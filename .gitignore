@@ -1,0 +1,6 @@
+.DS_Store
+pdf_env/
+__pycache__/
+*.pyc
+.antigravity/
+.gemini/

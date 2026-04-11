@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Manual Definitivo: Marco Teórico y Antecedentes · Laboratorio de Tesis</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* ── RESET & VARIABLES ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --c-bg: #f9f9fb;
+      --c-surface: #ffffff;
+      --c-text: #1a1c23;
+      --c-text-muted: #4e5366;
+      --c-border: #e2e8f0;
+      --c-accent: #6355e8; /* Violeta Tesis */
+      --c-accent-light: #eef0ff;
+      --c-teal: #1aadad;   /* Verde-agua (Ejemplos) */
+      --c-orange: #d9721c; /* Naranja (Avisos) */
+      --c-red: #d93f78;
+      --nav-w: 290px;
+      --radius: 12px;
+      --font-body: 'Crimson Pro', serif; 
+      --font-ui: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--c-bg);
+      color: var(--c-text);
+      display: flex;
+    }
+
+    h1, h2, h3, h4, h5, .nav-item, .badge, .btn, .sans {
+      font-family: var(--font-ui);
+    }
+    
+    /* ── SIDEBAR NAVIGATION ── */
+    aside.sidebar {
+      width: var(--nav-w);
+      height: 100vh;
+      position: fixed;
+      left: 0; top: 0;
+      background: var(--c-surface);
+      border-right: 1px solid var(--c-border);
+      padding: 30px 20px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    
+    .brand {
+      font-family: var(--font-ui);
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--c-accent);
+      margin-bottom: 40px;
+      line-height: 1.2;
+    }
+    .brand span { font-size: 0.8rem; color: var(--c-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display:block; margin-top:5px;}
+    
+    .nav-group { margin-bottom: 25px; }
+    .nav-label {
+      font-family: var(--font-ui); font-size: 0.75rem; font-weight: 800;
+      color: var(--c-text-muted); text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 10px; padding-left: 10px;
+    }
+    .nav-item {
+      display: block; padding: 8px 10px; color: var(--c-text);
+      text-decoration: none; font-size: 0.9rem; font-weight: 600;
+      border-radius: 6px; transition: background 0.2s, color 0.2s;
+    }
+    .nav-item:hover, .nav-item.active {
+      background: var(--c-accent-light); color: var(--c-accent);
+    }
+
+    /* ── MAIN CONTENT AREA ── */
+    main.content {
+      margin-left: var(--nav-w);
+      flex: 1;
+      min-height: 100vh;
+      padding: 60px 80px 100px 80px;
+      max-width: 1050px; 
+    }
+
+    /* Tipografía Textual de Lectura */
+    p { font-size: 1.15rem; line-height: 1.8; margin-bottom: 25px; color: #2d3142; }
+    h1 { font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 30px; letter-spacing: -0.02em; }
+    h2 { font-size: 2.2rem; font-weight: 800; margin: 60px 0 25px 0; padding-bottom: 15px; border-bottom: 2px solid var(--c-border); color: var(--c-text); }
+    h3 { font-size: 1.5rem; font-weight: 700; margin: 40px 0 15px 0; color: var(--c-text); }
+    ul, ol { margin-left: 20px; margin-bottom: 25px; font-size: 1.15rem; line-height: 1.8; color: #2d3142; }
+    li { margin-bottom: 10px; }
+    
+    .lead { font-size: 1.35rem; color: var(--c-text-muted); line-height: 1.7; font-family: var(--font-ui); font-weight: 400; margin-bottom: 40px; }
+
+    /* ── COMPONENTES CLAVE ── */
+    
+    /* Callouts (Avisos de color) */
+    .callout {
+      padding: 25px 30px; border-radius: var(--radius); margin: 35px 0;
+      background: var(--c-surface); border: 1px solid var(--c-border);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; gap: 20px; align-items: flex-start;
+    }
+    .callout-icon { font-size: 1.8rem; line-height: 1; margin-top:2px; }
+    .callout h4 { font-size: 1.1rem; margin-bottom: 10px; font-family: var(--font-ui); font-weight: 800; }
+    .callout p { font-size: 1.05rem; margin-bottom: 0; }
+    
+    .callout.info { border-left: 5px solid var(--c-accent); background: #fbfbfe; }
+    .callout.warning { border-left: 5px solid var(--c-orange); background: #fffcf8; }
+    .callout.danger { border-left: 5px solid var(--c-red); background: #fffcfd; }
+    
+    /* Plantillas de Ejemplo Literales (Para Word) */
+    .template-box {
+      margin: 40px 0; background: #fff; border: 2px solid var(--c-teal);
+      border-radius: var(--radius); position: relative; padding: 40px 30px 25px;
+      box-shadow: 0 8px 30px rgba(26, 173, 173, 0.1);
+    }
+    .template-box.apa { border-color: var(--c-orange); box-shadow: 0 8px 30px rgba(217, 114, 28, 0.1); }
+    .template-box.apa .template-badge { background: var(--c-orange); }
+
+    .template-badge {
+      position: absolute; top: 0; left: 0; background: var(--c-teal); color: #fff;
+      font-family: var(--font-ui); font-size: 0.75rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.1em; padding: 6px 16px;
+      border-radius: 10px 0 10px 0;
+    }
+    .template-box p.text {
+      font-family: 'Times New Roman', Times, serif; font-size: 1.15rem; line-height: 1.9;
+      font-style: italic; color: #111; margin: 0;
+    }
+    .template-note {
+      display: block; font-family: var(--font-ui); font-size: 0.85rem; color: var(--c-teal);
+      background: rgba(26,173,173,.08); padding: 10px 15px; border-radius: 6px; margin-top: 20px; font-style: normal; line-height: 1.5;
+    }
+    .template-box.apa .template-note { color: var(--c-orange); background: rgba(217,114,28,.08); }
+
+    /* Grilla general */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 30px 0; }
+    .card { background: var(--c-surface); border: 1px solid var(--c-border); padding: 25px; border-radius: var(--radius); }
+    
+    /* Estilos del comparador Visual vs */
+    .vs-box { display: flex; align-items: stretch; justify-content: space-between; gap: 15px; margin: 30px 0; }
+    .vs-item { width: 48%; padding: 25px; background: #fff; border: 1px solid var(--c-border); border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+    .vs-item h4 { font-size: 1.15rem; margin-bottom: 15px; border-bottom: 2px solid var(--c-border); padding-bottom: 10px; }
+    .vs-item.bad h4 { color: var(--c-red); border-color: rgba(217,63,120,.3); }
+    .vs-item.good h4 { color: var(--c-accent); border-color: rgba(99,85,232,.3); }
+
+    /* Checklists */
+    .todo-item { display:flex; align-items:flex-start; gap:12px; margin-bottom:15px; font-family:var(--font-ui); font-size:0.95rem; cursor:pointer;}
+    .todo-item input[type="checkbox"] { width:22px; height:22px; margin-top:1px; cursor:pointer; accent-color:var(--c-accent); flex-shrink:0; border-radius:4px;}
+    .todo-item span { transition: color 0.2s, text-decoration 0.2s; user-select:none; line-height: 1.5; color: var(--c-text);}
+    .todo-item input[type="checkbox"]:checked + span { color:#a0a0c0; text-decoration:line-through; }
+
+    @media (max-width: 1024px) {
+      aside.sidebar { display: none; }
+      main.content { margin-left: 0; padding: 40px 25px; }
+      .vs-box { flex-direction: column; }
+      .vs-item { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">
+    Manual Literario
+    <span>El Marco Teórico TFL</span>
+  </div>
+  
+  <div class="nav-group">
+    <div class="nav-label">Introducción</div>
+    <a href="#ch-0" class="nav-item active">El Desafío del "Diccionario"</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Los Dos Pilares</div>
+    <a href="#ch-1" class="nav-item">2.1. El Estado del Arte</a>
+    <a href="#ch-2" class="nav-item">2.2. Las Bases Teóricas (Estructura)</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Redacción y Citas</div>
+    <a href="#ch-3" class="nav-item">Evitando el Plagio Textual</a>
+    <a href="#ch-4" class="nav-item">Las Normas APA 7ma Edición</a>
+    <a href="#ch-5" class="nav-item">Paráfrasis vs Citación Directa</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Resumen Final</div>
+    <a href="#ch-todo" class="nav-item">To-Do List: Los 7 Pasos</a>
+  </div>
+
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="content">
+
+  <!-- CH 0: QUE ES Y QUE NO ES -->
+  <section id="ch-0">
+    <div class="badge sans" style="display:inline-block; background:var(--c-accent-light); color:var(--c-accent); padding:6px 14px; border-radius:100px; font-size:0.8rem; font-weight:800; letter-spacing:0.05em; margin-bottom:20px;">
+      LABORATORIO DE TESIS · FONOAUDIOLOGÍA
+    </div>
+    <h1>Construyendo el Marco Teórico</h1>
+    <p class="lead">El capítulo que define la excelencia de una tesis. Esta guía académica te motivará y enseñará iterativamente cómo evolucionar de una redacción tipo "Glosario", buscar fuentes fidedignas y argumentar tu tesis basándote en la evidencia para lograr un Marco Teórico (Capítulo 2) irrefutable.</p>
+
+    <h2>1. ¿Qué es (y qué evitar en) el Marco Teórico?</h2>
+    
+    <p>Piensa en el Marco Teórico como el andamiaje lógico que previene que los jueces digan: <em>"¿Por qué estudiaste a niños de 4 años en vez de 6? ¿Y por qué usaste Terapia Miofuncional en lugar de otra cosa?"</em>. El Marco es la plataforma jurídica y empírica de tu investigación.</p>
+    
+    <div class="callout warning">
+      <div class="callout-icon">💡</div>
+      <div>
+        <h4>El Gran Desafío: Superar el "Efecto Diccionario"</h4>
+        <p>Un obstáculo universitario común es creer que el Marco Teórico se limita a agrupar definiciones obvias copiadas de manuales o Wikipedia. Escribir: <em>"Subtítulo: 2.1 El Lenguaje. El lenguaje es la capacidad humana..."</em> seguido de <em>"2.2 Qué es un niño."</em> <br>Para que tu tesis brille, enlázalos siempre con hipótesis y argumentos de investigación.</p>
+      </div>
+    </div>
+
+    <div class="vs-box sans">
+      <div class="vs-item bad">
+        <h4>❌ Lo Que Hacen (Mal)</h4>
+        <p style="font-size: 0.95rem; font-family: var(--font-body); font-style:italic;">"La deglución atípica es un problema oral. Según Martínez es cuando se traga mal. Fin de la sección."</p>
+      </div>
+      <div class="vs-item good">
+        <h4>✅ Lo Que Busca la Universidad</h4>
+        <p style="font-size: 0.95rem; font-family: var(--font-body); font-style:italic;">"La deglución atípica impacta biomecánicamente las estructuras. Martínez (2021) sostiene que su origen suele ser orgánico, aunque esto difiere del postulado de López (2022) quien alerta sobre el factor de hábito oral prolongado..."</p>
+      </div>
+    </div>
+    
+    <p>Para solucionar y organizar toda nuestra prosa teórica, el Capítulo suele dividirse estrictamente en dos dominios que no debes mezclar: <strong>El Estado del Arte</strong> y <strong>Las Bases Teórico-Conceptuales</strong>.</p>
+  </section>
+
+  <div style="border-top: 1px solid var(--c-border); margin: 60px 0;"></div>
+
+  <!-- CH 1: ESTADO DEL ARTE -->
+  <section id="ch-1">
+    <h2>2.1. El Estado del Arte (Antecedentes)</h2>
+    <p>Generalmente el sub-capítulo <code>2.1 Antecedentes de Estudio</code> es lo primero redactado. Responde a la pregunta: <em>"¿Quién más investigó exactamente mi problema PICO en los últimos años?"</em>.</p>
+    
+    <p>Sirve para que no reinventes la rueda. Aquí citas Investigaciones (Papers Empíricos de revistas). Una regla de oro de la salud es que un buen Estado del Arte en Fonoaudiología utiliza <strong>investigaciones de hace 5 o 7 años como máximo</strong> para que no esté caduco científica o médicamente.</p>
+
+    <div class="template-box">
+      <div class="template-badge">Plantilla: Párrafo de Antecedentes Internacionales</div>
+      <p class="text">"A nivel internacional, destacamos la investigación heurística de Gonçalves y Silva (Brasil, 2023), titulada 'Terapias orofaciales tempranas', publicada en la Revista Paulista de Pediatría. Los autores llevaron adelante un ensayo clínico con 45 infantes diagnosticados con malformación craneofacial leve, aplicando fotobiomodulación durante seis meses. Tras su período de estudio, los autores demostraron que la fuerza tónico-muscular de los labiales incrementó un 34% en comparación a la terapia de empuje manual tradicional. Este es un antecedente vital, ya que refuerza la base conceptual del presente TFL respecto de descartar agentes mecánicos retrógrados en nuestras muestras locales."</p>
+      
+      <div class="template-note"><b>La estructura perfecta de un antecedente es de 4 elementos:</b><br/>1. Autor, País y Año.<br/>2. Objetivo del manuscrito citado (¿Qué intentaron probar?).<br/>3. Muestra (N=45 infantes).<br/>4. <b>Conclusión conectada:</b> ¿Qué tiene que ver ese artículo con mi Tesis?</div>
+    </div>
+  </section>
+
+  <!-- CH 2: BASES TEÓRICAS -->
+  <section id="ch-2">
+    <h2>2.2. Bases Teórico-Conceptuales (El Embudo)</h2>
+    <p>Aquí es donde desarrollas la teoría biológica, patológica e interventiva de tu tema PICO. Tienes que imaginar tu índice como un <strong>Embudo Geométrico</strong> (De lo más general y vasto, hasta caer microscópicamente en tu intervención específica).</p>
+    
+    <p>Si tu TFL es sobre el <em>Trastorno del Espectro Autista severo y Terapia con Pictogramas</em>, tu índice NO puede empezar hablando directamente del "Pictograma". Debes ir de macro a micro estableciendo un andamiaje que sostenga tus ideas lógicas.</p>
+
+    <div class="callout info">
+      <div class="callout-icon">🌪️</div>
+      <div>
+        <h4>La Arquitectura del Embudo (Ejemplo Real a Copiar)</h4>
+        <p>A manera de índice demostrativo para un trabajo, la Metodología Teórica se vertebraría obligatoriamente descendiendo capas abstractas:</p>
+        <ul style="margin-top:15px; font-size:1rem; font-family:var(--font-ui);">
+          <li style="margin-bottom:8px;"><b>2.2.1 El Neurodesarrollo Infantil Típico</b> (Nivel más macro y biológico fundamental).</li>
+          <li style="margin-bottom:8px;"><b>2.2.2 Interrupciones: El Trastorno del Espectro Autista (TEA)</b> (Bajamos al nivel neuro-patológico. Leyes neurológicas).</li>
+          <li style="margin-bottom:8px;"><b>2.2.3 El TEA y el Lenguaje Expresivo</b> (Nos alejamos de la motricidad y nos enfocamos netamente en Fonoaudiología Pragmática).</li>
+          <li style="margin-bottom:8px;"><b>2.2.4 Sistemas Alternativos y Aumentativos de Comunicación (SAAC)</b> (Teoría de las intervenciones artificiales masivas).</li>
+          <li style="margin-bottom:8px;"><b>2.2.5 El Pictograma como estímulo Visual Resolutivo en TEA Grado 3</b> (Nivel microscópico terminal. Aquí es donde cae tu Tesis y encendemos el ensayo).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CH 3: EVITANDO PLAGIO -->
+  <section id="ch-3">
+    <h2>3. El Discurso Narrativo y la Ética de Citación</h2>
+    <p>Cuidar la originalidad es fundamental. Plataformas universitarias de excelencia como <em>Turnitin</em> o <em>PlagScan</em> ayudan a respaldar la autenticidad de tu obra. <strong>Al dar siempre crédito al autor original de los grandes textos fundacionales</strong>, proteges tu inmenso esfuerzo, validas tus argumentos empíricos y elevas el estándar científico de tu Trabajo Final.</p>
+    
+    <p>Hacer un Marco Teórico robusto no significa "poner comillas a todos tus párrafos". Una tesis con 40 citas textuales grandes evidencia falta de razonamiento. El secreto absoluto para enhebrar el tejido bibliográfico es la <strong>Paráfrasis Estructural</strong>.</p>
+  </section>
+
+  <!-- CH 4 & 5: NORMAS APA 7MA -->
+  <section id="ch-4">
+    <h2>4. Aplicando APA (7ma Edición): Paráfrasis vs Texto</h2>
+    <p>En las Ciencias de la Salud Humana y Lingüística (como Fono), la APA ha reemplazado altamente las exigencias viejas de estar colocando links alocados.</p>
+
+    <h3>A. La Cita Literal (Textual Clásica)</h3>
+    <p>Se usa EXCLUSIVAMENTE cuando necesitas que el lector lea una definición exacta o contundente que si la alteras, pierde sentido (Ej. Leyes biológicas o declaraciones de la OMS). Si tiene menos de 40 palabras, se encierra obligatoriamente entre "comillas" y se agrega la página.</p>
+
+    <div class="template-box apa">
+      <div class="template-badge">Plantilla: Cita Textual (< 40 Palabras)</div>
+      <p class="text">"Es por tal limitante de respiración celular que la literatura indica contundentemente que 'el frenillo lingual alterado no es un fallo adaptativo, sino una fusión biológica restrictiva irreversible sin praxis curativa' (González y Ruiz, 2022, p. 14). Por consiguiente, nuestro abordaje anatómico debe orientarse a un proceso miofuncional..."</p>
+      
+      <div class="template-note"><b>Clave APA:</b> Al poner palabras textuales, es obligación agregar <b>la página (p. 14)</b> dentro del paréntesis. Si no hay comillas, se percibe como plagio si la IA corrobora el texto en la revista original.</div>
+    </div>
+
+    <h3>B. El Parafraseo Avanzado (El Formato Deseado)</h3>
+    <p>Esto representa el 90% de un buen Marco Teórico. Es cuando tomas las ideas de tres autores diferentes, las sumas y las escribes *tú mismo* con tu propia redacción fonoaudiológica, sin usar comillas, pero acreditando a los cerebros que las descubrieron.</p>
+    <p>Existen dos formas populares de citar según Normativas APA:</p>
+
+    <div class="vs-box sans" style="margin-top:20px;">
+      <div class="vs-item" style="border-top: 4px solid var(--c-accent);">
+        <h4 style="border:none; margin-bottom:5px;">Cita Narrativa (Basada en el Autor)</h4>
+        <p style="font-size:0.9rem; font-family:var(--font-body); color:var(--c-text-muted);">Pones al autor afuera del paréntesis para darle el crédito protagónico antes de tu oración.</p>
+        <p style="font-size:0.95rem; font-family:var(--font-body); font-style:italic; border-left:3px solid var(--c-accent); padding-left:10px; margin-top:15px; background:var(--c-surface);">
+          "Al respecto, <strong style="color:var(--c-accent);">Mendoza et al. (2021) argumentan</strong> que la tartamudez infantil está sumamente ligada al pico de ansiedad parental, incrementando el nivel de repeticiones tónicas..."
+        </p>
+      </div>
+      
+      <div class="vs-item" style="border-top: 4px solid var(--c-teal);">
+        <h4 style="border:none; margin-bottom:5px;">Cita Parentética (Basada en Idea)</h4>
+        <p style="font-size:0.9rem; font-family:var(--font-body); color:var(--c-text-muted);">Dejas que la idea teórica fluya de manera imperceptible y tiras a los autores al final del párrafo.</p>
+        <p style="font-size:0.95rem; font-family:var(--font-body); font-style:italic; border-left:3px solid var(--c-teal); padding-left:10px; margin-top:15px; background:var(--c-surface);">
+          "El grado elevado de ansiedad materna se ha convertido en el principal disparador que multiplica las repeticiones clónotónicas de manera sostenida durante la ingesta <strong style="color:var(--c-teal);">(Mendoza et al., 2021; Torres, 2022)</strong>."
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div style="border-top: 1px solid var(--c-border); margin: 60px 0;"></div>
+
+  <!-- CH TODO LIST -->
+  <section id="ch-todo" style="background:#fff; border:1px solid var(--c-border); padding:40px; border-radius:var(--radius); margin-top:40px; box-shadow:0 6px 20px rgba(0,0,0,0.02);">
+    <h2>Síntesis y To-Do List del Marco Teórico</h2>
+    <p>A modo de hoja de ruta organizativa, te brindamos el flujograma metodológico exacto que tu equipo debe seguir para poder redactar el Capítulo 2 de la Tesis alcanzando los estándares de más alta calidad académica. Utiliza esta lista clickeando para borrar los ítems completados.</p>
+
+    <!-- TO-DO LIST INTERACTIVA -->
+    <div style="background:var(--c-bg); border: 1px solid var(--c-border); border-radius:12px; padding:30px; margin-top: 30px;">
+      <h3 style="margin-top:0; color:var(--c-accent); font-size:1.3rem;">Fases de Ejecución: Elaboración Teórica</h3>
+      <p style="font-size:0.95rem; margin-bottom:20px; font-family:var(--font-ui);">Marca activamente las casillas para actualizar el seguimiento de redacción:</p>
+
+      <label class="todo-item"><input type="checkbox"><span><b>Paso 1: Mapeo y Lluvia Conceptual.</b> Identificar y anotar en un bloc las 4 a 5 palabras claves que sí o sí conforman tu problema clínico estudiado.</span></label>
+      
+      <label class="todo-item"><input type="checkbox"><span><b>Paso 2: Arquitectura del Embudo.</b> Formalizar un Índice de subtítulos descendente: Partiendo de la gran patología hacia las pequeñeces de la terapia.</span></label>
+      
+      <label class="todo-item"><input type="checkbox"><span><b>Paso 3: Búsqueda del "Estado del Arte".</b> Ingresar a Google Académico o Scielo para recabar Papers de "Antecedentes" (Estudiar quién probó y fracasó esto antes).</span></label>
+      
+      <label class="todo-item"><input type="checkbox"><span><b>Paso 4: Literatura de Bases Teóricas.</b> Buscar en los libros clásicos anatómicos y fisiológicos los fundamentos irrefutables de la Tesis (Manuales Base).</span></label>
+      
+      <label class="todo-item"><input type="checkbox"><span><b>Paso 5: Lectura Centralizada (Fichaje).</b> Configurar al Gestor (Zotero/Mendeley) y armar tarjetas subrayadas para facilitar la relectura.</span></label>
+      
+      <label class="todo-item"><input type="checkbox"><span><b>Paso 6: Escritura del Borrador "Parafraseado".</b> Redactar unificando las narrativas, utilizando APA 7ma parentética. Recordar jamás "hacer el diccionario".</span></label>
+
+      <label class="todo-item"><input type="checkbox"><span><b>Paso 7: Evaluación de Autoplagio.</b> Enviar o correr el documento por detector anti-plagio/similitud web con meta de alcanzar un resultado < al 15%.</span></label>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Active sidebar navigation observer logic
+  const secIds = ['ch-0', 'ch-1', 'ch-2', 'ch-3', 'ch-4', 'ch-todo'];
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const activeNav = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+        if(activeNav) activeNav.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px', threshold: 0.1 });
+
+  secIds.forEach(id => {
+    const section = document.getElementById(id);
+    if(section) observer.observe(section);
+  });
+</script>
+
+</body>
+</html>

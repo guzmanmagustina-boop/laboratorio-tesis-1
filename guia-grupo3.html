@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laboratorio de Tesis · Prof. Agustina</title>
+  <meta name="description" content="Laboratorio de Tesis: guía paso a paso para elegir un tema de investigación, redactar el problema y formular objetivos. Asesoría Pedagógica - Prof. Agustina." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET & TOKENS ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c-bg:        #f4f6fc;
+      --c-surface:   #ffffff;
+      --c-surface2:  #edf0f9;
+      --c-border:    rgba(0,0,0,.09);
+      --c-border-md: rgba(0,0,0,.13);
+      --c-text:      #1b1e35;
+      --c-muted:     #656a93;
+      --c-accent1:   #6355e8;   /* violeta */
+      --c-accent2:   #1aadad;   /* teal */
+      --c-accent3:   #d9721c;   /* naranja */
+      --c-accent4:   #2ea85a;   /* verde */
+      --c-accent5:   #d93f78;   /* rosa */
+      --radius:      16px;
+      --radius-sm:   10px;
+      --shadow:      0 2px 12px rgba(0,0,0,.07);
+      --shadow-md:   0 6px 28px rgba(0,0,0,.10);
+      --shadow-lg:   0 12px 48px rgba(0,0,0,.13);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--c-bg);
+      color: var(--c-text);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    /* ── SLIDE SYSTEM ───────────────────────────────── */
+    .slides-wrapper { display: flex; flex-direction: column; gap: 0; }
+
+    .slide {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 72px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-inner { max-width: 860px; width: 100%; position: relative; z-index: 2; }
+
+    /* ── BLOBS (light, subtle) ──────────────────────── */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: .09;
+      pointer-events: none;
+      z-index: 0;
+      animation: float 9s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%       { transform: translateY(-18px) scale(1.03); }
+    }
+
+    /* ── DIVIDER BETWEEN SLIDES ─────────────────────── */
+    .slide-sep { height: 1px; background: var(--c-border); }
+
+    /* ── COVER ──────────────────────────────────────── */
+    #cover {
+      background: linear-gradient(160deg, #eef0ff 0%, #f9f6ff 40%, #ecfbfb 100%);
+      text-align: center;
+    }
+
+    .cover-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(99,85,232,.1);
+      border: 1px solid rgba(99,85,232,.25);
+      border-radius: 100px;
+      padding: 6px 18px;
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--c-accent1);
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .cover-badge::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--c-accent1);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .4; transform: scale(1.5); }
+    }
+
+    h1.cover-title {
+      font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -.03em;
+      color: var(--c-text);
+      margin-bottom: 18px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--c-accent1) 0%, var(--c-accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cover-subtitle {
+      font-size: 1.1rem;
+      color: var(--c-muted);
+      max-width: 520px;
+      margin: 0 auto 48px;
+      line-height: 1.7;
+    }
+
+    .cover-steps {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .cover-step-pill {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border-md);
+      border-radius: 100px;
+      padding: 10px 22px;
+      font-size: .9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      box-shadow: var(--shadow);
+      transition: transform .22s, box-shadow .22s;
+    }
+    .cover-step-pill:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+    .cover-step-pill span.num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .74rem; font-weight: 800;
+    }
+
+    /* ── SECTION TAG ────────────────────────────────── */
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .73rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 18px;
+    }
+    .section-tag .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+    /* ── SLIDE TITLE ────────────────────────────────── */
+    h2.slide-title {
+      font-size: clamp(1.7rem, 3.6vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -.025em;
+      margin-bottom: 10px;
+      line-height: 1.2;
+      color: var(--c-text);
+    }
+
+    .slide-lead {
+      font-size: 1rem;
+      color: var(--c-muted);
+      margin-bottom: 32px;
+      max-width: 620px;
+    }
+
+    /* ── CHECKLIST ──────────────────────────────────── */
+    .checklist { display: flex; flex-direction: column; gap: 12px; }
+
+    .check-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+    }
+    .check-item:hover {
+      border-color: rgba(99,85,232,.25);
+      transform: translateX(4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .check-icon {
+      flex-shrink: 0;
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.05rem;
+    }
+    .check-item h4 { font-size: .95rem; font-weight: 700; margin-bottom: 4px; color: var(--c-text); }
+    .check-item p  { font-size: .875rem; color: var(--c-muted); }
+
+    /* ── CALLOUT ────────────────────────────────────── */
+    .callout {
+      border-radius: var(--radius-sm);
+      padding: 18px 22px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-top: 22px;
+      font-size: .9rem;
+    }
+    .callout-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .callout strong { display: block; margin-bottom: 4px; font-size: .93rem; color: var(--c-text); }
+    .callout p, .callout li { color: var(--c-muted); }
+
+    .callout.tip  { background: rgba(26,173,173,.07);  border: 1px solid rgba(26,173,173,.22); }
+    .callout.warn { background: rgba(217,114,28,.07);  border: 1px solid rgba(217,114,28,.22); }
+    .callout.info { background: rgba(99,85,232,.07);   border: 1px solid rgba(99,85,232,.22); }
+
+    /* ── EXAMPLE BOX ────────────────────────────────── */
+    .example-box {
+      background: var(--c-surface);
+      border-left: 4px solid var(--c-accent1);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 16px 18px;
+      font-size: .9rem;
+      color: var(--c-text);
+      box-shadow: var(--shadow);
+      margin: 8px 0;
+    }
+    .example-box .ex-label {
+      font-size: .68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--c-accent1);
+      margin-bottom: 6px;
+    }
+    .example-box.teal   { border-color: var(--c-accent2); }
+    .example-box.teal   .ex-label { color: var(--c-accent2); }
+    .example-box.orange { border-color: var(--c-accent3); }
+    .example-box.orange .ex-label { color: var(--c-accent3); }
+    .example-box.green  { border-color: var(--c-accent4); }
+    .example-box.green  .ex-label { color: var(--c-accent4); }
+    .example-box.pink   { border-color: var(--c-accent5); }
+    .example-box.pink   .ex-label { color: var(--c-accent5); }
+
+    /* ── FORMULA CARD ───────────────────────────────── */
+    .formula-card {
+      background: linear-gradient(135deg, rgba(99,85,232,.07), rgba(26,173,173,.05));
+      border: 1px solid rgba(99,85,232,.2);
+      border-radius: var(--radius);
+      padding: 26px;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .formula-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--c-text);
+      font-style: italic;
+    }
+    .formula-parts {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 16px;
+    }
+    .formula-part {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border-md);
+      border-radius: 8px;
+      padding: 7px 15px;
+      font-size: .83rem;
+      font-weight: 600;
+      color: var(--c-text);
+      box-shadow: var(--shadow);
+    }
+
+    /* ── STEP GRID ──────────────────────────────────── */
+    .step-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .step-card {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      padding: 26px 22px;
+      box-shadow: var(--shadow);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .step-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+
+    .step-num {
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      opacity: .8;
+    }
+    .step-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+    .step-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 7px; color: var(--c-text); }
+    .step-card p  { font-size: .875rem; color: var(--c-muted); line-height: 1.6; }
+
+    /* ── TIMELINE ───────────────────────────────────── */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+
+    .tl-item { display: flex; gap: 20px; position: relative; }
+
+    .tl-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 44px;
+      flex-shrink: 0;
+    }
+    .tl-circle {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.05rem;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+      box-shadow: var(--shadow);
+    }
+    .tl-line { width: 2px; flex: 1; background: var(--c-border-md); margin: 4px 0; min-height: 22px; }
+    .tl-item:last-child .tl-line { display: none; }
+
+    .tl-content { padding-bottom: 26px; flex: 1; }
+    .tl-content h3 { font-size: .97rem; font-weight: 700; margin-bottom: 5px; color: var(--c-text); }
+    .tl-content p  { font-size: .875rem; color: var(--c-muted); }
+
+    /* ── TWO COLUMNS ────────────────────────────────── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* ── OBJ CARDS ──────────────────────────────────── */
+    .obj-card {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+    .obj-card h3 {
+      font-size: .97rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--c-text);
+    }
+    .obj-badge {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 100px;
+    }
+    .obj-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .obj-list li { font-size: .875rem; color: var(--c-muted); display: flex; align-items: flex-start; gap: 8px; }
+    .obj-list li::before { content: '→'; flex-shrink: 0; font-weight: 700; color: var(--c-accent1); }
+
+    /* ── VERB PILLS ─────────────────────────────────── */
+    .verb-grid { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 14px; }
+    .verb-pill {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border-md);
+      border-radius: 8px;
+      padding: 7px 15px;
+      font-size: .86rem;
+      font-weight: 600;
+      box-shadow: var(--shadow);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .verb-pill:hover { transform: scale(1.06); box-shadow: var(--shadow-md); }
+
+    /* ── FULL EXAMPLE ───────────────────────────────── */
+    .full-example {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      box-shadow: var(--shadow-md);
+    }
+    .full-example .ex-row { display: flex; flex-direction: column; gap: 5px; }
+    .full-example .ex-row label { font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .full-example .ex-row p {
+      font-size: .92rem;
+      color: var(--c-text);
+      background: var(--c-surface2);
+      border-radius: var(--radius-sm);
+      padding: 11px 15px;
+      border: 1px solid var(--c-border);
+      line-height: 1.6;
+    }
+
+    /* ── MINI TABLE ─────────────────────────────────── */
+    .mini-table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+    .mini-table th {
+      text-align: left;
+      padding: 11px 14px;
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: var(--c-surface2);
+      color: var(--c-muted);
+      border-bottom: 2px solid var(--c-border-md);
+    }
+    .mini-table td { padding: 11px 14px; border-top: 1px solid var(--c-border); vertical-align: top; color: var(--c-text); }
+    .mini-table tr:hover td { background: var(--c-surface2); }
+    .tag-cell {
+      display: inline-block;
+      padding: 3px 11px;
+      border-radius: 100px;
+      font-size: .75rem;
+      font-weight: 700;
+    }
+
+    /* ── PROGRESS NAV ───────────────────────────────── */
+    .progress-nav {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      z-index: 100;
+    }
+    .progress-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.15);
+      cursor: pointer;
+      transition: background .25s, transform .25s;
+    }
+    .progress-dot.active { background: var(--c-accent1); transform: scale(1.45); }
+    .progress-dot:hover  { background: rgba(0,0,0,.35); }
+
+    /* ── ACCORDION (multi-area examples) ────────────── */
+    .accordion { display: flex; flex-direction: column; gap: 10px; }
+
+    .accordion-item {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: .93rem;
+      font-weight: 700;
+      color: var(--c-text);
+      gap: 12px;
+      transition: background .2s;
+    }
+    .accordion-header:hover { background: var(--c-surface2); }
+
+    .accordion-header .area-badge {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    .accordion-header .chevron {
+      font-size: .8rem;
+      color: var(--c-muted);
+      transition: transform .3s;
+      flex-shrink: 0;
+    }
+    .accordion-header.open .chevron { transform: rotate(90deg); }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s ease;
+    }
+    .accordion-body.open { max-height: 600px; }
+
+    .accordion-body-inner {
+      padding: 4px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .acc-example {
+      background: var(--c-surface2);
+      border-radius: var(--radius-sm);
+      padding: 13px 15px;
+      font-size: .875rem;
+      color: var(--c-text);
+      border: 1px solid var(--c-border);
+    }
+    .acc-example strong {
+      display: block;
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    /* ── HR DIVIDER ─────────────────────────────────── */
+    hr.divider { border: none; height: 1px; background: var(--c-border); margin: 24px 0; }
+
+    /* ── FINAL SLIDE ────────────────────────────────── */
+    #final {
+      background: linear-gradient(160deg, #f0eeff 0%, #ecfdfb 100%);
+      text-align: center;
+    }
+    .final-emoji { font-size: 3.8rem; margin-bottom: 22px; display: block; }
+
+    /* ── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 640px) {
+      .two-col  { grid-template-columns: 1fr; }
+      .step-grid{ grid-template-columns: 1fr; }
+      .progress-nav { display: none; }
+    }
+    
+    @page {
+      margin: 0;
+    }
+
+    @media print {
+      /* Anula animaciones y despliega acordeones */
+      .step-card, .check-item, .example-box, .tl-item, .callout, .obj-card, .accordion-item, .full-example {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .accordion-body { max-height: none !important; overflow: visible !important; }
+      .progress-nav { display: none !important; }
+      .blob { display: none !important; }
+      
+      /* FIX visual 1: Anula el texto con gradiente que los lectores PDF muestran como un rectángulo sólido */
+      .gradient-text {
+        background: none !important;
+        -webkit-text-fill-color: var(--c-accent1) !important;
+        color: var(--c-accent1) !important;
+      }
+
+      /* FIX visual 2: Anula el desenfoque estilo vidrio que Chrome imprime como cuadros grises oscuros */
+      .cover-step-pill {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: white !important;
+        border: 2px solid rgba(0,0,0,0.05) !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── PROGRESS NAV ──────────────────────────────────── -->
+<nav class="progress-nav" aria-label="Navegación de secciones">
+  <div class="progress-dot active" onclick="scrollToSlide('cover')"  title="Portada"></div>
+  <div class="progress-dot"        onclick="scrollToSlide('s1')"     title="¿Qué es investigar?"></div>
+  <div class="progress-dot"        onclick="scrollToSlide('s2')"     title="Elegir el tema"></div>
+  <div class="progress-dot"        onclick="scrollToSlide('s3')"     title="Criterios"></div>
+  <div class="progress-dot"        onclick="scrollToSlide('s4')"     title="El problema"></div>
+  <div class="progress-dot"        onclick="scrollToSlide('s5')"     title="Objetivos"></div>
+  <div class="progress-dot"        onclick="scrollToSlide('s6')"     title="Ejemplo completo"></div>
+  <div class="progress-dot"        onclick="scrollToSlide('s7')"     title="Ejemplos por área"></div>
+  <div class="progress-dot"        onclick="scrollToSlide('s8')"     title="Resumen"></div>
+  <div class="progress-dot"        onclick="scrollToSlide('final')"  title="Cierre"></div>
+</nav>
+
+<div class="slides-wrapper">
+
+  <!-- ════════════════════════════════════════════════
+       PORTADA
+  ════════════════════════════════════════════════ -->
+  <section class="slide" id="cover">
+    <div class="blob" style="width:500px;height:500px;background:#6355e8;top:-120px;left:-80px;animation-delay:0s;"></div>
+    <div class="blob" style="width:420px;height:420px;background:#1aadad;bottom:-80px;right:-80px;animation-delay:3s;"></div>
+
+    <div class="slide-inner" style="text-align:center;">
+      <div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:28px;">
+        <div class="cover-badge" style="margin-bottom:0;">Asesoría Pedagógica · Prof. Agustina</div>
+        <a href="https://wa.me/542664309334" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:7px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);border-radius:100px;padding:6px 16px;font-size:.78rem;font-weight:700;color:#1a9e4a;letter-spacing:.06em;text-decoration:none;transition:background .2s,transform .2s;"
+           onmouseover="this.style.background='rgba(37,211,102,.18)';this.style.transform='translateY(-2px)'"
+           onmouseout="this.style.background='rgba(37,211,102,.1)';this.style.transform='translateY(0)'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a9e4a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          +54 266 430-9334
+        </a>
+      </div>
+
+      <h1 class="cover-title">
+        <span class="gradient-text">Laboratorio de Tesis</span>
+      </h1>
+
+      <p style="font-size:clamp(1.1rem,2.5vw,1.55rem);font-weight:700;color:var(--c-text);letter-spacing:-.01em;margin-bottom:10px;line-height:1.3;">Construyendo tu camino al título</p>
+
+      <p class="cover-subtitle" style="margin-top:10px;">
+        Una guía práctica con ejemplos para construir una base sólida:<br>
+        del tema al problema, y del problema a los objetivos.
+      </p>
+
+      <div class="cover-steps">
+        <div class="cover-step-pill">
+          <span class="num" style="background:rgba(99,85,232,.15);color:var(--c-accent1);">1</span>
+          Elegir el tema
+        </div>
+        <div class="cover-step-pill">
+          <span class="num" style="background:rgba(26,173,173,.15);color:var(--c-accent2);">2</span>
+          Redactar el problema
+        </div>
+        <div class="cover-step-pill">
+          <span class="num" style="background:rgba(217,114,28,.15);color:var(--c-accent3);">3</span>
+          Formular los objetivos
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="slide-sep"></div>
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE 1 — ¿QUÉ ES INVESTIGAR?
+  ════════════════════════════════════════════════ -->
+  <section class="slide" id="s1" style="background:var(--c-surface);">
+    <div class="blob" style="width:360px;height:360px;background:#2ea85a;top:5%;right:-60px;animation-delay:1s;"></div>
+
+    <div class="slide-inner">
+      <div class="section-tag" style="background:rgba(46,168,90,.1);border:1px solid rgba(46,168,90,.25);color:var(--c-accent4);">
+        <span class="dot" style="background:var(--c-accent4);"></span>
+        Para empezar
+      </div>
+
+      <h2 class="slide-title">¿Qué significa investigar?</h2>
+      <p class="slide-lead">Antes de elegir el tema, es útil tener claro de qué se trata el proceso.</p>
+
+      <div class="checklist">
+        <div class="check-item">
+          <div class="check-icon" style="background:rgba(99,85,232,.1);color:var(--c-accent1);">🔍</div>
+          <div>
+            <h4>Investigar = hacerse preguntas</h4>
+            <p>Toda investigación nace de algo que no se sabe o no se entiende del todo. Si ya tenemos la respuesta, no hay investigación posible.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon" style="background:rgba(26,173,173,.1);color:var(--c-accent2);">📌</div>
+          <div>
+            <h4>No se investiga "todo"</h4>
+            <p>El tema tiene que estar acotado. Cuanto más específico, más manejable es el trabajo y más valioso resulta el aporte.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon" style="background:rgba(217,114,28,.1);color:var(--c-accent3);">🎯</div>
+          <div>
+            <h4>Hay un punto de llegada claro</h4>
+            <p>Los objetivos marcan el norte: sabemos por dónde arrancamos y sabemos cuándo terminamos.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon" style="background:rgba(46,168,90,.1);color:var(--c-accent4);">📝</div>
+          <div>
+            <h4>Se documenta y se argumenta</h4>
+            <p>Investigar no es solo "buscar en Google". Se analiza, se compara y se fundamenta con fuentes académicas confiables.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="slide-sep"></div>
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE 2 — ELEGIR EL TEMA
+  ════════════════════════════════════════════════ -->
+  <section class="slide" id="s2">
+    <div class="blob" style="width:400px;height:400px;background:#6355e8;bottom:-60px;left:-80px;animation-delay:2s;"></div>
+
+    <div class="slide-inner">
+      <div class="section-tag" style="background:rgba(99,85,232,.1);border:1px solid rgba(99,85,232,.25);color:var(--c-accent1);">
+        <span class="dot" style="background:var(--c-accent1);"></span>
+        Paso 1
+      </div>
+
+      <h2 class="slide-title">Elegir el tema</h2>
+      <p class="slide-lead">El tema es el punto de partida. No se elige al azar: hay un proceso para llegar a él.</p>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-circle" style="background:rgba(99,85,232,.1);color:var(--c-accent1);">💡</div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-content">
+            <h3>Del área general → al tema específico</h3>
+            <p>Empezá por el área que te interesa y andá acotando hasta llegar a algo concreto y manejable.</p>
+            <div class="example-box" style="margin-top:11px;">
+              <div class="ex-label">Ejemplo — Fonoaudiología</div>
+              Área: <strong>Fonoaudiología</strong> → Subtema: <strong>intervención en lenguaje infantil</strong> → Tema específico: <strong>desarrollo del lenguaje expresivo en niños con retraso del habla de 3 a 5 años</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-circle" style="background:rgba(26,173,173,.1);color:var(--c-accent2);">🗺️</div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-content">
+            <h3>Revisá lo que ya existe</h3>
+            <p>Antes de cerrarlo, buscá investigaciones previas sobre ese tema. Eso te ayuda a entender dónde está el <em>hueco</em> que tu investigación puede llenar.</p>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-circle" style="background:rgba(217,114,28,.1);color:var(--c-accent3);">✂️</div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-content">
+            <h3>Definí el alcance</h3>
+            <p>¿Qué <strong>población</strong> vas a estudiar? ¿En qué <strong>contexto</strong>? ¿En qué <strong>período</strong>? Acotar es fundamental para que sea realizable.</p>
+            <div class="example-box teal" style="margin-top:11px;">
+              <div class="ex-label">Tema ya acotado</div>
+              "Eficacia de la intervención fonoaudiológica temprana en el desarrollo del lenguaje expresivo en niños de 3 a 5 años con retraso del habla en centros de salud públicos de Córdoba, 2022–2024"
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-circle" style="background:rgba(46,168,90,.1);color:var(--c-accent4);">✅</div>
+          </div>
+          <div class="tl-content">
+            <h3>Chequeá la viabilidad</h3>
+            <p>¿Podés acceder a la información que necesitás? ¿Es realizable en el tiempo disponible? Si la respuesta es no, hay que ajustar el tema.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="slide-sep"></div>
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE 3 — CRITERIOS PARA ELEGIR UN TEMA
+  ════════════════════════════════════════════════ -->
+  <section class="slide" id="s3" style="background:var(--c-surface);">
+    <div class="blob" style="width:360px;height:360px;background:#d93f78;top:5%;right:-50px;animation-delay:0.5s;"></div>
+
+    <div class="slide-inner">
+      <div class="section-tag" style="background:rgba(217,63,120,.1);border:1px solid rgba(217,63,120,.25);color:var(--c-accent5);">
+        <span class="dot" style="background:var(--c-accent5);"></span>
+        Paso 1 · Criterios
+      </div>
+
+      <h2 class="slide-title">¿Mi tema es bueno?<br>Chequealo así.</h2>
+      <p class="slide-lead">Un buen tema cumple con estos seis criterios. Si alguno falla, todavía hay que ajustarlo.</p>
+
+      <div class="step-grid">
+        <div class="step-card" style="border-top:3px solid var(--c-accent1);">
+          <span class="step-icon">🎯</span>
+          <div class="step-num" style="color:var(--c-accent1);">Criterio 01</div>
+          <h3>Relevancia</h3>
+          <p>¿Tiene importancia para el campo o para la comunidad? ¿Le sirve a alguien más allá del equipo?</p>
+        </div>
+        <div class="step-card" style="border-top:3px solid var(--c-accent2);">
+          <span class="step-icon">🔬</span>
+          <div class="step-num" style="color:var(--c-accent2);">Criterio 02</div>
+          <h3>Originalidad</h3>
+          <p>¿Agrega algo nuevo? No tiene que ser una revolución, pero sí una perspectiva o enfoque propio.</p>
+        </div>
+        <div class="step-card" style="border-top:3px solid var(--c-accent3);">
+          <span class="step-icon">⚙️</span>
+          <div class="step-num" style="color:var(--c-accent3);">Criterio 03</div>
+          <h3>Viabilidad</h3>
+          <p>¿Hay datos disponibles? ¿Tenemos acceso a la población o al contexto que queremos estudiar?</p>
+        </div>
+        <div class="step-card" style="border-top:3px solid var(--c-accent4);">
+          <span class="step-icon">❤️</span>
+          <div class="step-num" style="color:var(--c-accent4);">Criterio 04</div>
+          <h3>Interés genuino</h3>
+          <p>¿El tema motiva al equipo? La investigación es un proceso largo; si no engancha, cuesta sostenerse.</p>
+        </div>
+        <div class="step-card" style="border-top:3px solid var(--c-accent5);">
+          <span class="step-icon">📏</span>
+          <div class="step-num" style="color:var(--c-accent5);">Criterio 05</div>
+          <h3>Acotamiento</h3>
+          <p>"La fonoaudiología" es demasiado amplio. "La intervención en dislalia en nivel inicial en Córdoba" ya es trabajable.</p>
+        </div>
+        <div class="step-card" style="border-top:3px solid var(--c-accent1);">
+          <span class="step-icon">📚</span>
+          <div class="step-num" style="color:var(--c-accent1);">Criterio 06</div>
+          <h3>Sustento bibliográfico</h3>
+          <p>¿Existe literatura sobre el tema? Necesitamos fuentes académicas para construir el marco teórico.</p>
+        </div>
+      </div>
+
+      <div class="callout tip" style="margin-top:22px;">
+        <div class="callout-icon">💡</div>
+        <div>
+          <strong>Ideas de temas en Fonoaudiología para inspirarse</strong>
+          <p>Intervención en trastornos del lenguaje en nivel inicial · Terapia miofuncional y dislalias · Teleasistencia fonoaudiológica post-pandemia · Alfabetización e intervención fonoaudiológica en escuelas · Comunicación aumentativa y alternativa en personas con TEA · Deglución atípica en adultos mayores</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="slide-sep"></div>
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE 4 — EL PROBLEMA DE INVESTIGACIÓN
+  ════════════════════════════════════════════════ -->
+  <section class="slide" id="s4">
+    <div class="blob" style="width:420px;height:420px;background:#1aadad;bottom:-80px;right:-60px;animation-delay:1.5s;"></div>
+
+    <div class="slide-inner">
+      <div class="section-tag" style="background:rgba(26,173,173,.1);border:1px solid rgba(26,173,173,.25);color:var(--c-accent2);">
+        <span class="dot" style="background:var(--c-accent2);"></span>
+        Paso 2
+      </div>
+
+      <h2 class="slide-title">El problema<br>de investigación</h2>
+      <p class="slide-lead">Una vez elegido el tema, hay que convertirlo en un <strong>problema</strong>. El problema es la pregunta que guía todo el trabajo.</p>
+
+      <div class="formula-card">
+        <p style="font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--c-muted);margin-bottom:10px;">Estructura básica del problema</p>
+        <p class="formula-text">"¿Qué relación existe entre [Variable A] y [Variable B] en [Contexto / Población] durante [Período]?"</p>
+        <div class="formula-parts">
+          <div class="formula-part">Variable A</div>
+          <div class="formula-part">Variable B / efecto</div>
+          <div class="formula-part">Contexto / Población</div>
+          <div class="formula-part">Período de tiempo</div>
+        </div>
+      </div>
+
+      <div class="checklist">
+        <div class="check-item">
+          <div class="check-icon" style="background:rgba(26,173,173,.1);color:var(--c-accent2);">❓</div>
+          <div>
+            <h4>El problema es una pregunta</h4>
+            <p>Tiene que formularse como pregunta o como afirmación que expresa una incógnita. No es simplemente el título del tema.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon" style="background:rgba(99,85,232,.1);color:var(--c-accent1);">🔁</div>
+          <div>
+            <h4>El problema guía los objetivos</h4>
+            <p>Todo objetivo que definamos tiene que apuntar a resolver este problema. Si no, algo está desconectado.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon" style="background:rgba(217,114,28,.1);color:var(--c-accent3);">🚫</div>
+          <div>
+            <h4>No tiene respuesta obvia</h4>
+            <p>Si ya sabemos la respuesta antes de investigar, no es un problema de investigación. Tiene que generar incertidumbre genuina.</p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <p style="font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--c-muted);margin-bottom:13px;">Ejemplos de problemas de investigación — Fonoaudiología</p>
+
+      <div style="display:flex;flex-direction:column;gap:11px;">
+        <div class="example-box">
+          <div class="ex-label">Problema 1 · Lenguaje infantil</div>
+          ¿En qué medida la intervención fonoaudiológica temprana influye en el desarrollo del lenguaje expresivo en niños de 3 a 5 años con retraso del habla atendidos en centros de salud públicos de Córdoba durante 2022–2024?
+        </div>
+        <div class="example-box teal">
+          <div class="ex-label">Problema 2 · Terapia miofuncional</div>
+          ¿Cuál es la efectividad de la terapia miofuncional oral en la corrección de dislalias funcionales en niños de nivel primario en escuelas de la ciudad de Córdoba?
+        </div>
+        <div class="example-box orange">
+          <div class="ex-label">Problema 3 · Teleasistencia</div>
+          ¿De qué manera impactó la implementación de la teleasistencia fonoaudiológica en la continuidad del tratamiento de pacientes con trastornos de la voz durante el período 2020–2022?
+        </div>
+        <div class="example-box pink">
+          <div class="ex-label">Problema 4 · Deglución</div>
+          ¿Qué relación existe entre los trastornos de deglución y la calidad de vida en adultos mayores institucionalizados en hogares de Córdoba?
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="slide-sep"></div>
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE 5 — OBJETIVOS
+  ════════════════════════════════════════════════ -->
+  <section class="slide" id="s5" style="background:var(--c-surface);">
+    <div class="blob" style="width:380px;height:380px;background:#d9721c;top:0;left:-60px;animation-delay:2.5s;"></div>
+
+    <div class="slide-inner">
+      <div class="section-tag" style="background:rgba(217,114,28,.1);border:1px solid rgba(217,114,28,.25);color:var(--c-accent3);">
+        <span class="dot" style="background:var(--c-accent3);"></span>
+        Paso 3
+      </div>
+
+      <h2 class="slide-title">Los objetivos</h2>
+      <p class="slide-lead">Los objetivos indican <em>qué vamos a hacer</em> para responder al problema. Hay un objetivo general y varios específicos.</p>
+
+      <div class="two-col" style="margin-bottom:22px;">
+        <div class="obj-card" style="border-top:3px solid var(--c-accent1);">
+          <h3>
+            Objetivo General
+            <span class="obj-badge" style="background:rgba(99,85,232,.12);color:var(--c-accent1);">Solo 1</span>
+          </h3>
+          <ul class="obj-list">
+            <li>Resume la meta principal del estudio</li>
+            <li>Responde directamente al problema</li>
+            <li>Es amplio, pero alcanzable</li>
+            <li>Comienza con un verbo en infinitivo</li>
+          </ul>
+        </div>
+        <div class="obj-card" style="border-top:3px solid var(--c-accent2);">
+          <h3>
+            Objetivos Específicos
+            <span class="obj-badge" style="background:rgba(26,173,173,.12);color:var(--c-accent2);">3 a 5</span>
+          </h3>
+          <ul class="obj-list">
+            <li>Son los pasos para alcanzar el general</li>
+            <li>Más concretos y medibles</li>
+            <li>Cada uno aborda un aspecto del problema</li>
+            <li>En conjunto, "suman" al objetivo general</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-icon">🧭</div>
+        <div>
+          <strong>Truco: usá verbos de acción claros y precisos</strong>
+          <p>Los objetivos no dicen "estudiar" o "conocer" a secas. Usá verbos que indiquen con exactitud qué vas a hacer.</p>
+        </div>
+      </div>
+
+      <div class="verb-grid">
+        <div class="verb-pill" style="border-color:rgba(99,85,232,.25);color:var(--c-accent1);">Analizar</div>
+        <div class="verb-pill" style="border-color:rgba(99,85,232,.25);color:var(--c-accent1);">Identificar</div>
+        <div class="verb-pill" style="border-color:rgba(26,173,173,.25);color:var(--c-accent2);">Describir</div>
+        <div class="verb-pill" style="border-color:rgba(26,173,173,.25);color:var(--c-accent2);">Determinar</div>
+        <div class="verb-pill" style="border-color:rgba(217,114,28,.25);color:var(--c-accent3);">Comparar</div>
+        <div class="verb-pill" style="border-color:rgba(217,114,28,.25);color:var(--c-accent3);">Evaluar</div>
+        <div class="verb-pill" style="border-color:rgba(46,168,90,.25);color:var(--c-accent4);">Caracterizar</div>
+        <div class="verb-pill" style="border-color:rgba(46,168,90,.25);color:var(--c-accent4);">Proponer</div>
+        <div class="verb-pill" style="border-color:rgba(217,63,120,.25);color:var(--c-accent5);">Explorar</div>
+        <div class="verb-pill" style="border-color:rgba(217,63,120,.25);color:var(--c-accent5);">Establecer</div>
+      </div>
+
+      <hr class="divider" />
+
+      <p style="font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--c-muted);margin-bottom:13px;">Ejemplo de objetivos — Fonoaudiología</p>
+
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <div class="example-box">
+          <div class="ex-label">Objetivo General</div>
+          Analizar la influencia de la intervención fonoaudiológica temprana en el desarrollo del lenguaje expresivo en niños de 3 a 5 años con retraso del habla en centros de salud públicos de Córdoba (2022–2024).
+        </div>
+        <div class="example-box teal">
+          <div class="ex-label">Objetivo Específico 1</div>
+          Describir el perfil lingüístico inicial de los niños con retraso del habla incorporados al programa de intervención temprana.
+        </div>
+        <div class="example-box orange">
+          <div class="ex-label">Objetivo Específico 2</div>
+          Identificar las estrategias de intervención fonoaudiológica más utilizadas en los centros de salud estudiados.
+        </div>
+        <div class="example-box green">
+          <div class="ex-label">Objetivo Específico 3</div>
+          Comparar el desarrollo del lenguaje expresivo antes y después de la intervención en los niños que completaron el ciclo de tratamiento.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="slide-sep"></div>
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE 6 — EJEMPLO COMPLETO (Fonoaudiología)
+  ════════════════════════════════════════════════ -->
+  <section class="slide" id="s6">
+    <div class="blob" style="width:360px;height:360px;background:#2ea85a;bottom:-40px;right:-40px;animation-delay:3s;"></div>
+
+    <div class="slide-inner">
+      <div class="section-tag" style="background:rgba(46,168,90,.1);border:1px solid rgba(46,168,90,.25);color:var(--c-accent4);">
+        <span class="dot" style="background:var(--c-accent4);"></span>
+        Todo junto · Ejemplo completo
+      </div>
+
+      <h2 class="slide-title">De la idea a los objetivos<br>paso a paso</h2>
+      <p class="slide-lead">Así se ve la progresión completa. El área, el tema, el problema y los objetivos deben contar <strong>la misma historia</strong>.</p>
+
+      <div class="full-example" style="margin-bottom:22px;">
+        <div class="ex-row">
+          <label style="color:var(--c-accent1);">🔷 Área de interés</label>
+          <p>Fonoaudiología — Lenguaje infantil</p>
+        </div>
+        <div class="ex-row">
+          <label style="color:var(--c-accent2);">🔶 Tema acotado</label>
+          <p>Intervención fonoaudiológica temprana y desarrollo del lenguaje expresivo en niños de 3 a 5 años con retraso del habla en centros de salud públicos de Córdoba (2022–2024)</p>
+        </div>
+        <div class="ex-row">
+          <label style="color:var(--c-accent3);">❓ Problema de investigación</label>
+          <p>¿En qué medida la intervención fonoaudiológica temprana influye en el desarrollo del lenguaje expresivo en niños de 3 a 5 años con retraso del habla atendidos en centros de salud públicos de Córdoba durante 2022–2024?</p>
+        </div>
+        <div class="ex-row">
+          <label style="color:var(--c-accent4);">🎯 Objetivo General</label>
+          <p>Analizar la influencia de la intervención fonoaudiológica temprana en el desarrollo del lenguaje expresivo en niños de 3 a 5 años con retraso del habla en centros de salud públicos de Córdoba (2022–2024).</p>
+        </div>
+        <div class="ex-row">
+          <label style="color:var(--c-accent5);">📌 Objetivo Específico 1</label>
+          <p>Describir el perfil lingüístico inicial de los niños con retraso del habla incorporados al programa de intervención temprana.</p>
+        </div>
+        <div class="ex-row">
+          <label style="color:var(--c-accent5);">📌 Objetivo Específico 2</label>
+          <p>Identificar las estrategias de intervención fonoaudiológica más utilizadas en los centros de salud estudiados.</p>
+        </div>
+        <div class="ex-row">
+          <label style="color:var(--c-accent5);">📌 Objetivo Específico 3</label>
+          <p>Comparar el desarrollo del lenguaje expresivo antes y después de la intervención en los niños que completaron el ciclo de tratamiento.</p>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-icon">⚠️</div>
+        <div>
+          <strong>Desafíos a superar para la excelencia</strong>
+          <ul style="margin-top:6px;padding-left:16px;font-size:.875rem;display:flex;flex-direction:column;gap:4px;">
+            <li>Tema demasiado amplio → no se puede abordar en una sola investigación</li>
+            <li>Problema que no es una pregunta → no guía el proceso</li>
+            <li>Objetivos que no responden al problema → trabajo desconectado</li>
+            <li>Usar verbos vagos en los objetivos: "ver", "saber", "conocer"</li>
+            <li>Formular más de un objetivo general</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="slide-sep"></div>
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE 7 — EJEMPLOS POR ÁREA (accordion)
+  ════════════════════════════════════════════════ -->
+  <section class="slide" id="s7" style="background:var(--c-surface);">
+    <div class="blob" style="width:380px;height:380px;background:#6355e8;top:-40px;right:-60px;animation-delay:1s;"></div>
+
+    <div class="slide-inner">
+      <div class="section-tag" style="background:rgba(99,85,232,.1);border:1px solid rgba(99,85,232,.25);color:var(--c-accent1);">
+        <span class="dot" style="background:var(--c-accent1);"></span>
+        Ejemplos por disciplina
+      </div>
+
+      <h2 class="slide-title">El mismo proceso<br>en otras áreas</h2>
+      <p class="slide-lead">La lógica tema → problema → objetivos es universal. Hacé clic en cada disciplina para ver un ejemplo completo.</p>
+
+      <div class="accordion" id="accordion">
+
+        <!-- Educación -->
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+            <span style="display:flex;align-items:center;gap:12px;">
+              <span>📖</span>
+              <span>Educación</span>
+              <span class="area-badge" style="background:rgba(99,85,232,.12);color:var(--c-accent1);">Ciencias de la educación</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="acc-example">
+                <strong style="color:var(--c-accent2);">🔶 Tema</strong>
+                Uso de plataformas digitales y rendimiento académico en estudiantes universitarios de primer año (2022–2024)
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent3);">❓ Problema</strong>
+                ¿En qué medida el uso de plataformas digitales en el aula influye en el rendimiento académico de estudiantes universitarios de primer año entre 2022 y 2024?
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent4);">🎯 Objetivo General</strong>
+                Analizar la relación entre el uso de plataformas digitales y el rendimiento académico en estudiantes universitarios de primer año durante 2022–2024.
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent5);">📌 Objetivos Específicos</strong>
+                1. Describir el tipo y frecuencia de uso de plataformas digitales en los estudiantes.<br>
+                2. Identificar los factores que los estudiantes asocian con su rendimiento académico.<br>
+                3. Comparar el rendimiento entre estudiantes con alta y baja frecuencia de uso digital.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trabajo Social -->
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+            <span style="display:flex;align-items:center;gap:12px;">
+              <span>🤝</span>
+              <span>Trabajo Social</span>
+              <span class="area-badge" style="background:rgba(26,173,173,.12);color:var(--c-accent2);">Intervención social</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="acc-example">
+                <strong style="color:var(--c-accent2);">🔶 Tema</strong>
+                Inclusión laboral de personas con discapacidad en empresas privadas de Córdoba (2020–2023)
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent3);">❓ Problema</strong>
+                ¿Cuáles son los principales obstáculos que enfrentan las personas con discapacidad en el acceso y permanencia en el mercado laboral formal en Córdoba durante 2020–2023?
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent4);">🎯 Objetivo General</strong>
+                Identificar los obstáculos que enfrentan las personas con discapacidad en el acceso y permanencia en el mercado laboral formal en Córdoba (2020–2023).
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent5);">📌 Objetivos Específicos</strong>
+                1. Caracterizar el perfil de las personas con discapacidad incluidas en el estudio.<br>
+                2. Describir las barreras institucionales y culturales reportadas.<br>
+                3. Evaluar el impacto de las políticas de cupo laboral en la situación estudiada.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Psicología -->
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+            <span style="display:flex;align-items:center;gap:12px;">
+              <span>🧠</span>
+              <span>Psicología</span>
+              <span class="area-badge" style="background:rgba(217,114,28,.12);color:var(--c-accent3);">Salud mental</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="acc-example">
+                <strong style="color:var(--c-accent2);">🔶 Tema</strong>
+                Teletrabajo y salud mental en empleados de empresas tecnológicas en Argentina (2021–2023)
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent3);">❓ Problema</strong>
+                ¿De qué manera la modalidad de teletrabajo incide en los niveles de ansiedad y agotamiento emocional en empleados de empresas tecnológicas en Argentina durante 2021–2023?
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent4);">🎯 Objetivo General</strong>
+                Determinar la incidencia del teletrabajo sobre los niveles de ansiedad y agotamiento emocional en empleados de empresas tecnológicas en Argentina (2021–2023).
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent5);">📌 Objetivos Específicos</strong>
+                1. Describir las condiciones de trabajo remoto de los empleados participantes.<br>
+                2. Identificar los síntomas de ansiedad y agotamiento presentes en la muestra.<br>
+                3. Comparar los niveles de bienestar entre teletrabajadores con y sin experiencia previa.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enfermería / Salud -->
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+            <span style="display:flex;align-items:center;gap:12px;">
+              <span>🏥</span>
+              <span>Enfermería / Salud</span>
+              <span class="area-badge" style="background:rgba(46,168,90,.12);color:var(--c-accent4);">Ciencias de la salud</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="acc-example">
+                <strong style="color:var(--c-accent2);">🔶 Tema</strong>
+                Burnout en enfermeros de unidades de terapia intensiva del sector público de Córdoba (2022–2024)
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent3);">❓ Problema</strong>
+                ¿Qué factores organizacionales y personales inciden en el desarrollo del síndrome de burnout en enfermeros de UTI del sector público de Córdoba entre 2022 y 2024?
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent4);">🎯 Objetivo General</strong>
+                Analizar los factores organizacionales y personales que inciden en el desarrollo del burnout en enfermeros de UTI del sector público de Córdoba (2022–2024).
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent5);">📌 Objetivos Específicos</strong>
+                1. Describir las condiciones laborales de los enfermeros participantes.<br>
+                2. Identificar los niveles de agotamiento emocional, despersonalización y realización personal.<br>
+                3. Establecer la relación entre factores organizacionales y presencia del síndrome.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comunicación -->
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+            <span style="display:flex;align-items:center;gap:12px;">
+              <span>📡</span>
+              <span>Comunicación Social</span>
+              <span class="area-badge" style="background:rgba(217,63,120,.12);color:var(--c-accent5);">Medios y sociedad</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="acc-example">
+                <strong style="color:var(--c-accent2);">🔶 Tema</strong>
+                Uso de redes sociales e imagen corporal en adolescentes de nivel secundario de Córdoba (2023–2024)
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent3);">❓ Problema</strong>
+                ¿Qué relación existe entre el consumo de contenido en redes sociales y la percepción de imagen corporal en adolescentes de nivel secundario en Córdoba durante 2023–2024?
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent4);">🎯 Objetivo General</strong>
+                Explorar la relación entre el consumo de contenido en redes sociales y la percepción de imagen corporal en adolescentes de nivel secundario en Córdoba (2023–2024).
+              </div>
+              <div class="acc-example">
+                <strong style="color:var(--c-accent5);">📌 Objetivos Específicos</strong>
+                1. Describir los patrones de consumo de redes sociales en los adolescentes participantes.<br>
+                2. Caracterizar la percepción de imagen corporal en la muestra.<br>
+                3. Analizar la correlación entre tiempo de exposición a contenido y autopercepción corporal.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /accordion -->
+    </div>
+  </section>
+
+  <div class="slide-sep"></div>
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE 8 — RESUMEN EN TABLA
+  ════════════════════════════════════════════════ -->
+  <section class="slide" id="s8">
+    <div class="blob" style="width:340px;height:340px;background:#1aadad;bottom:-30px;left:-40px;animation-delay:2s;"></div>
+
+    <div class="slide-inner">
+      <div class="section-tag" style="background:rgba(26,173,173,.1);border:1px solid rgba(26,173,173,.25);color:var(--c-accent2);">
+        <span class="dot" style="background:var(--c-accent2);"></span>
+        Referencia rápida
+      </div>
+
+      <h2 class="slide-title">Resumen en tabla</h2>
+      <p class="slide-lead">Un vistazo rápido a los tres elementos clave y sus características esenciales.</p>
+
+      <div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--c-border);box-shadow:var(--shadow-md);margin-bottom:22px;">
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>Elemento</th>
+              <th>¿Qué es?</th>
+              <th>¿Cómo se formula?</th>
+              <th>Ejemplo corto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag-cell" style="background:rgba(99,85,232,.12);color:var(--c-accent1);">Tema</span></td>
+              <td>El asunto acotado y delimitado que vamos a estudiar</td>
+              <td>Sustantivo + población + contexto + período</td>
+              <td>Intervención fonoaudiológica en niños con retraso del habla (Córdoba, 2022–2024)</td>
+            </tr>
+            <tr>
+              <td><span class="tag-cell" style="background:rgba(26,173,173,.12);color:var(--c-accent2);">Problema</span></td>
+              <td>La pregunta central que la investigación busca responder</td>
+              <td>Pregunta con variable A, variable B, contexto y período</td>
+              <td>¿En qué medida la intervención temprana influye en el lenguaje expresivo?</td>
+            </tr>
+            <tr>
+              <td><span class="tag-cell" style="background:rgba(217,114,28,.12);color:var(--c-accent3);">Obj. General</span></td>
+              <td>La meta global de la investigación</td>
+              <td>Verbo preciso + qué + en quién + contexto</td>
+              <td>Analizar la influencia de la intervención temprana en el desarrollo del lenguaje</td>
+            </tr>
+            <tr>
+              <td><span class="tag-cell" style="background:rgba(46,168,90,.12);color:var(--c-accent4);">Obj. Específicos</span></td>
+              <td>Los pasos concretos para alcanzar el objetivo general</td>
+              <td>Verbo preciso + aspecto particular del problema</td>
+              <td>Describir, Identificar, Comparar… cada dimensión del tema</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-icon">🔗</div>
+        <div>
+          <strong>La regla de oro: coherencia interna</strong>
+          <p>Tema → Problema → Objetivo General → Objetivos Específicos deben estar alineados. Si cambiás uno, revisá los demás. Tienen que contar <strong>la misma historia</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="slide-sep"></div>
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE FINAL — CIERRE
+  ════════════════════════════════════════════════ -->
+  <section class="slide" id="final">
+    <div class="blob" style="width:480px;height:480px;background:#6355e8;top:-100px;left:-100px;animation-delay:0s;"></div>
+    <div class="blob" style="width:380px;height:380px;background:#1aadad;bottom:-80px;right:-80px;animation-delay:3s;"></div>
+
+    <div class="slide-inner" style="text-align:center;">
+      <span class="final-emoji">🚀</span>
+      <h2 class="slide-title" style="margin-bottom:14px;">
+        ¡Manos a la obra!
+      </h2>
+      <p class="slide-lead" style="margin:0 auto 36px;">
+        Recuerden: la investigación no es un proceso lineal perfecto. Se ajusta en el camino.<br>
+        Lo importante es construir una base sólida desde el principio.
+      </p>
+
+      <div style="display:flex;flex-direction:column;gap:11px;max-width:520px;margin:0 auto;">
+        <div class="check-item" style="text-align:left;">
+          <div class="check-icon" style="background:rgba(99,85,232,.1);color:var(--c-accent1);">1️⃣</div>
+          <div>
+            <h4>Definan el tema</h4>
+            <p>Área → subtema → tema específico acotado. Chequeenlo con los 6 criterios.</p>
+          </div>
+        </div>
+        <div class="check-item" style="text-align:left;">
+          <div class="check-icon" style="background:rgba(26,173,173,.1);color:var(--c-accent2);">2️⃣</div>
+          <div>
+            <h4>Planteen el problema</h4>
+            <p>Una pregunta clara con variables, contexto y período que genere incertidumbre genuina.</p>
+          </div>
+        </div>
+        <div class="check-item" style="text-align:left;">
+          <div class="check-icon" style="background:rgba(217,114,28,.1);color:var(--c-accent3);">3️⃣</div>
+          <div>
+            <h4>Formulen los objetivos</h4>
+            <p>Un general + 3 a 5 específicos. Verbos precisos. Todos respondiendo al problema.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:48px;">
+        <div class="cover-badge" style="margin-bottom:0;">Asesoría Pedagógica · Prof. Agustina</div>
+        <a href="https://wa.me/542664309334" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:7px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);border-radius:100px;padding:6px 16px;font-size:.78rem;font-weight:700;color:#1a9e4a;letter-spacing:.06em;text-decoration:none;transition:background .2s,transform .2s;"
+           onmouseover="this.style.background='rgba(37,211,102,.18)';this.style.transform='translateY(-2px)'"
+           onmouseout="this.style.background='rgba(37,211,102,.1)';this.style.transform='translateY(0)'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a9e4a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          +54 266 430-9334
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /slides-wrapper -->
+
+<!-- ── SCRIPT ─────────────────────────────────────────── -->
+<script>
+  /* ── Scroll to slide ─────────────────────────── */
+  function scrollToSlide(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* ── Active dot on scroll ────────────────────── */
+  const slideIds = ['cover','s1','s2','s3','s4','s5','s6','s7','s8','final'];
+  const dots     = document.querySelectorAll('.progress-dot');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = slideIds.indexOf(entry.target.id);
+        if (idx === -1) return;
+        dots.forEach(d => d.classList.remove('active'));
+        if (dots[idx]) dots[idx].classList.add('active');
+      }
+    });
+  }, { threshold: 0.45 });
+
+  slideIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+
+  /* ── Fade-in on scroll ───────────────────────── */
+  const fadeEls = document.querySelectorAll(
+    '.step-card, .check-item, .example-box, .tl-item, .callout, .obj-card, .accordion-item, .full-example'
+  );
+  const fadeObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = entry.target.style.transform.replace('translateY(18px)', 'translateY(0)');
+        fadeObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  fadeEls.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = (el.style.transform || '') + ' translateY(18px)';
+    el.style.transition = 'opacity .45s ease, transform .45s ease';
+    fadeObs.observe(el);
+  });
+
+  /* ── Accordion ───────────────────────────────── */
+  function toggleAccordion(btn) {
+    const body    = btn.nextElementSibling;
+    const isOpen  = body.classList.contains('open');
+
+    // close all
+    document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.accordion-header').forEach(b => {
+      b.classList.remove('open');
+      b.setAttribute('aria-expanded', 'false');
+    });
+
+    if (!isOpen) {
+      body.classList.add('open');
+      btn.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  }
+</script>
+
+</body>
+</html>

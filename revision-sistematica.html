@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Manual Definitivo: Revisión Sistemática IMRD · Laboratorio de Tesis</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* ── RESET & VARIABLES ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --c-bg: #f9f9fb;
+      --c-surface: #ffffff;
+      --c-text: #1a1c23;
+      --c-text-muted: #4e5366;
+      --c-border: #e2e8f0;
+      --c-accent: #6355e8;
+      --c-accent-light: #eef0ff;
+      --c-teal: #1aadad;
+      --c-orange: #d9721c;
+      --c-red: #d93f78;
+      --nav-w: 280px;
+      --radius: 12px;
+      --font-body: 'Crimson Pro', serif; /* Tipo lectura de libro académico */
+      --font-ui: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--c-bg);
+      color: var(--c-text);
+      display: flex;
+    }
+
+    h1, h2, h3, h4, h5, .nav-item, .badge, .btn, .sans {
+      font-family: var(--font-ui);
+    }
+    
+    /* ── SIDEBAR NAVIGATION ── */
+    aside.sidebar {
+      width: var(--nav-w);
+      height: 100vh;
+      position: fixed;
+      left: 0; top: 0;
+      background: var(--c-surface);
+      border-right: 1px solid var(--c-border);
+      padding: 30px 20px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    
+    .brand {
+      font-family: var(--font-ui);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--c-accent);
+      margin-bottom: 40px;
+      line-height: 1.2;
+    }
+    .brand span { font-size: 0.8rem; color: var(--c-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display:block; margin-top:5px;}
+    
+    .nav-group { margin-bottom: 25px; }
+    .nav-label {
+      font-family: var(--font-ui); font-size: 0.75rem; font-weight: 800;
+      color: var(--c-text-muted); text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 10px; padding-left: 10px;
+    }
+    .nav-item {
+      display: block; padding: 8px 10px; color: var(--c-text);
+      text-decoration: none; font-size: 0.9rem; font-weight: 600;
+      border-radius: 6px; transition: background 0.2s, color 0.2s;
+    }
+    .nav-item:hover, .nav-item.active {
+      background: var(--c-accent-light); color: var(--c-accent);
+    }
+
+    /* ── MAIN CONTENT AREA ── */
+    main.content {
+      margin-left: var(--nav-w);
+      flex: 1;
+      min-height: 100vh;
+      padding: 60px 80px 100px 80px;
+      max-width: 1000px; /* Ancho cómodo de lectura tipo texto */
+    }
+
+    /* Tipografía Textual de Lectura */
+    p { font-size: 1.15rem; line-height: 1.8; margin-bottom: 25px; color: #2d3142; }
+    h1 { font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 30px; letter-spacing: -0.02em; }
+    h2 { font-size: 2.2rem; font-weight: 800; margin: 60px 0 25px 0; padding-bottom: 15px; border-bottom: 2px solid var(--c-border); color: var(--c-text); }
+    h3 { font-size: 1.5rem; font-weight: 700; margin: 40px 0 15px 0; color: var(--c-text); }
+    ul, ol { margin-left: 20px; margin-bottom: 25px; font-size: 1.15rem; line-height: 1.8; color: #2d3142; }
+    li { margin-bottom: 10px; }
+    
+    .lead { font-size: 1.35rem; color: var(--c-text-muted); line-height: 1.7; font-family: var(--font-ui); font-weight: 400; margin-bottom: 40px; }
+
+    /* ── COMPONENTES CLAVE ── */
+    
+    /* Callouts (Avisos de color) */
+    .callout {
+      padding: 25px 30px; border-radius: var(--radius); margin: 35px 0;
+      background: var(--c-surface); border: 1px solid var(--c-border);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; gap: 20px; align-items: flex-start;
+    }
+    .callout-icon { font-size: 1.8rem; line-height: 1; margin-top:2px; }
+    .callout h4 { font-size: 1.1rem; margin-bottom: 10px; font-family: var(--font-ui); font-weight: 800; }
+    .callout p { font-size: 1.05rem; margin-bottom: 0; }
+    
+    .callout.info { border-left: 5px solid var(--c-accent); background: #fbfbfe; }
+    .callout.warning { border-left: 5px solid var(--c-orange); background: #fffcf8; }
+    
+    /* Plantillas de Ejemplo (Vital para que el alumno copie al Word) */
+    .template-box {
+      margin: 40px 0; background: #fff; border: 2px solid var(--c-teal);
+      border-radius: var(--radius); position: relative; padding: 40px 30px 25px;
+      box-shadow: 0 8px 30px rgba(26, 173, 173, 0.1);
+    }
+    .template-badge {
+      position: absolute; top: 0; left: 0; background: var(--c-teal); color: #fff;
+      font-family: var(--font-ui); font-size: 0.75rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.1em; padding: 6px 16px;
+      border-radius: 10px 0 10px 0;
+    }
+    .template-box p.text {
+      font-family: 'Times New Roman', Times, serif; font-size: 1.15rem; line-height: 1.9;
+      font-style: italic; color: #111; margin: 0;
+    }
+    /* Comentarios al margen dentro de templates */
+    .template-note {
+      display: block; font-family: var(--font-ui); font-size: 0.85rem; color: var(--c-teal);
+      background: rgba(26,173,173,.08); padding: 10px 15px; border-radius: 6px; margin-top: 20px; font-style: normal;
+    }
+
+    /* Grilla de pasos */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 30px 0; }
+    .card { background: var(--c-surface); border: 1px solid var(--c-border); padding: 25px; border-radius: var(--radius); }
+    .card.blue { border-top: 4px solid var(--c-accent); }
+
+    /* Código Búsqueda */
+    .code-term {
+      background: #1e1e2e; color: #cdd6f4; border-radius: 8px;
+      padding: 20px; font-family: 'Courier New', Courier, monospace; font-size: 1rem;
+      margin: 20px 0; border: 1px solid #313244; line-height: 1.6;
+    }
+    .code-term b { color: #f38ba8; } /* Bools */
+
+    /* ── PRISMA CSS GRID (A prueba de balas) ── */
+    .prisma-container {
+      width: 100%; border: 1px solid var(--c-border); border-radius: var(--radius);
+      padding: 40px; background: #fff; margin: 40px 0; box-shadow: 0 10px 40px rgba(0,0,0,.04);
+    }
+    .p-level { display: flex; width: 100%; align-items: flex-start; justify-content: space-between; position: relative; margin-bottom: 20px; }
+    .p-col-left { width: 45%; display: flex; flex-direction: column; align-items: center; }
+    .p-col-mid { width: 10%; display: flex; justify-content: center; align-items: center; color: var(--c-red); font-size: 2rem; font-weight: 800; padding-top: 25px; }
+    .p-col-right { width: 45%; }
+    
+    .p-box {
+      width: 100%; border: 2px solid var(--c-text); background: var(--c-surface); padding: 20px; border-radius: 8px; text-align: center;
+    }
+    .p-box.blue { border-color: var(--c-accent); }
+    .p-box.red { border-color: var(--c-red); background: #fffcfd; }
+    .p-box.green { border-color: var(--c-teal); background: #f2fdfd; border-width: 3px; }
+    
+    .p-box h5 { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-text-muted); margin-bottom: 10px; }
+    .p-box .p-val { font-size: 1.1rem; font-weight: 700; font-family: var(--font-ui); color: var(--c-text); }
+    .p-box .p-sub { margin-top: 8px; font-size: 0.85rem; font-family: var(--font-ui); color: var(--c-text-muted); line-height: 1.4; text-align: left;}
+
+    .arrow-down { font-size: 2rem; font-weight: 800; color: var(--c-accent); line-height: 1; margin: 5px 0; }
+
+    @media (max-width: 1024px) {
+      aside.sidebar { display: none; }
+      main.content { margin-left: 0; padding: 40px 25px; }
+    }
+    @media (max-width: 650px) {
+      .p-level { flex-direction: column; align-items: center; }
+      .p-col-left, .p-col-right { width: 100%; }
+      .p-col-mid { transform: rotate(90deg); margin: 15px 0; padding: 0; }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">
+    Manual Metodológico
+    <span>Revisión Sistemática TFL</span>
+  </div>
+  
+  <div class="nav-group">
+    <div class="nav-label">Introducción</div>
+    <a href="#ch-0" class="nav-item active">¿Qué es (y por qué) PRISMA?</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Capítulo: Metodología</div>
+    <a href="#ch-1" class="nav-item">3.1. Diseño y Pregunta (PICO)</a>
+    <a href="#ch-2" class="nav-item">3.2. Criterios de Selección</a>
+    <a href="#ch-3" class="nav-item">3.3. Estrategia de Búsqueda</a>
+    <a href="#ch-4" class="nav-item">3.4. Cribado Intersujeto</a>
+    <a href="#ch-4b" class="nav-item">El Flujograma PRISMA (Gráfica)</a>
+    <a href="#ch-5" class="nav-item">3.5. Evaluación de Sesgo (Calidad)</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Capítulo: Resultados y Discusión</div>
+    <a href="#ch-6" class="nav-item">Reporte en Resultados (Matriz)</a>
+    <a href="#ch-7" class="nav-item">Redacción de Discusión IMRD</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Resumen Final</div>
+    <a href="#ch-8" class="nav-item">Síntesis y To-Do List del TFL</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Anexos</div>
+    <a href="#ch-biblio" class="nav-item">Fuentes y Bibliografía</a>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="content">
+
+  <!-- CH 0: PORTADA Y FUNDAMENTOS -->
+  <section id="ch-0">
+    <div class="badge sans" style="display:inline-block; background:var(--c-accent-light); color:var(--c-accent); padding:6px 14px; border-radius:100px; font-size:0.8rem; font-weight:800; letter-spacing:0.05em; margin-bottom:20px;">
+      LABORATORIO DE TESIS · FONOAUDIOLOGÍA
+    </div>
+    <h1>La Revisión Sistemática en el TFL</h1>
+    <p class="lead">Este documento trasciende el resumen. Es un manual prescriptivo y detallado, paso a paso, con <strong>plantillas académicas ("copiables") para Word</strong>, basado estrictamente en el Checklist de la Declaración PRISMA 2020 y la literatura científica metodológica (Page et al.; Urrútia & Bonfill).</p>
+
+    <h2>1. ¿Qué es (y por qué obligamos a usar) PRISMA?</h2>
+    
+    <p>A menudo se confunde una revisión sistemática con una "Revisión Narrativa". Esta última, si bien es informativa, suele carecer del rigor procedimental necesario para un TFL porque depende enteramente de la subjetividad del autor. Sin una estructura clara, se corre el riesgo de omitir involuntariamente evidencia contradictoria o valiosa, restándole solidez a la investigación.</p>
+    
+    <p>Para que una Tesis de Grado tenga validez como <strong>Estudio Secundario Cuantitativo o Cualitativo</strong>, la revisión debe ser <strong>Sistemática y Reproducible</strong>. Para lograrlo, la comunidad internacional publicó la *Declaración PRISMA (Preferred Reporting Items for Systematic reviews and Meta-Analyses)*.</p>
+    
+    <p>PRISMA es un candado metodológico. Su objetivo es que, si tú publicas tu TFL estableciendo cómo buscaste, <strong>otro investigador en España pueda copiar tus fórmulas en su navegador al año siguiente y obtener exactamente los mismos 15 artículos finales que tú</strong>. Si no es reproducible, no es ciencia.</p>
+  </section>
+
+  <!-- CH 1: METODOLOGIA - DISEÑO Y PICO -->
+  <section id="ch-1">
+    <h2>3.1. Diseño de Estudio y Pregunta (PICO)</h2>
+    <p>Todo el trabajo documentado a partir de esta fase se escribe tradicionalmente en el Capítulo "3. Materiales y Métodos" (o "Marco Metodológico") de la Tesis.</p>
+
+    <p>El primer paso es definir la pregunta de investigación usando el marco <strong>PICO</strong> (Población, Intervención, Comparación, Outcome/Resultados).</p>
+    <ul>
+      <li><strong>P (Población):</strong> Niños de 4 a 6 años con TDL (Trastorno del Desarrollo del Lenguaje).</li>
+      <li><strong>I (Intervención):</strong> Terapia de juego estructurado o Intervención asistida por animales.</li>
+      <li><strong>C (Comparación):</strong> (Comúnmente omitido o comparado contra tratamiento logopédico estándar).</li>
+      <li><strong>O (Resultados):</strong> Incremento del léxico y mejora morfosintáctica.</li>
+    </ul>
+
+    <div class="template-box">
+      <div class="template-badge">Plantilla: Párrafo de Diseño en TFL</div>
+      <p class="text">"3.1 Diseño del Estudio.<br><br>El presente Trabajo Final de Licenciatura consiste en un estudio secundario de nivel descriptivo-correlacional, específicamente formulado como una <strong>Revisión Sistemática de la Literatura</strong>. Para garantizar la reproducibilidad, erradicación de sesgos de notificación y transparencia en los procesos de recolección de evidencia documental, la metodología investigativa se rige de manera estricta bajo la normativa internacional de la Declaración PRISMA en su actualización 2020 (Page et al., 2021).<br><br>La pregunta de investigación que guía la estrategia de búsqueda se estructuró bajo el acrónimo PICO..."</p>
+      
+      <div class="template-note"><b>Tip:</b> Citar a Page et al. (2021) en este párrafo demuestra a tu Tribunal que conoces la fuente oficial madre de PRISMA. Además, puedes mencionar si registrarás este protocolo en <b>PROSPERO</b>.</div>
+    </div>
+  </section>
+
+  <!-- CH 2: CRITERIOS -->
+  <section id="ch-2">
+    <h2>3.2. Criterios de Selección (Elegibilidad)</h2>
+    <p>La regla de oro de la sistemática es definir <strong>antes de buscar</strong> qué papers sobrevivirían al análisis y cuáles no (Ítem 5 de PRISMA). En el documento de tesis, esto se lista de manera fría mediante viñetas.</p>
+
+    <div class="template-box">
+      <div class="template-badge">Plantilla: Criterios en TFL</div>
+      <p class="text">"3.2 Criterios de Eligibilidad.<br><br>Se han establecido los siguientes parámetros para limitar la dispersión teórica:<br><br><b>Criterios de Inclusión:</b><br>- Estudios primarios de tipo Ensayo Clínico Aleatorizado (ECA) o Estudios de Cohortes observables.<br>- Publicaciones limitadas temporalmente a los últimos 5 años (Enero 2018 - Diciembre 2023).<br>- Artículos publicados en idioma Español, Inglés o Portugués.<br>- Estudios que traten exclusivamente sobre pacientes intervenidos con estimulación sonora temprana en el primer año de vida.<br><br><b>Criterios de Exclusión:</b><br>- Literatura gris (documentos no indexados en bases científicas), libros u opiniones de expertos.<br>- Revisiones literarias narrativas u otras revisiones sistemáticas (para evitar redundancia secundaria).<br>- Artículos cuyos textos completos no se encuentren disponibles en acceso abierto."</p>
+      
+      <div class="template-note"><b>Aclaración Oculta:</b> La razón por la que "Otras revisiones sistemáticas" se excluyen siempre es porque en tu TFL buscarás <b>Papers o Investigaciones en campo propias (Estudios Primarios)</b>. Tu investigación es a su vez un estudio secundario.</div>
+    </div>
+  </section>
+
+  <!-- CH 3: BUSQUEDA -->
+  <section id="ch-3">
+    <h2>3.3. Estrategia de Búsqueda de Inferencia</h2>
+    <p>Jamás debe referenciarse a "Búsqueda en Google". Las bases médicas a referir obligatoriamente para Fonoaudiología comprenden: <strong>PubMed/Medline</strong> (internacional en inglés), <strong>Scopus</strong>, y las latinas claves <strong>SciELO</strong> y <strong>LILACS</strong>.</p>
+    
+    <p>Los términos a usar no son inventados. Se explora el <strong>DeCS</strong> (Latinoamérica) o <strong>MeSH</strong> (Inglés) para encontrar el "Término Médico Dominante". En lugar de "problema de habla", el MeSH dictará <code>"Speech Disorders"</code>. Luego, se combinan con operadores algebraicos (Booleanos) de la siguiente manera explícita en tu TFL:</p>
+
+    <div class="template-box">
+      <div class="template-badge">Plantilla: La Ecuación en el TFL</div>
+      <p class="text">"3.3 Búsqueda Electrónica de la Evidencia<br><br>La exploración sistemática se orquestó entre los meses de Septiembre y Octubre de 2023 en cuatro bases de referencia primarias: PubMed, Scopus, SciELO y LILACS. De manera coordinada, se determinaron lexemas en inglés y español bajo codificación DeCS y MeSH, integrados mediante los operadores booleanos AND, OR y NOT.<br><br>La ecuación o sintaxis algorítmica literal vertida en el motor de referenciación de PubMed resultó la siguiente:<br><code>( "Speech Disorders" OR "Articulation Disorders" ) AND ( "Myofunctional Therapy" OR "Child, Preschool" ) NOT ( "Cleft Palate" )</code>"</p>
+    </div>
+  </section>
+
+  <!-- CH 4: CRIBADO E INDEPENDENCIA -->
+  <section id="ch-4">
+    <h2>3.4. El Cribado de Selección Ciega (Ítem 8 PRISMA)</h2>
+    <p>Uno de los saltos de calidad más altos entre un trabajo "amateur" y uno universitario es la <strong>Independencia del investigador</strong>.</p>
+
+    <p>Al hacer la búsqueda obtendrán, por ejemplo, 500 artículos. La lectura de los *Abstracts* (Resúmenes) para descartar los que no sirven se denomina <strong>Cribado</strong> (Screening).</p>
+
+    <div class="callout warning">
+      <div class="callout-icon">👥</div>
+      <div>
+        <h4>La revisión debe ser "Ciega Independiente"</h4>
+        <p>No se dividen el trabajo de manera que el Estudiante 1 lea 250 artículos y el Estudiante 2 los otros 250. Eso invalida PRISMA. <strong>Ambos estudiantes deben leer los 500 artículos, ignorando lo que bota el compañero</strong>. Solo apuntan un "SÍ" o "NO" en su propia plantilla (Excel o app como <em>Rayyan</em>).</p>
+      </div>
+    </div>
+
+    <p>Al final, cruzan los resultados. Aquellos abstracts donde un alumno pulsó "Sí" y el otro "No", generan una <strong>discrepancia</strong>. Según la Literatura Médica, los tesistas debaten e introducen a un "Tercer Revisor" (Tercer estudiante de la cursada o tutor) que desempata sin conocer opiniones previas.</p>
+
+    <div class="template-box">
+      <div class="template-badge">Plantilla: Proceso de Criba en Metodología</div>
+      <p class="text">"3.4 Proceso de Selección de los Estudios<br><br>Una vez exportados los resultados biográficos generados en las bases a la herramienta informática de gestión (Ej. Mendeley / Excel), se activó el filtro de duplicados, retirando solapamientos automáticos.<br><br>Posteriormente, la fase uno denominada "Cribado Inicial" fue ejecutada por revisiones ciegas independientes por dos integrantes del equipo investigativo, evaluando títulos y resúmenes de los registros frente a los criterios de inclusión dictados axiomáticamente.<br><br>Los conflictos inter-examinador o áreas de discordancia con respecto a la permanencia de un artículo se resolvieron mediante debate cualitativo y mediación obligatoria de un tercer revisor, hasta alcanzar el 100% del consenso integrativo."</p>
+      
+      <div class="template-note"><b>Nivel Experto:</b> En tesis más complejas, esta "concordancia" matemática entre dos estudiantes se calcula en número bajo la métrica estadística del <b>Coeficiente Kappa de Cohen</b>, pero usualmente excede las peticiones del TFL de Grado estándar.</div>
+    </div>
+  </section>
+
+  <!-- CH 4b: PRISMA FLOWCHART GRAPHIC -->
+  <section id="ch-4b">
+    <h2>El Diagrama de Flujo (Gráfica PRISMA)</h2>
+    <p>La síntesis visual de todo el recorte se dibuja en el gráfico obligatorio PRISMA. <strong>Atención lógica:</strong> Este dibujo por lo general no se pega en el capítulo de 'Métodos', sino que se imprime en la primera hoja del Capítulo de <strong>"4. RESULTADOS"</strong>, porque constituye el primer dato real de tu tesis empírica.</p>
+
+    <div class="prisma-container sans">
+      
+      <!-- Nivel 1 -->
+      <div class="p-level">
+        <div class="p-col-left">
+          <div class="p-box blue">
+            <h5>Fase: Identificación</h5>
+            <div class="p-val">Búsqueda en Bases de Datos (n = 350)</div>
+            <div class="p-sub">Se descargaron los metadatos desde PubMed, SciELO y LILACS utilizando la sintaxis Booleana de la metodología.</div>
+          </div>
+          <div class="arrow-down">↓</div>
+        </div>
+        <div class="p-col-mid">→</div>
+        <div class="p-col-right">
+          <div class="p-box red">
+            <h5>Eliminación Limpiadora</h5>
+            <div class="p-val">Excluidos (n = 45)</div>
+            <div class="p-sub">Eliminados en la fase previa al cribado.<br><b>Razón:</b> Registros que se encontraban textualmente duplicados entre las diferentes bases de datos.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nivel 2 -->
+      <div class="p-level">
+        <div class="p-col-left">
+          <div class="p-box blue">
+            <h5>Fase: Cribado Ocular</h5>
+            <div class="p-val">Artículos Cribados (n = 305)</div>
+            <div class="p-sub">Los dos autores independientes proceden a leer rápida y exclusivamente Títulos y Abstracts (Resúmenes) de lo restante.</div>
+          </div>
+          <div class="arrow-down">↓</div>
+        </div>
+        <div class="p-col-mid">→</div>
+        <div class="p-col-right">
+          <div class="p-box red">
+            <h5>Descarte Rápido</h5>
+            <div class="p-val">Registros excluidos (n = 260)</div>
+            <div class="p-sub">Descartados por el software/autores ya que su título o resumen demostraba que no trataban del tema pertinente a este TFL de fonoaudiología.</div>
+          </div>
+        </div>
+      </div>
+
+       <!-- Nivel 3 -->
+       <div class="p-level">
+        <div class="p-col-left">
+          <div class="p-box blue">
+            <h5>Fase: Elegibilidad</h5>
+            <div class="p-val">Lectura a Texto Completo (n = 45)</div>
+            <div class="p-sub">A este último puñado de dudas, se descarga y se lee el PDF en su absoluta extensión empírica desde el cuerpo de introducción a sus resultados.</div>
+          </div>
+          <div class="arrow-down">↓</div>
+        </div>
+        <div class="p-col-mid">→</div>
+        <div class="p-col-right">
+          <div class="p-box red">
+            <h5>Exclusión con Justificación Focal</h5>
+            <div class="p-val">Informes excluidos (n = 31)</div>
+            <div class="p-sub">No pasaron la frontera del protocolo. Motivos listados explícitamente:<br>
+            - La muestra resultaron adultos y no pediátricos (n=12).<br>
+            - Intervención difería y agregaba terapia psiquiátrica (n=9).<br>
+            - Tipologia errada: resultó ser informe cualitativo anecdótico (n=10).</div>
+          </div>
+        </div>
+      </div>
+
+       <!-- Nivel 4 (Final) -->
+       <div class="p-level" style="margin-bottom:0;">
+        <div class="p-col-left">
+          <div class="p-box green">
+            <h5>Fase: Inclusión</h4>
+            <div class="p-val">Literatura Final para el TFL (n = 14)</div>
+            <div class="p-sub">Solo la información emanada de estos 14 artículos purificados nutrirá la extracción de datos y la conclusión de los alumnos para la tesis final.</div>
+          </div>
+        </div>
+        <div class="p-col-mid"></div>
+        <div class="p-col-right"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CH 5: CALIDAD / RIESGO DE SESGO -->
+  <section id="ch-5">
+    <h2>3.5. Evaluación de Riesgo de Sesgo (Calidad)</h2>
+    <p>Retornamos a Metodología un último paso (antes de ir a volcarlos a Resultados). Al encontrar 14 papers validados, no copiamos sus resultados a ciegas. Obligatoriamente la academia exige someterlos a un filtro de calidad (Ítem 11 de PRISMA). En las plantillas se dictamina si la metodología que usó *ese artículo* fue rigurosa o pobre.</p>
+
+    <ul style="margin-top:20px;">
+      <li>Si el artículo es un "Ensayo Clínico Aleatorizado", debes usar en tu tesis la herramienta <strong>Cochrane RoB-2</strong>.</li>
+      <li>Si el artículo es un "Estudio Observacional o Cohorte", se usa usualmente <strong>Newcastle-Ottawa (NOS)</strong> o plantillas cualitativas <strong>CASPe</strong>.</li>
+    </ul>
+
+    <div class="template-box">
+      <div class="template-badge">Plantilla: Juicio de Calidad (Metodología)</div>
+      <p class="text">"3.5 Valoración Crítica del Sesgo (Herramienta de Calidad)<br><br>Procediendo a la exégesis de la evidencia, a los catorce (14) artículos finalmente admitidos en el presente compendio, se les practicó un análisis del riesgo de sesgo metódico. Al tratarse predominantemente de estudios observacionales de cohortes prospectivas, se estandarizó la aplicación de la Escala Newcastle-Ottawa.<br><br>Dos evaluadores operaron la herramienta midiendo constructos de selección, comparabilidad y determinación del resultado clínico. Se estipuló metodológicamente que aquellos *papers* que recabaran una valoración inferior a 4 estrellas serían catalogados como 'evidencia de baja confiabilidad'."</p>
+    </div>
+  </section>
+
+  <!-- CH 6: MATRIZ Y REPORTE DE EXCLUSIONES -->
+  <section id="ch-6">
+    <h2>4. Resultados y La Matriz del TFL</h2>
+    <p>Entrando al cuarto capítulo principal de la tesis de grado, aquí expones la "carne" de tu búsqueda, el botín estadístico.</p>
+    
+    <p>Antes de poner la Matriz, debes escribir literariametne lo que grafica el Flujograma PRISMA. <strong>De nada sirve el dibujo del embudo PRISMA si no lo cuentas en el texto.</strong> Tienes que explicar concretamente el *Por qué* a la derecha del recuadro (Las n = exclusiones).</p>
+
+    <div class="template-box">
+      <div class="template-badge">Plantilla: Redacción de Resultados ("El Embudo")</div>
+      <p class="text">"4.0 Selección Algorítmica de Evidencia.<br><br>La búsqueda de literatura reportó preliminarmente un abanico constitutivo de 350 registros interrumpiendo las bases seleccionadas. Se expulsaron 45 remanentes biográficos repetidos validados como literatura gemela.<br><br>Durante el escrutinio primario de cribado superficial (Título e Índole Resumida), se prescindió del acceso de 260 decesos de relevancia focal. Por consiguiente, 45 publicaciones transicionaron a la fiscalización y lectura a texto completo. En este filtro se desestimaron justificadamente 31 artículos definitivos amparados en el protocolo de exclusión preaprobado: doce (n=12) de fallas geográficas y etarias, diez (n=10) se identificaron como reseñas retrospectivas literarias (fallas categóricas) y los restantes (n=9) abordaban aparatología logopédica externa al objeto del TFL.<br><br>Finalmente, la muestra destilada habilitada para el cruce matricial cristalizó en un total de n=14 estudios purificados (véase Figura 1, Diagrama Flujométrico PRISMA)."</p>
+    </div>
+
+    <h3>La Tabla Excesiva (Matriz de Evidencia)</h3>
+    <p>Luego, insertarás una tabla monstruosa en formato apaisado en Microsoft Word (La Matriz) donde desglosas a los 14 sobrevivientes. Esto evita que escribas 14 páginas aburridas narrando "García hizo este estudio. Luego Lopez hizo este estudio." La matriz resume la tesis completa.</p>
+
+    <div class="callout tip">
+      <div class="callout-icon">📋</div>
+      <div>
+        <h4>Columnas clásicas que debes inyectar en tu Matriz</h4>
+        <p>1. Autor (Año y País).<br>2. Nivel / Tipo de Estudio <i>(Ej. Ensayo Abierto)</i>.<br>3. Muestra Demográfica <i>(Ej. N=40 infantes sordos, rango 3-5 años)</i>.<br>4. Metodología empleada / Tiempo de Tratamiento <i>(Ej. 3 meses, 2hs x sem)</i>.<br>5. Variable Principal a la Medida <i>(Ej. Disfagia)</i>.<br>6. <b>Hallazgo Empírico / Conclusión Clínica del paper.</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CH 7: DISCUSIÓN -->
+  <section id="ch-7">
+    <h2>5. La Discusión: El Cerebro Sistémico</h2>
+    <p>El formato <strong>IMRD</strong> finaliza cruzando estudios mediante citación obligatoria (APA / Vancouver) en el capítulo de *Discusión*.</p>
+    
+    <p>Un gran punto de mejora en los trabajos de licenciatura es la profundidad de la "Discusión". En lugar de reescribir la introducción o las opiniones personales, el objetivo aquí es alcanzar el máximo nivel de análisis: <strong>Discutir y Sistematizar consiste en tomar los resultados de tu Matriz y generar un diálogo crítico entre los autores.</strong></p>
+
+    <div class="template-box">
+      <div class="template-badge">Plantilla: Párrafo Analítico Cruzado (Discusión)</div>
+      <p class="text">"5.0 Discusión Analítica Integral.<br><br>La literatura compilada arroja marcadas discordancias en relación a la intervención fonofonoaudiológica pura para el abordaje crónico. Por su lado, Martínez et al. (2020) sugieren una detención en la progresión fonolátrica tras un tratamiento acotado de apenas 3 semanas de intervención sonora. Subyacentemente, este hallazgo es directamente rebatido por González y Pineda (2022) y el consorcio de Rodríguez (2023) quienes, a pesar de evaluar un clúster muestral de menor proporción geográfica (N=18 infantes), evidenciaron que la maleabilidad cortical logopédica sólo reaccionó al sobrepasar los 45 días continuos de la misma terapia, revelando que el éxito no radica en la terapia intra-sí, sino en la administración posológica extendida de los hitos fonoaudiológicos."</p>
+      
+      <div class="template-note"><b>Nótese el nivel:</b> En lugar de emitir juicios subjetivos, conectamos los hallazgos de estudios válidos entre sí (Diálogo bibliográfico: Martínez 2020 <b>vs</b> González 2022) para hallar un nuevo significado científico. Eso marca un TFL de excelencia.</div>
+    </div>
+  </section>
+
+  <!-- CH 8: TO-DO LIST Y ESTRUCTURA -->
+  <section id="ch-8" style="background:#fff; border:1px solid var(--c-border); padding:45px; border-radius:var(--radius); margin-top:80px; box-shadow:0 6px 20px rgba(0,0,0,0.02);">
+    <h2>Síntesis General: Tu TFL Paso a Paso</h2>
+    <p>A modo de cierre integrador, te presentamos el "esqueleto" fundamental de los subtítulos que el jurado de la universidad buscará en tu Tesis, seguido de una hoja de ruta interactiva práctica para que no te saltes ninguna fase. Utiliza esta herramienta real para controlar el avance progresivo de tu equipo de investigación.</p>
+
+    <div class="grid-2" style="margin-top: 40px;">
+      <!-- 1. ESTRUCTURA METODOLÓGICA -->
+      <div style="padding-right: 15px;">
+        <h3 style="margin-top:0; color:var(--c-teal); font-size:1.3rem;">1. Estructura Obligatoria (El Esqueleto IMRD)</h3>
+        <p style="font-size:1.05rem;">Estos son los subtítulos jerárquicos exactos que debe contener tu redacción del Capítulo de la Metodología una vez que abres el Word:</p>
+        <ul style="list-style:none; padding-left:0; font-family:var(--font-ui); font-size:0.95rem; line-height:1.6; color:var(--c-text-muted);">
+          <li style="margin-bottom:15px; padding-left:15px; border-left:3px solid var(--c-teal);"><b>3.1 Tipo y Diseño de Estudio</b><br>Declaración explícita del empleo de una Revisión Sistemática bajo normas y checklist oficial PRISMA 2020.</li>
+          <li style="margin-bottom:15px; padding-left:15px; border-left:3px solid var(--c-teal);"><b>3.2 Criterios de Selección (Elegibilidad)</b><br>El enlistado crudo en viñetas de tus variables clínicas de Inclusión y Exclusión.</li>
+          <li style="margin-bottom:15px; padding-left:15px; border-left:3px solid var(--c-teal);"><b>3.3 Estrategia de Búsqueda de Inferencia</b><br>La transcripción de la cadena Booleana de búsqueda (con AND/OR/NOT) y bases consultadas en internet.</li>
+          <li style="margin-bottom:15px; padding-left:15px; border-left:3px solid var(--c-teal);"><b>3.4 Proceso de Cribado y Selección</b><br>Explicación técnica de cómo hicieron lectura ciega inter-jueces. (El dibujo PRISMA lo pondrás en Resultados).</li>
+          <li style="margin-bottom:15px; padding-left:15px; border-left:3px solid var(--c-teal);"><b>3.5 Evaluación de Calidad (Sesgo)</b><br>Determinación de qué plantilla de control se le aplicó a los PDFs completos (Ej. Análisis asimétrico de RoB-2).</li>
+        </ul>
+      </div>
+
+      <!-- 2. TO-DO LIST INTERACTIVA -->
+      <div style="background:var(--c-bg); border: 1px solid var(--c-border); border-radius:12px; padding:30px;">
+        <h3 style="margin-top:0; color:var(--c-accent); font-size:1.3rem;">2. To-Do List Interactiva de Tareas</h3>
+        <p style="font-size:0.95rem; margin-bottom:20px; font-family:var(--font-ui);">Haz clic directamente en las casillas para ir marcando, ordenadamente, cómo avanza cronológicamente el trabajo de tu equipo:</p>
+
+        <style>
+          .todo-item { display:flex; align-items:flex-start; gap:12px; margin-bottom:15px; font-family:var(--font-ui); font-size:0.95rem; cursor:pointer;}
+          .todo-item input[type="checkbox"] { width:22px; height:22px; margin-top:1px; cursor:pointer; accent-color:var(--c-accent); flex-shrink:0; border-radius:4px;}
+          .todo-item span { transition: color 0.2s, text-decoration 0.2s; user-select:none; line-height: 1.5; color: var(--c-text);}
+          .todo-item input[type="checkbox"]:checked + span { color:#a0a0c0; text-decoration:line-through; }
+        </style>
+
+        <label class="todo-item"><input type="checkbox"><span><b>Fase 1:</b> Definir la pregunta final (PICO) con precisión clínica.</span></label>
+        <label class="todo-item"><input type="checkbox"><span><b>Fase 2:</b> Redactar los Criterios de Inclusión en un documento borrador interno.</span></label>
+        <label class="todo-item"><input type="checkbox"><span><b>Fase 3:</b> Armar el algoritmo Booleano buscando los Descriptores Médicos (DeCS).</span></label>
+        <label class="todo-item"><input type="checkbox"><span><b>Fase 4:</b> Buscar en LILACS, PubMed y SciELO exportando los resultados.</span></label>
+        <label class="todo-item"><input type="checkbox"><span><b>Fase 5:</b> Realizar el Cribado veloz y ciego (Leer solos los Abstracts).</span></label>
+        <label class="todo-item"><input type="checkbox"><span><b>Fase 6:</b> Debatir empates, descargar los PDFs completos y rellenar las casillas PRISMA.</span></label>
+        <label class="todo-item"><input type="checkbox"><span><b>Fase 7:</b> Puntuarlos mediante el Riesgo de Sesgo (Ej. Plantilla CASPe / NOS).</span></label>
+        <label class="todo-item"><input type="checkbox"><span><b>Fase 8:</b> Volcar los hallazgos en Apaisado (Generar la Matriz tabular de Evidencia).</span></label>
+        <label class="todo-item"><input type="checkbox"><span><b>Fase 9:</b> Redactar la "Discusión" enfrentando posturas de los autores con Normas APA.</span></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIBLIO -->
+  <section id="ch-biblio" style="margin-top: 100px; padding-top: 40px; border-top: 2px dashed var(--c-border); margin-bottom:100px;">
+    <h3>Consideraciones y Corpus Bibliográfico Consultante</h3>
+    <p>Esta documentación pedagógica ha sido orquestada, filtrada y dictaminada combinando los requerimientos de la Academia Científica general y los eslabonamientos formales recomendados en las siguientes guías bibliográficas aportadas:</p>
+
+    <ul>
+      <li><span style="color:var(--c-accent); font-weight:700;">(Page et al., 2021)</span> Page, M. J., et al. (2021). <em>Declaración PRISMA 2020: una guía actualizada para la publicación de revisiones sistemáticas</em>. Revista Española de Cardiología, 74(9), 790-799.</li>
+      <li><span style="color:var(--c-accent); font-weight:700;">(Urrútia & Bonfill, 2010)</span> Urrútia, G., & Bonfill, X. (2010). Declaración PRISMA: una propuesta para mejorar la publicación de revisiones sistemáticas y metaanálisis. <em>Medicina Clínica</em>.</li>
+      <li><span style="color:var(--c-accent); font-weight:700;">(Redalyc/Metodológicas)</span> Guías estructuradas de Metanális y Revisión estandarizadas.</li>
+      <li><span style="color:var(--c-accent); font-weight:700;">(Tesis y Masters Arg., 2023)</span> Pasos documentales y Estructura IMRD para Revisiones Sistemáticas Académicas de Tesis (Soporte y redacción metodológica).</li>
+      <li><span style="color:var(--c-accent); font-weight:700;">(Jenni.ai)</span> Structural and Algorithmic Search: Guía para Systematic Literature Review (SLR) y Evaluaciones de Sesgo.</li>
+    </ul>
+
+    <div class="callout" style="background:#1e1e2e; color:#fff; border-color:#1e1e2e; margin-top:50px;">
+      <div class="callout-icon">🎓</div>
+      <div>
+        <h4 style="color:var(--c-accent-light); font-weight: 800; margin-bottom:5px;">Laboratorio de Tesis</h4>
+        <p style="color:#a6abc8;">Prof. Agustina. <br>Fonoaudiología. Investigación de Grado.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Simple scroll spy logic for the active sidebar navigation
+  const secIds = ['ch-0', 'ch-1', 'ch-2', 'ch-3', 'ch-4', 'ch-4b', 'ch-5', 'ch-6', 'ch-7', 'ch-8', 'ch-biblio'];
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const activeNav = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+        if(activeNav) activeNav.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px', threshold: 0.1 });
+
+  secIds.forEach(id => {
+    const section = document.getElementById(id);
+    if(section) observer.observe(section);
+  });
+</script>
+
+</body>
+</html>
