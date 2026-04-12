@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Estilístico: Redacción Académica del TFL · Laboratorio de Tesis</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* ── RESET & VARIABLES ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --c-bg: #f5f6fa;
+      --c-surface: #ffffff;
+      --c-text: #171923;
+      --c-text-muted: #53596a;
+      --c-border: #e0e5ed;
+      --c-accent: #2e60e8;   /* Azul Royal Estudiantil */
+      --c-accent-light: #eff3ff;
+      --c-teal: #109f9f;     /* Para cuadros de OK */
+      --c-red: #da3e52;      /* Para cuadros de Evitar */
+      --nav-w: 290px;
+      --radius: 12px;
+      --font-body: 'Crimson Pro', serif; 
+      --font-ui: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--c-bg);
+      color: var(--c-text);
+      display: flex;
+    }
+
+    h1, h2, h3, h4, h5, .nav-item, .badge, .btn, .sans {
+      font-family: var(--font-ui);
+    }
+    
+    /* ── SIDEBAR NAVIGATION ── */
+    aside.sidebar {
+      width: var(--nav-w);
+      height: 100vh;
+      position: fixed;
+      left: 0; top: 0;
+      background: var(--c-surface);
+      border-right: 1px solid var(--c-border);
+      padding: 30px 20px;
+      overflow-y: auto;
+      z-index: 100;
+      box-shadow: 2px 0 15px rgba(0,0,0,0.02);
+    }
+    
+    .brand {
+      font-family: var(--font-ui);
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--c-accent);
+      margin-bottom: 35px;
+      line-height: 1.25;
+    }
+    .brand span { font-size: 0.8rem; color: var(--c-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display:block; margin-top:5px;}
+    
+    .nav-group { margin-bottom: 25px; }
+    .nav-label {
+      font-family: var(--font-ui); font-size: 0.75rem; font-weight: 800;
+      color: var(--c-text-muted); text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 10px; padding-left: 10px;
+    }
+    .nav-item {
+      display: block; padding: 8px 10px; color: var(--c-text);
+      text-decoration: none; font-size: 0.9rem; font-weight: 600;
+      border-radius: 6px; transition: background 0.2s, color 0.2s;
+    }
+    .nav-item:hover, .nav-item.active {
+      background: var(--c-accent-light); color: var(--c-accent);
+    }
+
+    /* ── MAIN CONTENT AREA ── */
+    main.content {
+      margin-left: var(--nav-w);
+      flex: 1;
+      min-height: 100vh;
+      padding: 60px 80px 100px 80px;
+      max-width: 1050px; 
+    }
+
+    p { font-size: 1.18rem; line-height: 1.85; margin-bottom: 25px; color: #2d3142; }
+    h1 { font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 25px; letter-spacing: -0.02em; }
+    h2 { font-size: 2.2rem; font-weight: 800; margin: 60px 0 25px 0; padding-bottom: 15px; border-bottom: 2px solid var(--c-border); color: var(--c-text); }
+    h3 { font-size: 1.5rem; font-weight: 700; margin: 40px 0 15px 0; color: var(--c-text); }
+    ul, ol { margin-left: 20px; margin-bottom: 25px; font-size: 1.15rem; line-height: 1.8; color: #2d3142; }
+    li { margin-bottom: 10px; }
+    
+    .lead { font-size: 1.35rem; color: var(--c-text-muted); line-height: 1.7; font-family: var(--font-ui); font-weight: 400; margin-bottom: 40px; }
+
+    /* ── COMPONENTES CLAVE ── */
+    
+    .callout {
+      padding: 25px 30px; border-radius: var(--radius); margin: 35px 0;
+      background: var(--c-surface); border: 1px solid var(--c-border);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; gap: 20px; align-items: flex-start;
+    }
+    .callout-icon { font-size: 1.8rem; line-height: 1; margin-top:2px; }
+    .callout h4 { font-size: 1.15rem; margin-bottom: 10px; font-family: var(--font-ui); font-weight: 800; }
+    .callout p { font-size: 1.05rem; margin-bottom: 0; line-height: 1.6;}
+    
+    .callout.info { border-left: 5px solid var(--c-accent); background: #fbfbfe; }
+    
+    /* Plantillas de Ejemplo Literales (Para Word) */
+    .template-box {
+      margin: 40px 0; background: #fff; border: 2px solid var(--c-accent);
+      border-radius: var(--radius); position: relative; padding: 40px 30px 25px;
+      box-shadow: 0 8px 30px rgba(46, 96, 232, 0.08); /* Sombra de c-accent */
+    }
+
+    .template-badge {
+      position: absolute; top: 0; left: 0; background: var(--c-accent); color: #fff;
+      font-family: var(--font-ui); font-size: 0.75rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.1em; padding: 6px 16px;
+      border-radius: 10px 0 10px 0;
+    }
+    .template-box p.text {
+      font-family: 'Times New Roman', Times, serif; font-size: 1.15rem; line-height: 1.9;
+      background: #fdfdfe; border-left: 4px solid var(--c-border); padding-left: 20px;
+      color: #111; margin: 0;
+    }
+    .template-note {
+      display: block; font-family: var(--font-ui); font-size: 0.85rem; color: var(--c-accent);
+      background: rgba(46, 96, 232, 0.08); padding: 10px 15px; border-radius: 6px; margin-top: 20px; font-style: normal; line-height: 1.5;
+    }
+
+    /* Grilla general */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 30px 0; }
+    .card { background: var(--c-surface); border: 1px solid var(--c-border); padding: 25px; border-radius: var(--radius); }
+    
+    /* Estilos del comparador Visual vs */
+    .vs-box { display: flex; align-items: stretch; justify-content: space-between; gap: 15px; margin: 30px 0; }
+    .vs-item { width: 48%; padding: 25px; background: #fff; border: 1px solid var(--c-border); border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+    .vs-item h4 { font-size: 1.15rem; margin-bottom: 15px; border-bottom: 2px solid var(--c-border); padding-bottom: 10px; }
+    .vs-item.bad h4 { color: var(--c-red); border-color: rgba(217,63,120,.3); }
+    .vs-item.good h4 { color: var(--c-teal); border-color: rgba(26,173,173,.3); }
+
+    @media (max-width: 1024px) {
+      aside.sidebar { display: none; }
+      main.content { margin-left: 0; padding: 40px 25px; }
+      .vs-box { flex-direction: column; }
+      .vs-item { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">
+    Manual Estilístico
+    <span>Redacción Académica TFL</span>
+  </div>
+  
+  <div class="nav-group">
+    <div class="nav-label">Fundamentos</div>
+    <a href="#ch-0" class="nav-item active">El Lenguaje de la Ciencia</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">La Estructura I.M.R.D.</div>
+    <a href="#ch-1" class="nav-item">Introducción (Fórmula de 3)</a>
+    <a href="#ch-2" class="nav-item">El Tono Aséptico en Metodología</a>
+    <a href="#ch-3" class="nav-item">Relatar Resultados Limpios</a>
+    <a href="#ch-4" class="nav-item">Discusión y Conclusiones</a>
+  </div>
+
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="content">
+
+  <!-- CH 0: CONCEPTO GLOBAL -->
+  <section id="ch-0">
+    <div class="badge sans" style="display:inline-block; background:var(--c-accent-light); color:var(--c-accent); padding:6px 14px; border-radius:100px; font-size:0.8rem; font-weight:800; letter-spacing:0.05em; margin-bottom:20px;">
+      LABORATORIO DE TESIS · FONOAUDIOLOGÍA
+    </div>
+    <h1>El Arte de la Redacción Científica</h1>
+    <p class="lead">Para transformar un conjunto de resultados en un Trabajo Final (TFL) aprobado y publicable, no basta con leer Papers. El alumno debe dominar el <em>Lenguaje Académico de la Salud</em>: abandonar la coloquialidad y domesticar los tiempos verbales.</p>
+
+    <h2>1. La muerte del "Yo" (La Voz Pasiva)</h2>
+    
+    <p>La regla inquebrantable de la academia científica determina que <strong>la ciencia es objetiva, por lo tanto el investigador no importa, importa el dato</strong>. Nunca, bajo ninguna circunstancia, se redacta el TFL en Primera Persona del plural ("Nosotros concluimos", "En nuestra tesis"). </p>
+    
+    <p>Se utiliza un ente ubicuo denominado **"Tercera Persona Impersonal"** o construcciones de **Voz Pasiva con "se"** ("Se concluyó que", "La presente tesis determinó").</p>
+    
+    <div class="vs-box sans">
+      <div class="vs-item bad">
+        <h4>❌ Forma Subjetiva y Coloquial</h4>
+        <p style="font-size: 1rem; font-family: var(--font-body); font-style:italic; line-height: 1.6;">"A partir de nuestra lectura de los 14 artículos de chicos con autismo, nos dimos cuenta que la mayoría mejoró con el tratamiento pictográfico. Por eso nosotros creemos que sirve mucho."</p>
+      </div>
+      <div class="vs-item good">
+        <h4>✅ Forma Académica (Plural Aséptico)</h4>
+        <p style="font-size: 1rem; font-family: var(--font-body); font-style:italic; line-height: 1.6;">"A partir de la triangulación de los 14 registros recabados, se evidenció una progresión patológica favorable en el espectro bajo estímulos pictográficos. Consecuentemente, los hallazgos de la presente investigación sugieren un alto valor terapéutico."</p>
+      </div>
+    </div>
+    
+  </section>
+
+  <div style="border-top: 1px solid var(--c-border); margin: 50px 0;"></div>
+
+  <!-- CH 1: I - INTRODUCCIÓN -->
+  <section id="ch-1">
+    <h2>2. La Introducción: La fórmula de los 3 Bloques</h2>
+    <p>La **"I"** de IMRD es lo último que se pule, pero lo primero que el jurado lee. En lugar de divagar, el modelo estándar internacional requiere redactar la justificación argumental de manera hipnótica utilizando la **"Fórmula del Vacío"**.</p>
+    
+    <ul>
+      <li><strong>Párrafo 1 (El Hook):</strong> Cuál es el impacto global y dolor de tu problema patológico hoy.</li>
+      <li><strong>Párrafo 2 (El Gap de Conocimiento):</strong> Qué hicieron los demás, y <em>qué fue lo que nadie investigó aún</em> (Aquí inyectas tu Tesis como la salvación).</li>
+      <li><strong>Párrafo 3 (El Objetivo Formal):</strong> Para tapar ese vacío, revelas explícitamente tú Pregunta de Investigación (La estocada final).</li>
+    </ul>
+
+    <div class="template-box">
+      <div class="template-badge">Plantilla: Párrafos Entrelazados (Introducción)</div>
+      <p class="text">
+        <span style="color:var(--c-accent); font-weight:bold; font-family:var(--font-ui); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; display:block; margin: 15px 0 5px 0;">[1. El Hook]</span>
+        Actualmente, las alteraciones morfofisiológicas derivadas de la respiración bucal crónica comprometen contundentemente al 45% del desarrollo orofacial pediátrico en Latinoamérica (Organización Panamericana de Salud, 2021). Si bien la Odontopediatría ha establecido brackets restrictivos históricos...<br><br>
+        <span style="color:var(--c-accent); font-weight:bold; font-family:var(--font-ui); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; display:block; margin: 15px 0 5px 0;">[2. El Vacío (Gap)]</span>
+        ...escasean las revisiones integrativas que cuantifiquen de manera pura la efectividad paliativa cuando el individuo recibe una estimulación Miofuncional Fonoaudiológica complementaria al bracket. La literatura moderna está fracturada. <br><br>
+        <span style="color:var(--c-accent); font-weight:bold; font-family:var(--font-ui); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; display:block; margin: 15px 0 5px 0;">[3. El Objetivo Integrador]</span>
+        Por ende, a raíz de dicha fisura de conocimiento, el presente Trabajo Final ambiciona responder al siguiente interrogante: ¿Cuál es la eficacia clínica transversal de la Terapia Miofuncional Fonoaudiológica acoplada frente a tratamientos convencionales exclusivos...?
+      </p>
+    </div>
+  </section>
+
+  <!-- CH 2: M - METODOLOGÍA -->
+  <section id="ch-2">
+    <h2>3. Metodología: El Verbo Estricto (Pasado)</h2>
+    <p>La Metodología NO es una argumentación de por qué diseñaste el trabajo de una forma u otra. Es el **"Manual de Instrucciones del Electrodoméstico"**. Es puramente descriptiva, fría y plana.</p>
+    
+    <p>A veces se relata el desarrollo del TFL mezclando tiempos: <em>"A continuación, **vamos** a explicar..."</em> o <em>"la búsqueda **se hará** con estas palabras"</em>.<br> ¡Recuerda! En el documento final, el TFL ya se hizo. La metodología se redacta como una crónica, <strong>rigurosamente en tiempo PASADO</strong>.</p>
+
+    <div class="callout info">
+      <div class="callout-icon">⏱️</div>
+      <div>
+        <h4>Diccionario de Conectores (Metodología)</h4>
+        <p>
+          - <s>"Hacemos una búsqueda para incluir"</s> ⇨ "Se <b>diseñó</b> un algoritmo..." o "La población <b>fue</b> filtrada..."<br>
+          - <s>"Vamos a expulsar a los que no tienen..."</s> ⇨ "Respecto a los criterios, se <b>desestimaron</b> aquellos manuscritos..."<br>
+          - <s>"Queremos medir la validez..."</s> ⇨ "Para mensurar la calidad cruzada, se <b>aplicó</b> la Escala NOS, resultando en..." 
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CH 3: R - RESULTADOS -->
+  <section id="ch-3">
+    <h2>4. Narrar Resultados sin Emociones</h2>
+    <p>En el capítulo de Resultados es donde insertarán la "Sabana de Autores" (Matriz de datos) y el "Embudo de Inclusión" (PRISMA). <br>Un detalle crucial para lograr un TFL sobresaliente es evitar la tentación de "vender" la gráfica ("Sorprendentemente la gráfica demuestra...").</p>
+
+    <p>Los datos no sorprenden, son mudos. Debes insertar el gráfico y guiar la pupila del jurado, nada más. En lugar de calificar ("Felizmente se cumplieron los objetivos..."), limitarse a dirigir la vista: <em>"Tal como ilustra la Figura 1"</em>.</p>
+
+    <div class="vs-box sans">
+      <div class="vs-item bad">
+        <h4>❌ Lleno de Juicios Personales</h4>
+        <p style="font-size: 0.95rem; font-family: var(--font-body); font-style:italic;">"La Figura 2 es el PRISMA. Lamentablemente de 400 papeles solo sirvieron 14 porque los demás eran muy viejos o inútiles para nuestra terapia. La gran cantidad de papers afirma nuestra hipótesis."</p>
+      </div>
+      <div class="vs-item good">
+        <h4>✅ Direccional y Aséptico</h4>
+        <p style="font-size: 0.95rem; font-family: var(--font-body); font-style:italic;">"La filtración sistemática decantó en la inclusión terminal de 14 artículos primarios (De una matriz bruta inicial de N=400), tal como se documenta íntegramente en la Figura 2. Cabe resaltar que la tasa principal de exclusión radicó en cronologías biográficas caducas."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CH 4: D - DISCUSIONES Y CONCLUSIÓN -->
+  <section id="ch-4">
+    <h2>5. Discusiones y Conclusiones Terminales</h2>
+    <p>La **Discusión** es donde, de golpe, está permitido volver a traer la Teoría. Aquí debes entrelazar autores, chocar sus metodologías y justificar qué paper tiene razón y por qué.</p>
+
+    <p>La **Conclusión** no es un resumen final repetitivo. Es un párrafo, de máxima elegancia, que responde unívoca y matemáticamente a la "Pregunta PICO" formulada en la Introducción; cerrando el ciclo sin traer citas nuevas ni dar sermones.</p>
+
+    <div class="template-box">
+      <div class="template-badge">Plantilla: Párrafo de Conclusión de Grado</div>
+      <p class="text">"Conclusión Final.<br><br>En virtud del análisis sistémico erigido, y logrando interceptar los corolarios propuestos empíricamente, se dictamina cabalmente que la Terapia Biofeedback exógena representa un coadyuvante fonoaudiológico significativamente superior al abordaje táctil-clásico (P<0.05). Las proyecciones de esta Revisión Sistemática no solo satisfacen la problemática PICO esbozada, sino que cimientan un llamado perentorio a la actualización curricular en las arcas patológicas."</p>
+    </div>
+  </section>
+
+  <section style="margin-top: 100px; padding-top: 40px; border-top: 2px dashed var(--c-border); margin-bottom:100px;">
+    <div class="callout" style="background:#171923; color:#fff; border-color:#171923; margin-top:20px;">
+      <div class="callout-icon">🎓</div>
+      <div>
+        <h4 style="color:var(--c-accent-light); font-weight: 800; margin-bottom:5px;">Laboratorio de Tesis</h4>
+        <p style="color:#b2b8ce;">Prof. Agustina. <br>Recursos Metodológicos · Fonoaudiología Universitaria.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Simple scroll spy logic for the active sidebar navigation
+  const secIds = ['ch-0', 'ch-1', 'ch-2', 'ch-3', 'ch-4'];
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const activeNav = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+        if(activeNav) activeNav.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -50% 0px', threshold: 0.1 });
+
+  secIds.forEach(id => {
+    const section = document.getElementById(id);
+    if(section) observer.observe(section);
+  });
+</script>
+
+</body>
+</html>
