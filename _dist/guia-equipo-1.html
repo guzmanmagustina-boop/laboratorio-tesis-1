@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laboratorio de Tesis · Guía Metodológica Interactiva</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* ── DISEÑO DE SISTEMA (TEMA CLARO - REPOSITORIO) ── */
+    :root {
+      --c-bg: #f8fafc;
+      --c-surface: #ffffff;
+      --c-text: #1e293b;
+      --c-text-muted: #64748b;
+      --c-accent: #6355e8;
+      --c-accent-light: #eef2ff;
+      --c-border: #e2e8f0;
+      --c-success: #10b981;
+      --c-warning: #f59e0b;
+      --radius: 16px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --font-ui: 'Plus Jakarta Sans', sans-serif;
+      --font-body: 'Crimson Pro', serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--c-bg);
+      color: var(--c-text);
+      font-family: var(--font-body);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .sans { font-family: var(--font-ui); }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 20px 100px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      background: var(--c-accent-light);
+      color: var(--c-accent);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+      font-family: var(--font-ui);
+    }
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--c-text);
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .lead {
+      font-size: 1.35rem;
+      color: var(--c-text-muted);
+      max-width: 750px;
+      margin: 0 auto;
+      font-family: var(--font-ui);
+      font-weight: 400;
+    }
+
+    /* ── SECCIONES ── */
+    .section-card {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      padding: 50px;
+      margin-bottom: 40px;
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 30px;
+      color: var(--c-text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    h2::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: var(--c-accent);
+      border-radius: 2px;
+    }
+
+    /* ── MASTERCLASS DESCRIPTORES ── */
+    .theory-box {
+      background: var(--c-accent-light);
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+    .theory-box h3 { font-size: 1.1rem; color: var(--c-accent); margin-bottom: 10px; }
+    .theory-box p { font-size: 1rem; color: var(--c-text); margin: 0; line-height: 1.6; }
+
+    .validation-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--c-success);
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 25px;
+      font-weight: 700;
+      font-family: var(--font-ui);
+    }
+
+    /* ── FÓRMULAS METODOLÓGICAS ── */
+    .formula-grid {
+      display: grid;
+      gap: 25px;
+      margin: 30px 0;
+    }
+    .formula-card {
+      padding: 25px;
+      border: 1px dashed var(--c-accent);
+      border-radius: 12px;
+      position: relative;
+    }
+    .formula-card .label {
+      position: absolute;
+      top: -12px; left: 20px;
+      background: var(--c-accent);
+      color: #fff;
+      padding: 2px 12px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      font-family: var(--font-ui);
+    }
+    .formula-content { font-weight: 700; font-size: 1.1rem; color: var(--c-text); }
+
+    /* ── PICO CARDS ── */
+    .pico-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .pico-card {
+      padding: 25px;
+      background: #fdfdfd;
+      border: 1px solid var(--c-border);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+    .pico-card:hover { border-color: var(--c-accent); transform: translateY(-2px); }
+    .pico-letter { font-size: 2rem; font-weight: 800; color: var(--c-accent); margin-bottom: 5px; display: block; }
+    .pico-name { font-weight: 700; color: var(--c-text); display: block; margin-bottom: 10px; }
+
+    /* ── ACORDEONES ── */
+    .accordion { margin-bottom: 10px; border: 1px solid var(--c-border); border-radius: 8px; overflow: hidden; }
+    .acc-header { padding: 18px 24px; background: #fff; cursor: pointer; display: flex; justify-content: space-between; font-weight: 700; }
+    .acc-header:hover { background: #fafafa; }
+    .acc-body { padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease; background: var(--c-bg); }
+    .accordion.open .acc-body { padding: 25px; max-height: 500px; }
+
+    /* ── TABLA EXCEL SIMULACIÓN ── */
+    .excel-container {
+      overflow-x: auto;
+      margin-top: 30px;
+      border-radius: 8px;
+      border: 1px solid var(--c-border);
+    }
+    table { width: 100%; border-collapse: collapse; background: #fff; }
+    th { background: #f1f5f9; color: var(--c-text-muted); padding: 12px; text-align: left; font-size: 0.75rem; text-transform: uppercase; border-bottom: 2px solid var(--c-border); }
+    td { padding: 12px; border-bottom: 1px solid var(--c-border); font-size: 0.9rem; color: var(--c-text); }
+    .tag { padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+    .tag-ok { background: #d1fae5; color: #065f46; }
+
+    /* ── PRISMA FLOW DIAGRAM ── */
+    .prisma-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      margin: 40px 0;
+    }
+    .prisma-step {
+      width: 100%;
+      max-width: 500px;
+      padding: 20px;
+      background: #f8fafc;
+      border: 2px solid var(--c-accent);
+      border-radius: 12px;
+      text-align: center;
+      position: relative;
+    }
+    .prisma-step::after {
+      content: '↓';
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5rem;
+      color: var(--c-accent);
+      font-weight: 800;
+    }
+    .prisma-step:last-child::after { content: ''; }
+    .prisma-step strong { display: block; color: var(--c-accent); font-family: var(--font-ui); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 5px; }
+
+    .bias-box {
+      border: 1px solid #fee2e2;
+      background: #fff5f5;
+      padding: 25px;
+      border-radius: 12px;
+      margin-top: 30px;
+    }
+    .bias-box h3 { color: #991b1b; font-size: 1.1rem; margin-bottom: 10px; }
+
+    @media (max-width: 768px) {
+      .container { padding: 40px 15px; }
+      h1 { font-size: 2.2rem; }
+      .section-card { padding: 30px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge">Sesión Sincrónica · 13 de Abril</div>
+      <h1>Guía Metodológica Interactiva</h1>
+      <p class="lead">Manual técnico para la asesoría pedagógica del <strong>Proyecto de Investigación</strong>. Enfoque exhaustivo en búsqueda y sistematización.</p>
+    </header>
+
+    <!-- 1. MASTERCLASS DE DESCRIPTORES -->
+    <div class="section-card">
+      <h2>1. Masterclass: El Poder de los Descriptores</h2>
+      
+      <div class="theory-box">
+        <h3>¿Qué es un Descriptor (MeSH/DeCS)?</h3>
+        <p>No son simples palabras clave. Son <strong>etiquetas controladas</strong> por bibliotecarios científicos. Mientras que en Google usamos "lenguaje natural" (receta de pan), en bases de datos usamos "lenguaje controlado" (Panificación AND Procesos). Sin descriptores, la base de datos es una biblioteca sin catálogo.</p>
+      </div>
+
+      <div class="validation-badge">
+        <span>✅</span> Validación Técnica: Los términos identificados deben ser precisos y cubrir el 100% de la jerarquía MeSH necesaria.
+      </div>
+
+      <p style="margin-top: 25px;"><strong>Fundamento técnico para la tutoría:</strong></p>
+      <ul style="margin-left: 20px; margin-top: 10px; color: var(--c-text-muted);">
+        <li><strong>Unificación:</strong> "Neonatal Screening" recupera artículos de autores que escribieron "cribado", "pesquisa" o "tamizaje".</li>
+        <li><strong>Filtro de Ruido:</strong> Evita que al buscar "impacto" aparezcan artículos sociológicos irrelevantes para la fonoaudiología clínica.</li>
+      </ul>
+    </div>
+
+    <!-- 2. LA TRINIDAD METODOLÓGICA (FÓRMULA) -->
+    <div class="section-card">
+      <h2>2. La Trinidad Metodológica: La Fórmula</h2>
+      <p>Un TFL sólido se construye sobre la alineación perfecta. Antes de ver su tema, analicemos la <strong>fórmula estructural</strong>.</p>
+      
+      <div class="formula-grid">
+        <div class="formula-card">
+          <div class="label">FÓRMULA TÍTULO</div>
+          <div class="formula-content">[Variable Central] + [Población] + [Contexto/Temporalidad] + [Tipo de Estudio]</div>
+        </div>
+        <div class="formula-card">
+          <div class="label">FÓRMULA PREGUNTA (PICO)</div>
+          <div class="formula-content">¿Cuál es el [Resultado] de [Intervención] frente a [Comparación] en [Población]?</div>
+        </div>
+      </div>
+
+      <div class="theory-box" style="background: #fff; border: 1px solid var(--c-border);">
+        <h3>💡 Ejemplo de Aplicación (Tema: Educación)</h3>
+        <p style="font-style: italic; color: var(--c-text-muted);">
+          "¿Es más efectivo el uso de <strong>recreos dirigidos (I)</strong> en comparación con el <strong>recreo libre (C)</strong> para mejorar la <strong>convivencia escolar (O)</strong> en <strong>niños de 6 a 8 años con TDAH (P)</strong>?"
+        </p>
+      </div>
+      
+      <p style="margin-top:20px; font-weight:700; color:var(--c-accent);">Actividad Sugerida: "Utilizando estas fórmulas, se debe reconstruir el Título y Problema reemplazando términos genéricos por conceptos técnicos precisos."</p>
+    </div>
+
+    <!-- 3. PROFUNDIZACIÓN: VALIDEZ DIAGNÓSTICA -->
+    <div class="section-card">
+      <h2>3. Precisión en Salud: La Evidencia</h2>
+      <p>Para una revisión sobre pruebas de detección (OEA/PEATC), se deben dominar estos dos conceptos "reglas de oro":</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0;">
+        <div style="padding: 20px; background: #fdfdfd; border-left: 4px solid var(--c-accent);">
+          <strong class="sans" style="color: var(--c-accent);">SENSIBILIDAD</strong>
+          <p style="font-size: 0.95rem; margin-top: 5px;">Capacidad de la prueba para detectar a los bebés que <strong>realmente tienen</strong> el problema. (Evita Falsos Negativos).</p>
+        </div>
+        <div style="padding: 20px; background: #fdfdfd; border-left: 4px solid var(--c-accent);">
+          <strong class="sans" style="color: var(--c-accent);">ESPECIFICIDAD</strong>
+          <p style="font-size: 0.95rem; margin-top: 5px;">Capacidad para detectar correctamente a los bebés <strong>sanos</strong>. (Evita Falsas Alarmas).</p>
+        </div>
+      </div>
+      
+      <div style="background: rgba(245, 158, 11, 0.05); padding: 15px; border-radius: 8px; font-size: 0.9rem;">
+        <strong>⚠️ Alerta Metodológica:</strong> Si el título dice "Impacto", el tribunal pedirá impacto social. Si dice "Eficacia Diagnóstica", defenderemos números y precisión clínica.
+      </div>
+    </div>
+
+    <!-- 4. CRITERIOS DE INCLUSIÓN Y EXCLUSIÓN -->
+    <div class="section-card">
+      <h2>4. El Embudo: Criterios de Selección</h2>
+      <p>Es lo que garantiza que la revisión no sea "lo que encontramos por ahí", sino un proceso sistemático.</p>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+        <div>
+          <h4 style="color: var(--c-success); margin-bottom: 10px;">Inclusión (Los que entran)</h4>
+          <ul style="font-size: 0.9rem; margin-left:15px;">
+            <li>Estudios en humanos (neonatos).</li>
+            <li>Artículos publicados 2014-2026.</li>
+            <li>Idiomas: Inglés, Español, Portugués.</li>
+            <li>Enfoque: Rendimiento diagnóstico combinado.</li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color: #da3e52; margin-bottom: 10px;">Exclusión (Los que quedan fuera)</h4>
+          <ul style="font-size: 0.9rem; margin-left:15px;">
+            <li>Estudios con animales o modelos computacionales.</li>
+            <li>Cartas al editor o reseñas no revisadas por pares.</li>
+            <li>Estudios sobre hipoacusias no relacionadas con DENA.</li>
+            <li>Reportes de un solo caso (n=1).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. BIBLIOTECA DE CRUCE (QUERY) -->
+    <div class="section-card">
+      <h2>5. Laboratorio de Búsqueda</h2>
+      <p style="margin-bottom: 20px;">Cadenas lógicas listas para insertar en bases de datos científicas.</p>
+      
+      <div class="accordion" id="acc1">
+        <div class="acc-header" onclick="toggleAcc('acc1')">Cadena en Inglés (Primary Evidence - PubMed) <span>+</span></div>
+        <div class="acc-body">
+          <div class="query-box">
+            <button class="btn-copy">Copiar</button>
+            <code>("Neonatal screening" OR "Newborn hearing screening") AND ("Otoacoustic Emissions" AND "Auditory Brainstem Response") AND "Auditory Neuropathy Spectrum Disorder"</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion" id="acc2">
+        <div class="acc-header" onclick="toggleAcc('acc2')">Cadena en Español (Regional - SciELO) <span>+</span></div>
+        <div class="acc-body">
+          <div class="query-box">
+            <button class="btn-copy">Copiar</button>
+            <code>("Pesquisa auditiva neonatal" OR "Tamizaje auditivo" OR "Cribado auditivo") AND ("Otoemisiones Acústicas" AND "Potenciales Evocados") AND "Neuropatía Auditiva"</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. LA MATRIZ DE REGISTRO (EXCEL) -->
+    <div class="section-card">
+      <h2>6. Simulación: Matriz de Registro (Excel)</h2>
+      <p>Este es el instrumento que se debe completar sistemáticamente para cada artículo encontrado.</p>
+      
+      <div class="excel-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Título del Artículo</th>
+              <th>Autores / Año</th>
+              <th>Base de Datos</th>
+              <th>Cumple Inclusión</th>
+              <th>Decisión Final</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>001</td>
+              <td>"Diagnostic precision of dual screening..."</td>
+              <td>Smith et al. (2022)</td>
+              <td>PubMed</td>
+              <td><span class="tag tag-ok">SI</span></td>
+              <td>Incluir</td>
+            </tr>
+            <tr>
+              <td>002</td>
+              <td>"Pesquisa auditiva en UCIN pública..."</td>
+              <td>García, L. (2019)</td>
+              <td>Lilacs</td>
+              <td><span class="tag tag-ok">SI</span></td>
+              <td>Incluir</td>
+            </tr>
+            <tr>
+              <td>003</td>
+              <td>"Impact of early intervention in..."</td>
+              <td>Doe, J. (2015)</td>
+              <td>Google Sch.</td>
+              <td><span class="tag" style="background:#fee2e2; color:#991b1b;">NO</span></td>
+              <td>Excluir (Fuera de tema)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 7. HACIA LA EXCELENCIA: EL ESTÁNDAR DE ORO -->
+    <div class="section-card" style="background: linear-gradient(135deg, #fff 0%, #f1f5f9 100%);">
+      <div class="badge" style="background: #eab308; color: #fff;">Bonus: Nivel de Excelencia</div>
+      <h2 style="margin-top: 10px;">7. El Estándar de Oro Metodológico</h2>
+      <p>Para que la investigación sea irrefutable ante un tribunal, se deben integrar estos tres pilares del rigor científico:</p>
+
+      <!-- PRISMA -->
+      <h3 style="margin: 30px 0 15px; font-size: 1.3rem;">A. El Mapa del Tesoro: Diagrama PRISMA 2020</h3>
+      <p style="font-size: 0.95rem;">Una Revisión Sistemática no es solo buscar; es <strong>filtrar</strong>. El diagrama PRISMA muestra cuántos artículos "sobrevivieron" al proceso:</p>
+      <div class="prisma-container">
+        <div class="prisma-step"><strong>Identificación</strong>Registros identificados en bases de datos (PubMed/Scielo).</div>
+        <div class="prisma-step"><strong>Cribado (Screening)</strong>Registros validados tras eliminar duplicados y leer títulos.</div>
+        <div class="prisma-step"><strong>Elegibilidad</strong>Artículos leídos a texto completo que cumplen los criterios.</div>
+        <div class="prisma-step"><strong>Inclusión</strong>Estudios finales que formarán parte de la síntesis.</div>
+      </div>
+
+      <!-- CALIDAD -->
+      <h3 style="margin: 40px 0 15px; font-size: 1.3rem;">B. Evaluación de Calidad (Critical Appraisal)</h3>
+      <p style="font-size: 0.95rem;">No todos los artículos tienen la misma validez. Se recomienda utilizar herramientas como el <strong>Checklist del JBI (Joanna Briggs Institute)</strong> para estudios de precisión diagnóstica:</p>
+      <div style="background: #fff; border: 1px solid var(--c-border); padding: 20px; border-radius: 12px; margin-top: 10px;">
+        <p style="font-size: 0.9rem; margin: 0;"><strong>Preguntas de Control:</strong><br>
+        1. ¿Se aplicó la prueba a todos los pacientes (neonatos)?<br>
+        2. ¿Fue el estándar de referencia (PEATC) independiente de la prueba (OEA)?<br>
+        3. ¿Todos los resultados fueron reportados (incluso los negativos)?</p>
+      </div>
+
+      <!-- DEFINICIONES -->
+      <h3 style="margin: 40px 0 15px; font-size: 1.3rem;">C. Definiciones Operacionales Clínicas</h3>
+      <p style="font-size: 0.95rem;">Se debe definir con precisión quirúrgica el alcance de los conceptos clave:</p>
+      <div class="excel-container" style="border-style: dashed;">
+        <table>
+          <tr style="background: #f8fafc;">
+            <th style="width: 30%;">Término</th>
+            <th>Definición Operacional en este Trabajo</th>
+          </tr>
+          <tr>
+            <td><strong>Detección Temprana</strong></td>
+            <td>Identificación de la patología antes de los 3 meses de vida.</td>
+          </tr>
+          <tr>
+            <td><strong>Población de Riesgo</strong></td>
+            <td>Neonatos con antecedentes de UCI, hiperbilirrubinemia o fármacos ototóxicos.</td>
+          </tr>
+          <tr>
+            <td><strong>Pesquisa Universal</strong></td>
+            <td>Tamizaje aplicado al 100% de los nacidos, sin distinción previa.</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- SESGO -->
+      <div class="bias-box">
+        <h3>🔍 Vigilancia de Sesgo y Conflictos de Interés</h3>
+        <p style="font-size: 0.95rem; margin: 0;">En estudios de tecnología médica (OEA/PEATC), se debe verificar si los autores tienen vínculos con los fabricantes de los equipos. Un estudio financiado por una marca específica puede tener un sesgo favorable que debe ser mencionado en la Discusión del TFL.</p>
+      </div>
+    </div>
+
+    <footer style="text-align: center; color: var(--c-text-muted); margin-top: 50px;">
+      <p style="font-size: 0.85rem;">Laboratorio de Tesis · Prof. Agustina · Universidad Nacional de Córdoba</p>
+    </footer>
+
+  </div>
+
+  <script>
+    function toggleAcc(id) {
+      const acc = document.getElementById(id);
+      acc.classList.toggle('open');
+      const icon = acc.querySelector('span');
+      icon.innerText = acc.classList.contains('open') ? '−' : '+';
+    }
+
+    document.querySelectorAll('.btn-copy').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const code = btn.nextElementSibling.innerText;
+        navigator.clipboard.writeText(code);
+        btn.innerText = 'Copiado';
+        setTimeout(() => btn.innerText = 'Copiar', 2000);
+      });
+    });
+  </script>
+</body>
+</html>

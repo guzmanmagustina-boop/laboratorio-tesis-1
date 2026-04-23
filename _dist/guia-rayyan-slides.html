@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Presentación Rayyan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Crimson+Pro:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #6355e8;
+      --secondary: #eef2ff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --bg: #f8fafc;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page {
+      size: 297mm 210mm; /* A4 Landscape */
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #ccc;
+      color: var(--text);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .slide {
+      width: 297mm;
+      height: 210mm;
+      background: white;
+      margin: 0 auto;
+      position: relative;
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Patrón de fondo para diapositivas de título */
+    .bg-pattern {
+      background-color: var(--primary);
+      background-image: radial-gradient(circle at 100% 100%, rgba(255,255,255,0.1) 0%, transparent 50%), 
+                        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.1) 0%, transparent 50%);
+      color: white;
+    }
+
+    .header-bar {
+      height: 8px;
+      background: var(--primary);
+      width: 100%;
+    }
+
+    .slide-content {
+      flex: 1;
+      padding: 50px 80px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide-center {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 30px;
+      border-bottom: 4px solid var(--secondary);
+      padding-bottom: 10px;
+      display: inline-block;
+    }
+
+    .subtitle {
+      font-size: 1.5rem;
+      color: var(--muted);
+      max-width: 80%;
+      line-height: 1.5;
+    }
+
+    .bg-pattern .subtitle {
+      color: rgba(255,255,255,0.8);
+    }
+
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 20px;
+    }
+
+    .box {
+      background: var(--bg);
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 30px;
+      border-left: 6px solid var(--primary);
+    }
+
+    .box.success { border-left-color: var(--success); }
+    .box.danger { border-left-color: var(--danger); background: #fef2f2;}
+    .box.warning { border-left-color: #f59e0b; background: #fffbeb;}
+
+    .box h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      color: var(--text);
+    }
+
+    .box h3.text-danger { color: var(--danger); }
+
+    .step-number {
+      background: var(--primary);
+      color: white;
+      width: 50px;
+      height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-right: 15px;
+    }
+
+    ul {
+      margin-left: 30px;
+      margin-top: 10px;
+    }
+    
+    li {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 30px;
+      left: 80px;
+      right: 80px;
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 15px;
+    }
+
+    .footer-white {
+      color: rgba(255,255,255,0.7);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .icon {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      display: block;
+    }
+    
+    .large-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+
+    .highlight {
+      background: var(--secondary);
+      color: var(--primary);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- PORTADA -->
+  <div class="slide bg-pattern">
+    <div class="slide-content slide-center">
+      <div class="large-icon">⚙️</div>
+      <h1>Guía Oficial: Rayyan para Revisión Sistemática</h1>
+      <p class="subtitle" style="font-size: 1.8rem; margin-top: 20px;">Manual Paso a Paso para la importación y Cribado Ciego de evidencia científica.</p>
+    </div>
+    <div class="footer footer-white">
+      <span>Laboratorio de Tesis · Prof. Agustina</span>
+      <span>Metodología PRISMA 2020</span>
+    </div>
+  </div>
+
+  <!-- MAIN CONCEPT -->
+  <div class="slide">
+    <div class="header-bar"></div>
+    <div class="slide-content">
+      <h2>¿Qué es Rayyan y por qué es obligatorio?</h2>
+      
+      <p style="font-size: 1.4rem; margin-bottom: 40px; margin-top: 20px;">
+        Rayyan es una plataforma web inteligente diseñada para agilizar el proceso de <strong>Cribado (Screening)</strong> en revisiones sistemáticas. Es el estándar de oro actual para cumplir con la declaración PRISMA.
+      </p>
+
+      <div class="grid-2">
+        <div class="box">
+          <span class="icon">🤖</span>
+          <h3>Sistema de Inteligencia Artificial (IA)</h3>
+          <p>La IA agrupa automáticamente artículos similares y detecta <strong>duplicados</strong> entre múltiples bases de datos (PubMed vs Scopus), ahorrando horas de trabajo manual.</p>
+        </div>
+        
+        <div class="box warning">
+          <span class="icon">🙈</span>
+          <h3>El Modo Ciego (Blinding)</h3>
+          <p>Oculta al integrante 1 lo que el integrante 2 vota durante el cribado. Es <strong>el requisito inviolable</strong> para asegurar que la revisión es imparcial y metodológicamente fuerte.</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Guía de Rayyan Automática</span>
+      <span>Página 2 / 7</span>
+    </div>
+  </div>
+
+  <!-- STEP 1 & 2 -->
+  <div class="slide">
+    <div class="header-bar"></div>
+    <div class="slide-content">
+      <h2>Paso 1: Exportar las Bases de Datos (Crucial)</h2>
+      
+      <p>Rayyan no busca los artículos, sino que <strong>ustedes deben subirle los resultados</strong> que encontraron en PubMed, Lilacs, etc. El único formato aceptado para no perder datos es el archivo <span class="highlight">.RIS</span> o <span class="highlight">.nbib</span>.</p>
+
+      <div class="grid-2" style="margin-top: 30px;">
+        <div class="box">
+          <h3 style="display:flex; align-items:center;"><span class="step-number" style="font-size:1rem; width:30px; height:30px;">1</span> PubMed</h3>
+          <ul>
+            <li>Tocar en "Save" (debajo del cuadro de búsqueda).</li>
+            <li>Selection: <strong>All results</strong> (Todos).</li>
+            <li>Format: <strong>PubMed</strong>.</li>
+            <li>Tocar "Create File" (Descarga un archivo .nbib).</li>
+          </ul>
+        </div>
+        
+        <div class="box">
+          <h3 style="display:flex; align-items:center;"><span class="step-number" style="font-size:1rem; width:30px; height:30px;">2</span> Scielo / LILACS / BVS</h3>
+          <ul>
+            <li>Seleccionar todos los artículos u hoja.</li>
+            <li>Tocar "Exportar".</li>
+            <li>Formato: <strong>RIS (ProCite, Reference Manager)</strong>.</li>
+            <li>Asegurarse de incluir <strong>Abstract/Resumen</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Guía de Rayyan Automática</span>
+      <span>Página 3 / 7</span>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="slide">
+    <div class="header-bar"></div>
+    <div class="slide-content">
+      <h2>Paso 2: Crear la Revisión e Importar</h2>
+      
+      <div style="display: flex; gap: 30px; margin-top: 20px;">
+        <div style="flex: 1;">
+          <ul style="margin-left: 20px;">
+            <li><span class="highlight">Nueva Revisión:</span> Clic en "New Review". Colocar título oficial, campo (Health Sciences) y tipo (Systematic Review).</li>
+            <li><span class="highlight">Subir RIS:</span> Arrastrar todos los archivos descargados de las bases de datos a la caja azul, o seleccionar "Select Files". Empezarán a cargar los títulos y resúmenes.</li>
+            <li><span class="highlight">Invitar al compañero:</span> Clic en "Invite" e ingresar el mail. Otorgarle rol de "Collaborator".</li>
+          </ul>
+        </div>
+        <div style="flex: 1; display:flex; justify-content:center;">
+           <div class="box success" style="width: 100%; border-width: 3px;">
+             <span class="icon">🧹</span>
+             <h3>Los Duplicados:</h3>
+             <p>Rayyan hace la limpieza. Ve al menú izquierdo, selecciona <strong>"Possible Duplicates"</strong>.</p>
+             <p>Aparecerán agrupados. Dale clic a <strong>"Resolve"</strong> y podrás borrar la copia que sobre para que cuente como 1 en tu PRISMA.</p>
+           </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Guía de Rayyan Automática</span>
+      <span>Página 4 / 7</span>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="slide">
+    <div class="header-bar"></div>
+    <div class="slide-content">
+      <h2>Paso 3: El Cribado (Screening Título/Resumen)</h2>
+      <p>Este es el corazón de PRISMA. Los dos miembros del equipo entran de sus propios perfiles y computadoras para realizar las votaciones al mismo tiempo.</p>
+
+      <div class="grid-2" style="margin-top: 20px;">
+        <div class="box danger" style="padding: 20px;">
+          <h3 class="text-danger">⚠️ REGLA DE ORO DEL MODO CIEGO</h3>
+          <p style="font-size: 1.1rem; color: #7f1d1d; font-weight:600;">"BLIND ON": ¡NO LO APAGUES!</p>
+          <p style="font-size: 1rem;">Si alguien apaga el Blind On, arruinarán la validación ciego inter-sujeto del TFL. Recién cuando TODOS hayan terminado de votar, podrán apagar el Blind para ver los cruces.</p>
+        </div>
+
+        <div class="box" style="padding: 20px;">
+          <h3>Los Botones de Voto</h3>
+          <ul style="font-size: 1rem; margin-left: 15px;">
+            <li><strong style="color:var(--success);">INCLUDE (I):</strong> Cumple todo. Se va a texto completo.</li>
+            <li><strong style="color:var(--danger);">EXCLUDE (E):</strong> Basura. No cumple criterios.</li>
+            <li><strong style="color:var(--muted);">MAYBE (M):</strong> Duda. Lo charlan luego en texto completo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Guía de Rayyan Automática</span>
+      <span>Página 5 / 7</span>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="slide">
+    <div class="header-bar"></div>
+    <div class="slide-content">
+      <h2>Paso 4: Razones de Exclusión (PRISMA)</h2>
+      
+      <p style="font-size: 1.3rem;">Cuando excluyan un artículo (EXCLUDE), <strong>es obligatorio</strong> marcar por qué lo están desechando. Esto va directo al diagrama PRISMA ("n = descartados por idioma", etc.).</p>
+      
+      <div class="box" style="margin-top: 30px;">
+        <h3>¿Cómo hacerlo en Rayyan?</h3>
+        <ul>
+          <li>Una vez seleccionado "Exclude", en el panel inferior busquen la sección <strong>"Reasons"</strong>.</li>
+          <li>Añadan la razón predeterminada: <em>Wrong population, Wrong Outcome, Foreign Language, Background article</em>.</li>
+          <li>O pueden escribir sus propias razones customizadas (Ej: "Estudio con animales").</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Guía de Rayyan Automática</span>
+      <span>Página 6 / 7</span>
+    </div>
+  </div>
+
+  <!-- FINAL -->
+  <div class="slide bg-pattern">
+    <div class="slide-content slide-center">
+      <div class="large-icon">🎯</div>
+      <h1 style="font-size: 3rem;">¡Listos para resolver conflictos!</h1>
+      <p class="subtitle">Una vez que ambos terminen, el "Blind On" se apaga.<br>Los "Conflicts" (Tú Votaste Sí, Él Votó No) se discuten con un tercer juez o de a dos. Finalmente... pueden exportar la matriz filtrada en CSV a Excel.</p>
+    </div>
+    <div class="footer footer-white">
+      <span>Laboratorio de Tesis · Prof. Agustina</span>
+      <span>Metodología PRISMA 2020</span>
+    </div>
+  </div>
+
+</body>
+</html>
