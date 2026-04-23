@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guía Rayyan: Carga de Bases de Datos · Laboratorio de Tesis</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── RESET & VARIABLES ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c-bg: #f9f9fb;
+      --c-surface: #ffffff;
+      --c-text: #1a1c23;
+      --c-text-muted: #4e5366;
+      --c-border: #e2e8f0;
+      --c-accent: #6355e8;
+      --c-accent-light: #eef0ff;
+      --c-teal: #1aadad;
+      --c-orange: #d9721c;
+      --c-red: #d93f78;
+      --c-green: #16a34a;
+      --c-purple: #7c3aed;
+      --nav-w: 280px;
+      --radius: 12px;
+      --font-body: 'Crimson Pro', serif;
+      --font-ui: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--c-bg);
+      color: var(--c-text);
+      display: flex;
+    }
+
+    h1, h2, h3, h4, h5, .nav-item, .badge, .btn, .sans {
+      font-family: var(--font-ui);
+    }
+
+    /* ── SIDEBAR NAVIGATION ── */
+    aside.sidebar {
+      width: var(--nav-w);
+      height: 100vh;
+      position: fixed;
+      left: 0; top: 0;
+      background: var(--c-surface);
+      border-right: 1px solid var(--c-border);
+      padding: 30px 20px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .brand {
+      font-family: var(--font-ui);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--c-accent);
+      margin-bottom: 40px;
+      line-height: 1.2;
+    }
+    .brand span { font-size: 0.8rem; color: var(--c-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display:block; margin-top:5px;}
+
+    .nav-group { margin-bottom: 25px; }
+    .nav-label {
+      font-family: var(--font-ui); font-size: 0.75rem; font-weight: 800;
+      color: var(--c-text-muted); text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 10px; padding-left: 10px;
+    }
+    .nav-item {
+      display: block; padding: 8px 10px; color: var(--c-text);
+      text-decoration: none; font-size: 0.9rem; font-weight: 600;
+      border-radius: 6px; transition: background 0.2s, color 0.2s;
+    }
+    .nav-item:hover, .nav-item.active {
+      background: var(--c-accent-light); color: var(--c-accent);
+    }
+
+    /* ── MAIN CONTENT ── */
+    main.content {
+      margin-left: var(--nav-w);
+      flex: 1;
+      min-height: 100vh;
+      padding: 60px 80px 100px 80px;
+      max-width: 1000px;
+    }
+
+    p { font-size: 1.15rem; line-height: 1.8; margin-bottom: 25px; color: #2d3142; }
+    h1 { font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 30px; letter-spacing: -0.02em; }
+    h2 { font-size: 2.2rem; font-weight: 800; margin: 60px 0 25px 0; padding-bottom: 15px; border-bottom: 2px solid var(--c-border); color: var(--c-text); }
+    h3 { font-size: 1.5rem; font-weight: 700; margin: 40px 0 15px 0; color: var(--c-text); }
+    h4 { font-size: 1.15rem; font-weight: 700; margin: 25px 0 10px 0; }
+    ul, ol { margin-left: 20px; margin-bottom: 25px; font-size: 1.15rem; line-height: 1.8; color: #2d3142; }
+    li { margin-bottom: 10px; }
+    code { font-family: 'Courier New', Courier, monospace; background: #f0f0f5; padding: 2px 7px; border-radius: 4px; font-size: 0.95rem; color: #6355e8; }
+
+    .lead { font-size: 1.35rem; color: var(--c-text-muted); line-height: 1.7; font-family: var(--font-ui); font-weight: 400; margin-bottom: 40px; }
+
+    /* ── STEP BLOCKS (PASOS NUMERADOS) ── */
+    .step-block {
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+      margin: 35px 0;
+      padding: 30px;
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 50px; height: 50px;
+      background: var(--c-accent);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-ui); font-size: 1.3rem; font-weight: 800;
+      margin-top: 3px;
+    }
+    .step-content { flex: 1; }
+    .step-content h4 { margin-top: 0; font-size: 1.2rem; color: var(--c-text); font-family: var(--font-ui); font-weight: 800; margin-bottom: 12px; }
+    .step-content p { margin-bottom: 10px; font-size: 1.1rem; }
+    .step-content .icon-action { display: inline-flex; align-items: center; gap: 6px; background: var(--c-accent-light); color: var(--c-accent); padding: 5px 12px; border-radius: 100px; font-family: var(--font-ui); font-size: 0.85rem; font-weight: 700; margin: 4px 3px; }
+
+    /* ── CALLOUT ── */
+    .callout {
+      padding: 25px 30px; border-radius: var(--radius); margin: 35px 0;
+      background: var(--c-surface); border: 1px solid var(--c-border);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; gap: 20px; align-items: flex-start;
+    }
+    .callout-icon { font-size: 1.8rem; line-height: 1; margin-top:2px; }
+    .callout h4 { font-size: 1.1rem; margin-bottom: 10px; font-family: var(--font-ui); font-weight: 800; }
+    .callout p { font-size: 1.05rem; margin-bottom: 0; }
+    .callout.info { border-left: 5px solid var(--c-accent); background: #fbfbfe; }
+    .callout.warning { border-left: 5px solid var(--c-orange); background: #fffcf8; }
+    .callout.success { border-left: 5px solid var(--c-green); background: #f0fdf4; }
+    .callout.danger { border-left: 5px solid var(--c-red); background: #fff7fa; }
+
+    /* ── SCREENSHOT BOX ── */
+    .screenshot-box {
+      margin: 30px 0;
+      border: 2px solid var(--c-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    .screenshot-box .caption {
+      background: var(--c-bg);
+      border-top: 1px solid var(--c-border);
+      padding: 10px 16px;
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      color: var(--c-text-muted);
+      font-style: italic;
+    }
+    .screenshot-box img { width: 100%; display: block; }
+
+    /* ── DB TABLE ── */
+    .db-table { width: 100%; border-collapse: collapse; margin: 30px 0; font-family: var(--font-ui); font-size: 0.95rem; }
+    .db-table th { background: var(--c-accent); color: #fff; padding: 12px 16px; text-align: left; font-weight: 700; }
+    .db-table th:first-child { border-radius: 8px 0 0 0; }
+    .db-table th:last-child { border-radius: 0 8px 0 0; }
+    .db-table td { padding: 11px 16px; border-bottom: 1px solid var(--c-border); vertical-align: top; }
+    .db-table tr:nth-child(even) td { background: #f7f8ff; }
+    .db-table .format-badge { display: inline-block; background: #e8e5ff; color: var(--c-accent); padding: 2px 10px; border-radius: 100px; font-size: 0.8rem; font-weight: 700; }
+
+    /* ── FORMAT PILL ── */
+    .format-ris { color: #fff; background: var(--c-accent); padding: 3px 11px; border-radius: 100px; font-family: var(--font-ui); font-size: 0.82rem; font-weight: 700; margin: 0 2px; display:inline-block;}
+    .format-bib { color: #fff; background: var(--c-teal); padding: 3px 11px; border-radius: 100px; font-family: var(--font-ui); font-size: 0.82rem; font-weight: 700; display:inline-block;}
+
+    /* ── TEMPLATE BOX ── */
+    .template-box {
+      margin: 40px 0; background: #fff; border: 2px solid var(--c-teal);
+      border-radius: var(--radius); position: relative; padding: 40px 30px 25px;
+      box-shadow: 0 8px 30px rgba(26, 173, 173, 0.1);
+    }
+    .template-badge {
+      position: absolute; top: 0; left: 0; background: var(--c-teal); color: #fff;
+      font-family: var(--font-ui); font-size: 0.75rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.1em; padding: 6px 16px;
+      border-radius: 10px 0 10px 0;
+    }
+    .template-box p.text {
+      font-family: 'Courier New', Courier, monospace; font-size: 1rem; line-height: 1.8;
+      color: #111; margin: 0; background: #f8fdfd; padding: 20px; border-radius: 8px;
+    }
+    .template-note {
+      display: block; font-family: var(--font-ui); font-size: 0.85rem; color: var(--c-teal);
+      background: rgba(26,173,173,.08); padding: 10px 15px; border-radius: 6px; margin-top: 20px;
+    }
+
+    /* ── DECISION BUTTONS VISUAL ── */
+    .decision-btns {
+      display: flex; gap: 15px; margin: 20px 0; flex-wrap: wrap;
+    }
+    .dbtn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px; border-radius: 10px;
+      font-family: var(--font-ui); font-size: 1rem; font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .dbtn.include { background: #16a34a; color: #fff; }
+    .dbtn.exclude { background: #dc2626; color: #fff; }
+    .dbtn.maybe   { background: #d97706; color: #fff; }
+    .dbtn .dbtn-icon { font-size: 1.3rem; }
+
+    /* ── GRID ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 30px 0; }
+    .card { background: var(--c-surface); border: 1px solid var(--c-border); padding: 25px; border-radius: var(--radius); }
+    .card.bordered-top-accent { border-top: 4px solid var(--c-accent); }
+    .card.bordered-top-teal { border-top: 4px solid var(--c-teal); }
+
+    /* ── PROGRESS TRACK ── */
+    .progress-track { margin: 35px 0; }
+    .progress-step {
+      display: flex; align-items: center; gap: 18px; margin-bottom: 16px;
+      padding: 16px 20px; background: var(--c-surface);
+      border: 1px solid var(--c-border); border-radius: 10px;
+      transition: box-shadow 0.2s;
+    }
+    .progress-step:hover { box-shadow: 0 4px 12px rgba(99,85,232,0.12); }
+    .progress-dot {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--c-accent); color: #fff; display: flex; align-items: center;
+      justify-content: center; font-family: var(--font-ui); font-weight: 800; font-size: 0.9rem; flex-shrink: 0;
+    }
+    .progress-step .label { font-family: var(--font-ui); font-size: 1rem; font-weight: 600; color: var(--c-text); }
+    .progress-step .sub { font-family: var(--font-ui); font-size: 0.85rem; color: var(--c-text-muted); margin-top: 2px; }
+
+    /* ── BLINDING BOX ── */
+    .blinding-visual {
+      display: flex; gap: 30px; justify-content: center; margin: 30px 0; flex-wrap: wrap;
+    }
+    .blinding-person {
+      text-align: center; background: var(--c-surface); border: 1px solid var(--c-border);
+      border-radius: var(--radius); padding: 25px 30px;
+    }
+    .blinding-person .avatar { font-size: 3rem; margin-bottom: 10px; }
+    .blinding-person .name { font-family: var(--font-ui); font-weight: 800; color: var(--c-text); }
+    .blinding-person .status { font-family: var(--font-ui); font-size: 0.8rem; color: var(--c-text-muted); margin-top:5px; }
+    .blinding-wall {
+      display: flex; align-items: center; font-size: 2.5rem;
+      color: var(--c-text-muted);
+    }
+
+    /* ── CHECKLIST ── */
+    .todo-item { display:flex; align-items:flex-start; gap:12px; margin-bottom:15px; font-family:var(--font-ui); font-size:0.95rem; cursor:pointer;}
+    .todo-item input[type="checkbox"] { width:22px; height:22px; margin-top:1px; cursor:pointer; accent-color:var(--c-accent); flex-shrink:0; border-radius:4px;}
+    .todo-item span { transition: color 0.2s, text-decoration 0.2s; user-select:none; line-height: 1.5; color: var(--c-text);}
+    .todo-item input[type="checkbox"]:checked + span { color:#a0a0c0; text-decoration:line-through; }
+
+    @media (max-width: 1024px) {
+      aside.sidebar { display: none; }
+      main.content { margin-left: 0; padding: 40px 25px; }
+    }
+    @media (max-width: 650px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .blinding-visual { flex-direction: column; align-items: center; }
+    }
+
+    /* Print styles for PDF */
+    @media print {
+      aside.sidebar { display: none !important; }
+      main.content { margin-left: 0; padding: 20px 30px; max-width: 100%; }
+      .step-block, .callout, .screenshot-box, .card { break-inside: avoid; }
+      h2 { break-before: page; }
+      h2:first-of-type { break-before: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">
+    Guía Práctica Rayyan
+    <span>Laboratorio de Tesis · Prof. Agustina</span>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Introducción</div>
+    <a href="#sec-intro" class="nav-item active">¿Qué es Rayyan?</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Parte 1: Registro</div>
+    <a href="#sec-cuenta" class="nav-item">Crear tu cuenta</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Parte 2: Exportar</div>
+    <a href="#sec-exportar" class="nav-item">Exportar desde las bases</a>
+    <a href="#sec-pubmed" class="nav-item">PubMed / MEDLINE</a>
+    <a href="#sec-scopus" class="nav-item">Scopus</a>
+    <a href="#sec-wos" class="nav-item">Web of Science</a>
+    <a href="#sec-scielo" class="nav-item">SciELO y LILACS</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Parte 3: Importar</div>
+    <a href="#sec-nueva-revision" class="nav-item">Crear nueva revisión</a>
+    <a href="#sec-cargar" class="nav-item">Cargar archivos RIS</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Parte 4: Cribado</div>
+    <a href="#sec-cribado" class="nav-item">Cribado título/resumen</a>
+    <a href="#sec-decisiones" class="nav-item">Botones Include/Exclude</a>
+    <a href="#sec-ciego" class="nav-item">Modo Ciego (Blinding)</a>
+    <a href="#sec-razones" class="nav-item">Registrar razones</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Parte 5: Colaboración</div>
+    <a href="#sec-colaborar" class="nav-item">Invitar al equipo</a>
+    <a href="#sec-textocomp" class="nav-item">Texto completo</a>
+    <a href="#sec-exportar-final" class="nav-item">Exportar resultados</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Checklist & Errores</div>
+    <a href="#sec-checklist" class="nav-item">Tu checklist PRISMA</a>
+    <a href="#sec-errores" class="nav-item">Errores frecuentes</a>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="content">
+
+  <!-- PORTADA -->
+  <section id="sec-intro">
+    <div class="badge sans" style="display:inline-block; background:var(--c-accent-light); color:var(--c-accent); padding:6px 14px; border-radius:100px; font-size:0.8rem; font-weight:800; letter-spacing:0.05em; margin-bottom:20px;">
+      LABORATORIO DE TESIS: Construyendo tu camino al título · Asesoría Pedagógica - Prof. Agustina
+    </div>
+    <h1>Guía de Carga de Bases de Datos en Rayyan</h1>
+    <p class="lead">Esta guía step-by-step te explica, con imágenes y descripciones de cada ícono, cómo exportar tus resultados de búsqueda desde las principales bases de datos científicas y cargarlos correctamente en <strong>Rayyan</strong> para realizar el cribado de tu Revisión Sistemática.</p>
+
+    <div class="callout info">
+      <div class="callout-icon">🎯</div>
+      <div>
+        <h4>¿Qué vas a lograr con esta guía?</h4>
+        <p>Al completar estos pasos, tendrás tus cientos de artículos organizados en Rayyan listos para cribado ciego con tu equipo, con todos los registros del proceso PRISMA documentados automáticamente.</p>
+      </div>
+    </div>
+
+    <h2 style="margin-top:40px;">¿Qué es Rayyan y por qué lo usamos?</h2>
+    <p>Rayyan (rayyan.ai) es una plataforma gratuita, especialmente diseñada para <strong>Revisiones Sistemáticas y Meta-análisis</strong>. Fue desarrollada por el Instituto de Computación y Datos de Qatar (QCRI) y hoy es utilizada por más de 1.000.000 de investigadores en el mundo.</p>
+
+    <div class="grid-2">
+      <div class="card bordered-top-accent">
+        <h4 style="margin-top:0; color:var(--c-accent);">✅ Lo que hace por vos</h4>
+        <ul style="margin-bottom:0;">
+          <li>Centraliza artículos de múltiples bases en un solo lugar</li>
+          <li>Detecta y elimina artículos duplicados automáticamente</li>
+          <li>Permite el cribado ciego entre dos revisores</li>
+          <li>Registra todas tus decisiones (Include / Exclude / Maybe)</li>
+          <li>Genera automáticamente los números para el diagrama PRISMA</li>
+          <li>Funciona desde el celular con su app móvil</li>
+        </ul>
+      </div>
+      <div class="card bordered-top-teal">
+        <h4 style="margin-top:0; color:var(--c-teal);">📌 Datos clave de la plataforma</h4>
+        <ul style="margin-bottom:0;">
+          <li><strong>Sitio web:</strong> <code>rayyan.ai</code></li>
+          <li><strong>Costo:</strong> Gratuito para planes básicos</li>
+          <li><strong>Interfaz:</strong> Esquema de colores lila/violeta (2024)</li>
+          <li><strong>Formatos soportados:</strong> RIS, BibTeX, CSV, ZIP</li>
+          <li><strong>Archivos por subida:</strong> hasta 10 archivos a la vez</li>
+          <li><strong>Idioma interfaz:</strong> Inglés (interfaz), contenido en tu idioma</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FLUJO GENERAL -->
+    <h3 style="margin-top:50px;">Flujo de trabajo en Rayyan</h3>
+    <p>Para entender el proceso completo, este es el recorrido que seguirás de principio a fin:</p>
+
+    <div class="progress-track">
+      <div class="progress-step">
+        <div class="progress-dot">1</div>
+        <div>
+          <div class="label">Crear tu cuenta en Rayyan</div>
+          <div class="sub">Registro gratuito en rayyan.ai — tarda menos de 3 minutos</div>
+        </div>
+      </div>
+      <div class="progress-step">
+        <div class="progress-dot">2</div>
+        <div>
+          <div class="label">Buscar en las bases de datos</div>
+          <div class="sub">PubMed, Scopus, Web of Science, SciELO, LILACS — usando tu ecuación booleana</div>
+        </div>
+      </div>
+      <div class="progress-step">
+        <div class="progress-dot">3</div>
+        <div>
+          <div class="label">Exportar resultados en formato RIS</div>
+          <div class="sub">Descargar archivos .ris / .nbib / .bib de cada base de datos</div>
+        </div>
+      </div>
+      <div class="progress-step">
+        <div class="progress-dot">4</div>
+        <div>
+          <div class="label">Crear una nueva revisión en Rayyan</div>
+          <div class="sub">Configurar el proyecto con título, tipo y descripción</div>
+        </div>
+      </div>
+      <div class="progress-step">
+        <div class="progress-dot">5</div>
+        <div>
+          <div class="label">Subir los archivos RIS a Rayyan</div>
+          <div class="sub">Importar todos los archivos descargados — Rayyan elimina los duplicados</div>
+        </div>
+      </div>
+      <div class="progress-step">
+        <div class="progress-dot">6</div>
+        <div>
+          <div class="label">Invitar a tu compañero/a de equipo</div>
+          <div class="sub">Ambos revisores deben tener cuenta y acceso a la misma revisión</div>
+        </div>
+      </div>
+      <div class="progress-step">
+        <div class="progress-dot">7</div>
+        <div>
+          <div class="label">Realizar el cribado de título y resumen</div>
+          <div class="sub">Include / Exclude / Maybe — de forma independiente y ciega</div>
+        </div>
+      </div>
+      <div class="progress-step">
+        <div class="progress-dot">8</div>
+        <div>
+          <div class="label">Resolver conflictos y generar PRISMA</div>
+          <div class="sub">Comparar decisiones y obtener los números finales del diagrama de flujo</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- PARTE 1: CREAR CUENTA -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="sec-cuenta">
+    <h2>Parte 1 — Crear tu cuenta en Rayyan</h2>
+    <p>Cada miembro del equipo necesita su propia cuenta. El registro es gratuito y solo requiere tu correo o una cuenta de Google. Seguí estos pasos:</p>
+
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Ir al sitio web oficial</h4>
+        <p>Abrí tu navegador y escribí la dirección: <code>https://rayyan.ai</code></p>
+        <p>Vas a ver la página principal de Rayyan con fondo violeta/lila. En la parte superior derecha del menú de navegación vas a encontrar dos botones principales:</p>
+        <p><span class="icon-action">🔑 Login</span> — Para ingresar si ya tenés cuenta &nbsp;&nbsp; <span class="icon-action">⭐ Start For Free</span> — Para crear cuenta nueva</p>
+        <p>Hacé clic en el botón <strong>"Start For Free"</strong> (o directamente ingresá a <code>rayyan.ai/sign-up</code>).</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Elegir método de registro</h4>
+        <p>En la pantalla de registro, vas a ver tres opciones:</p>
+        <ul>
+          <li><strong>Registrarse con Google</strong> — Opción más rápida. Hacé clic en el botón con la "G" de Google y seleccioná tu cuenta.</li>
+          <li><strong>Registrarse con Apple</strong> — Para usuarios de iPhone/Mac.</li>
+          <li><strong>Registro con email</strong> — Completá el campo de tu correo electrónico y creá una contraseña.</li>
+        </ul>
+        <div class="callout success" style="margin-top:15px; margin-bottom:0;">
+          <div class="callout-icon">💡</div>
+          <div><h4>Recomendación</h4><p>Usá el <strong>correo institucional o académico</strong> de tu universidad. Esto facilita la verificación y en algunos casos otorga acceso a funciones premium.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Completar el formulario de registro</h4>
+        <p>Si elegiste registro por email, completá los campos que aparecen en el formulario:</p>
+        <ol>
+          <li>Campo <strong>"Email address"</strong> → Tu correo electrónico.</li>
+          <li>Campo <strong>"Password"</strong> → Creá una contraseña segura (mínimo 8 caracteres).</li>
+          <li>Dropdown <strong>"Country"</strong> → Seleccioná <em>Argentina</em>.</li>
+          <li>Tildá la casilla <strong>"I'm not a robot"</strong> (verificación CAPTCHA).</li>
+          <li>Hace clic en el botón violeta <strong>"Create Account"</strong>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Verificar el correo electrónico</h4>
+        <p>Rayyan envía un email de confirmación a la dirección que registraste. Revisá tu bandeja de entrada (y también la carpeta <em>Spam</em>).</p>
+        <p>En el email, encontrás un botón o enlace que dice <strong>"Verify Email"</strong> o <strong>"Confirm your account"</strong>. Hacé clic en él. Eso activa tu cuenta definitivamente.</p>
+        <div class="callout warning" style="margin-top:15px; margin-bottom:0;">
+          <div class="callout-icon">⚠️</div>
+          <div><h4>No llegó el email</h4><p>Si no recibís el correo en 5 minutos, chequeá la carpeta de <strong>Spam / Correo no deseado</strong>. Si sigue sin llegar, en la página de Rayyan podés usar la opción <em>"Resend verification email"</em>.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h4>Completar el perfil</h4>
+        <p>Después de verificar el correo, Rayyan te lleva a una pantalla para completar tu perfil. Completá:</p>
+        <ul>
+          <li><strong>"First Name"</strong> → Tu nombre.</li>
+          <li><strong>"Last Name"</strong> → Tu apellido.</li>
+          <li>Hacé clic en <strong>"Save"</strong> (Guardar).</li>
+        </ul>
+        <p>¡Listo! Ya tenés tu cuenta activa. Rayyan te lleva automáticamente al <strong>Dashboard</strong> (panel principal).</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">🔁</div>
+      <div>
+        <h4>Repetí este proceso con todo el equipo</h4>
+        <p>Cada integrante de tu equipo de tesis (ambos revisores) debe crear su propia cuenta. No compartan cuentas: el sistema de cribado ciego requiere que sean usuarios separados.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- PARTE 2: EXPORTAR DESDE LAS BASES -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="sec-exportar">
+    <h2>Parte 2 — Exportar búsquedas de las bases de datos</h2>
+    <p>Antes de subir nada a Rayyan, necesitás <strong>exportar tus resultados de búsqueda</strong> desde cada base de datos que utilizaste. El objetivo es generar archivos descargables que Rayyan pueda leer e interpretar.</p>
+
+    <h3>Formatos de archivo aceptados</h3>
+    <p>Rayyan acepta varios formatos, pero <strong>siempre preferí el formato RIS</strong>, ya que es el más universal y mejor interpretado:</p>
+
+    <table class="db-table">
+      <thead>
+        <tr>
+          <th>Formato</th>
+          <th>Extensión del archivo</th>
+          <th>¿Cuándo usarlo?</th>
+          <th>Compatibilidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="format-ris">RIS</span></td>
+          <td><code>.ris</code> o <code>.nbib</code></td>
+          <td>Primera opción siempre. Estándar universal.</td>
+          <td>Excelente ✅</td>
+        </tr>
+        <tr>
+          <td><span class="format-bib">BibTeX</span></td>
+          <td><code>.bib</code></td>
+          <td>Alternativa si no hay RIS disponible.</td>
+          <td>Buena ✅</td>
+        </tr>
+        <tr>
+          <td>EndNote XML</td>
+          <td><code>.xml</code></td>
+          <td>Solo si venís desde EndNote.</td>
+          <td>Buena ✅</td>
+        </tr>
+        <tr>
+          <td>CSV</td>
+          <td><code>.csv</code></td>
+          <td>Última opción. Puede perder metadatos.</td>
+          <td>Básica ⚠️</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warning">
+      <div class="callout-icon">🔑</div>
+      <div>
+        <h4>Regla de oro al exportar</h4>
+        <p>Siempre elegí la opción que incluya el <strong>resumen (abstract)</strong> del artículo en el archivo. Sin el abstract, no podrás hacer el cribado correctamente en Rayyan. La opción suele llamarse <em>"Full Record"</em> o <em>"Include abstract"</em>.</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">📂</div>
+      <div>
+        <h4>Organizá bien tus archivos descargados</h4>
+        <p>Creá una carpeta en tu computadora llamada <code>bases_rayyan</code> y dentro de ella guardá todos los archivos con nombres descriptivos: <code>pubmed_resultados.ris</code>, <code>scopus_resultados.ris</code>, <code>lilacs_resultados.ris</code>, etc. Esto facilita la carga posterior.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PUBMED -->
+  <section id="sec-pubmed">
+    <h3>📗 Exportar desde PubMed / MEDLINE</h3>
+    <p>PubMed es la base de datos biomédica del NCBI (National Center for Biotechnology Information). Es obligatoria para tus revisiones sistemáticas de ciencias de la salud.</p>
+
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Realizá tu búsqueda</h4>
+        <p>Ingresá a <code>pubmed.ncbi.nlm.nih.gov</code> y pegá tu ecuación booleana en la barra de búsqueda principal. Presioná <strong>Enter</strong> o el botón <strong>"Search"</strong> (lupa azul).</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Seleccionar todos los resultados</h4>
+        <p>En la página de resultados, buscá el ícono o texto <strong>"Send to"</strong> ubicado en la parte superior derecha, justo sobre la lista de artículos. Hacé clic en él para desplegar un menú.</p>
+        <p>En el menú que aparece, hacé clic en la opción <strong>"Citation Manager"</strong>.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Configurar la exportación</h4>
+        <p>Se abre un pequeño panel debajo del botón "Send to". Configurá así:</p>
+        <ul>
+          <li><strong>"Selection"</strong> → Elegí <em>"All results"</em> para exportar todos.</li>
+          <li>Si tu búsqueda tiene más de 10.000 resultados, exportá en lotes de 10.000 registros como máximo.</li>
+        </ul>
+        <p>Hacé clic en el botón azul <strong>"Create file"</strong>.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Descargar el archivo</h4>
+        <p>El navegador descarga automáticamente un archivo con extensión <code>.nbib</code> (por ejemplo: <code>pubmed-speechdiso-set.nbib</code>). Este formato es completamente compatible con Rayyan, no necesitás renombrarlo.</p>
+        <p>Movelo a tu carpeta <code>bases_rayyan</code>.</p>
+        <div class="callout success" style="margin-top:15px; margin-bottom:0;">
+          <div class="callout-icon">✅</div>
+          <div><h4>¿Incluye el abstract?</h4><p>Sí. El formato Citation Manager de PubMed incluye automáticamente el abstract. No necesitás hacer ninguna configuración adicional.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCOPUS -->
+  <section id="sec-scopus">
+    <h3>🔷 Exportar desde Scopus</h3>
+    <p>Scopus (Elsevier) es la base de datos multidisciplinar más grande del mundo. Su acceso generalmente requiere afiliación universitaria o VPN institucional.</p>
+
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Realizá tu búsqueda</h4>
+        <p>Ingresá a <code>scopus.com</code> con tus credenciales institucionales. Usá la pestaña <strong>"Advanced search"</strong> (búsqueda avanzada) para pegar tu ecuación booleana completa y presioná el botón <strong>"Search"</strong> (lupa naranja).</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Seleccionar todos los resultados</h4>
+        <p>En la página de resultados, en la parte superior de la lista de artículos, encontrás un checkbox (casilla de verificación) que dice <strong>"Select all"</strong>. Hacé clic en él.</p>
+        <p>Si tenés más de 2.000 resultados, Scopus solo selecciona los de la página actual. En ese caso, buscá la opción <strong>"Select all results in this query"</strong> para seleccionarlos todos.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Abrir el menú de exportación</h4>
+        <p>Con los artículos seleccionados, hacé clic en el botón <strong>"Export"</strong>. Aparece un ícono de flecha hacia fuera (↗) o la palabra "Export" en la barra de herramientas superior.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Configurar el formato de exportación</h4>
+        <p>En la ventana de exportación que aparece, configurá lo siguiente:</p>
+        <ol>
+          <li>En <strong>"Export file type"</strong> → Seleccioná <em>"RIS format"</em>.</li>
+          <li>En <strong>"Information to export"</strong> → Asegurate de marcar <em>"Abstract &amp; keywords"</em> además de la información básica.</li>
+          <li>Hacé clic en el botón <strong>"Export"</strong>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h4>Guardar el archivo</h4>
+        <p>Se descarga un archivo <code>.ris</code>. Movelo a tu carpeta <code>bases_rayyan</code> con un nombre descriptivo como <code>scopus_resultados.ris</code>.</p>
+        <div class="callout warning" style="margin-top:15px; margin-bottom:0;">
+          <div class="callout-icon">⚠️</div>
+          <div><h4>Límite de exportación de Scopus</h4><p>Scopus permite exportar máximo <strong>2.000 registros</strong> por operación. Si tenés más, exportá en varias tandas seleccionando rangos de registros (1-2000, 2001-4000, etc.) y guardá cada archivo por separado.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEB OF SCIENCE -->
+  <section id="sec-wos">
+    <h3>🌐 Exportar desde Web of Science (WoS)</h3>
+    <p>Web of Science (Clarivate) es especialmente valorada por su rigor en el control de calidad de las revistas indexadas. Requiere acceso institucional.</p>
+
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Realizá tu búsqueda</h4>
+        <p>Ingresá a <code>webofscience.com</code> y en la barra de búsqueda seleccioná <strong>"Advanced Search"</strong>. Pegá tu ecuación booleana y hacé clic en <strong>"Search"</strong>.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Abrir el menú de exportación</h4>
+        <p>En la página de resultados, sobre la lista de artículos (sin necesidad de seleccionar manualmente), buscá el botón <strong>"Export"</strong>. Al hacer clic, se despliega un menú con varias opciones de exportación.</p>
+        <p>Seleccioná <strong>"RIS (Other Reference Software)"</strong>.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Configurar el rango de registros</h4>
+        <p>En el panel de exportación que aparece:</p>
+        <ol>
+          <li>En <strong>"Records"</strong> → Elegí <em>"All records in this query"</em> o definí el rango numérico (ej: 1 a 500).</li>
+          <li>En <strong>"Record content"</strong> → Seleccioná <em>"Full Record and Cited References"</em>. Esto incluye el abstract.</li>
+          <li>Hacé clic en <strong>"Export"</strong>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Guardar el archivo</h4>
+        <p>Se descarga un archivo <code>.ris</code>. Movelo a tu carpeta de bases con un nombre descriptivo.</p>
+        <div class="callout warning" style="margin-top:15px; margin-bottom:0;">
+          <div class="callout-icon">⚠️</div>
+          <div><h4>Límite de Web of Science</h4><p>WoS permite exportar máximo <strong>1.000 registros</strong> (o 500 según configuración) por operación. Exportá en lotes de 500 registros para mayor seguridad y nombralos: <code>wos_1_500.ris</code>, <code>wos_501_1000.ris</code>, etc.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCIELO Y LILACS -->
+  <section id="sec-scielo">
+    <h3>🌎 Exportar desde SciELO y LILACS</h3>
+    <p>Estas dos bases latinoamericanas son fundamentales para la investigación en español. Para Fonoaudiología, Medicina y Psicología argentina, siempre deben incluirse.</p>
+
+    <h4 style="color:var(--c-teal);">SciELO</h4>
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Buscar y seleccionar artículos</h4>
+        <p>Ingresá a <code>scielo.org</code>, usá la búsqueda avanzada. Tras obtener resultados, seleccioná todos los artículos con el checkbox de la parte superior.</p>
+      </div>
+    </div>
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Exportar a BibTeX o RIS</h4>
+        <p>Buscá el botón o enlace <strong>"Export"</strong> o <strong>"Exportar"</strong>. SciELO permite exportar en formato <strong>BibTeX</strong> (.bib) o <strong>RIS</strong>. Elegí <em>RIS</em> si está disponible, o <em>BibTeX</em> como alternativa. Ambos son compatibles con Rayyan.</p>
+      </div>
+    </div>
+
+    <h4 style="color:var(--c-teal); margin-top: 30px;">LILACS (BVS)</h4>
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Buscar en la Biblioteca Virtual en Salud</h4>
+        <p>Ingresá a <code>bvsalud.org</code> (Biblioteca Virtual en Salud). LILACS está integrado aquí. Realizá tu búsqueda avanzada con tu ecuación DeCS.</p>
+      </div>
+    </div>
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Exportar los resultados</h4>
+        <p>Seleccioná los resultados con el checkbox "Seleccionar todos". Buscá el botón <strong>"Exportar"</strong> o el ícono de descarga. Elegí formato <strong>RIS</strong> o <strong>BibTeX</strong>.</p>
+        <p>Guardá el archivo en tu carpeta <code>bases_rayyan</code>.</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">📊</div>
+      <div>
+        <h4>Resumen: ¿Cuántos archivos debieras tener al final?</h4>
+        <p>Si buscaste en las 4 bases recomendadas para Fonoaudiología/Salud, deberías tener entre <strong>3 y 6 archivos RIS</strong> listos para subir a Rayyan: uno (o más lotes) por cada base de datos utilizada.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- PARTE 3: IMPORTAR EN RAYYAN -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="sec-nueva-revision">
+    <h2>Parte 3 — Crear una nueva revisión en Rayyan</h2>
+    <p>Ya tenés tus archivos, tu cuenta activa, y estás logueado en Rayyan. Ahora creás el proyecto donde va a vivir tu revisión sistemática.</p>
+
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Ir al Dashboard (Panel Principal)</h4>
+        <p>Luego de iniciar sesión, Rayyan te lleva automáticamente al <strong>Dashboard</strong>. Ahí ves el menú lateral izquierdo con las siguientes opciones:</p>
+        <ul>
+          <li><span class="icon-action">🏠 Dashboard</span> — Página principal con tus revisiones</li>
+          <li><span class="icon-action">📋 My Reviews</span> — Lista de todas tus revisiones</li>
+          <li><span class="icon-action">📚 My Library</span> — Biblioteca personal de artículos</li>
+          <li><span class="icon-action">👥 Shared Reviews</span> — Revisiones compartidas contigo</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Crear una nueva revisión</h4>
+        <p>En el menú lateral izquierdo, hacé clic en el botón <strong>"Create New Review"</strong> (Crear nueva revisión). También podés encontrarlo como <strong>"New Review"</strong> con un ícono <strong>+</strong> (más).</p>
+        <p>Se abre un formulario modal (ventana emergente). Completá los campos:</p>
+        <ol>
+          <li><strong>"Review Title"</strong> → Escribí el título completo de tu tesis. Ej: <em>"Intervención fonoaudiológica en niños con TDL: revisión sistemática"</em>.</li>
+          <li><strong>"Review Type"</strong> → En el desplegable, seleccioná <em>"Systematic Review"</em>.</li>
+          <li><strong>"Description"</strong> → (Opcional) Podés agregar una breve descripción del objetivo de tu revisión.</li>
+        </ol>
+        <p>Cuando termines, hacé clic en el botón violeta <strong>"Create New Review"</strong>.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>La revisión se creó — Pantalla de carga</h4>
+        <p>Rayyan crea automáticamente tu revisión y te lleva a la pantalla de importación de referencias. Verás un mensaje que dice algo como <strong>"Upload your references to get started"</strong> (Subí tus referencias para comenzar).</p>
+        <p>¡Perfecto! Ya estás listo para la siguiente parte.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-cargar">
+    <h3>Cargar los archivos RIS en la revisión</h3>
+    <p>Esta es la etapa clave: subir todos los archivos que exportaste de las bases de datos.</p>
+
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Abrir la pantalla de carga de referencias</h4>
+        <p>Dentro de tu revisión, buscá la sección o pestaña <strong>"Review Data"</strong>. Dentro de ella, expandí la sección <strong>"Search Methods"</strong> o buscá el botón <strong>"Add References"</strong> o <strong>"Upload"</strong>.</p>
+        <p>Si estás en la pantalla inicial de la revisión recién creada, verás directamente el área de carga.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Seleccionar los archivos a subir</h4>
+        <p>Verás un área grande con una nube y texto que dice <strong>"Click to upload or drag &amp; drop"</strong> (Hacé clic o arrastrá los archivos aquí).</p>
+        <p>Podés hacer esto de dos formas:</p>
+        <ul>
+          <li><strong>Arrastrar y soltar (Drag &amp; Drop):</strong> Arrastrá todos los archivos RIS desde tu carpeta directamente a esta área.</li>
+          <li><strong>Clic para explorar:</strong> Hacé clic en el área y se abre el explorador de archivos de tu computadora. Navegá hasta tu carpeta <code>bases_rayyan</code>, seleccioná todos los archivos (Ctrl+A para seleccionar todos, o Ctrl+clic para seleccionar varios) y hacé clic en <strong>"Abrir"</strong>.</li>
+        </ul>
+        <div class="callout info" style="margin-top:15px; margin-bottom:0;">
+          <div class="callout-icon">📦</div>
+          <div><h4>Podés subir todo de una vez</h4><p>Rayyan acepta hasta <strong>10 archivos simultáneamente</strong>. Si exportaste en lotes, podés subir todos los archivos de todas las bases en una sola operación.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Confirmar la carga y esperar el procesamiento</h4>
+        <p>Después de seleccionar los archivos, los verás listados en la pantalla. Cada uno muestra el nombre del archivo y su estado (subiendo, procesando, completado ✅).</p>
+        <p>Cuando todos tengan el tilde verde, hacé clic en el botón <strong>"Next"</strong> (Siguiente) para confirmar la importación.</p>
+        <p>Rayyan procesa los archivos en segundo plano. Según la cantidad de artículos, puede tardar entre <strong>1 y 10 minutos</strong>.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>¡Rayyan elimina los duplicados automáticamente!</h4>
+        <p>Una de las funciones más importantes de Rayyan es que, cuando importa los artículos de múltiples bases, <strong>detecta automáticamente los registros duplicados</strong> (el mismo artículo que aparece en PubMed y en Scopus, por ejemplo) y los marca o elimina.</p>
+        <p>Al terminar el procesamiento, Rayyan te muestra:</p>
+        <ul>
+          <li>Total de registros importados</li>
+          <li>Duplicados detectados y eliminados</li>
+          <li>Total de <strong>artículos únicos</strong> listos para cribado</li>
+        </ul>
+        <p>Estos números son los que usarás para completar la <strong>Sección de Identificación</strong> de tu diagrama de flujo PRISMA.</p>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <div class="callout-icon">🎉</div>
+      <div>
+        <h4>¡Tu base de datos está cargada en Rayyan!</h4>
+        <p>Ahora tenés todos tus artículos importados, deduplicados y listos para iniciar el proceso de cribado. Esto corresponde a la <strong>Fase 1: Identificación</strong> del diagrama PRISMA.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- PARTE 4: CRIBADO -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="sec-cribado">
+    <h2>Parte 4 — Cribado de Títulos y Resúmenes</h2>
+    <p>El cribado (o <em>screening</em>) es el proceso de leer los títulos y resúmenes de cada artículo y decidir si pasa a la siguiente fase o se descarta. Es la tarea central que hacés dentro de Rayyan.</p>
+
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Acceder al espacio de cribado</h4>
+        <p>Desde el panel de tu revisión, hacé clic en el botón o pestaña <strong>"Articles"</strong> o <strong>"Start Screening"</strong> (Iniciar cribado). Esto abre la interfaz de cribado de Rayyan.</p>
+        <p>La pantalla principal del cribado está dividida en tres zonas:</p>
+        <ul>
+          <li><strong>Panel izquierdo (Filtros):</strong> Los filtros para organizar los artículos (Decisions, Labels, Keywords, Authors).</li>
+          <li><strong>Área central (Artículo):</strong> El artículo actual con título, autores, revista, año y resumen.</li>
+          <li><strong>Barra inferior (Acciones):</strong> Los botones de decisión.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Leer el título y resumen del artículo</h4>
+        <p>Para cada artículo que aparece en pantalla, leés el <strong>título</strong> (en negrita, arriba) y el <strong>abstract</strong> (resumen, el texto principal). Con esa información, decidís si el artículo cumple o no tus criterios de inclusión/exclusión.</p>
+        <p>No tenés que leer el el artículo completo en esta etapa. Solo valorás el título y el resumen.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-decisiones">
+    <h3>Los tres botones de decisión</h3>
+    <p>En la barra inferior de la pantalla de cribado encontrás los tres botones de decisión. Son el corazón de Rayyan:</p>
+
+    <div class="decision-btns">
+      <div class="dbtn include">
+        <span class="dbtn-icon">✓</span>
+        Include
+      </div>
+      <div class="dbtn exclude">
+        <span class="dbtn-icon">✕</span>
+        Exclude
+      </div>
+      <div class="dbtn maybe">
+        <span class="dbtn-icon">?</span>
+        Maybe
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:25px;">
+      <div class="card" style="border-left: 5px solid #16a34a;">
+        <h4 style="margin-top:0; color:#16a34a;">✓ Include (Incluir)</h4>
+        <p style="margin-bottom:0;">El artículo <strong>cumple todos tus criterios de inclusión</strong>. El título y el resumen indican que es relevante para tu pregunta PICO. Pasará a la siguiente fase de lectura de texto completo.</p>
+      </div>
+      <div class="card" style="border-left: 5px solid #dc2626;">
+        <h4 style="margin-top:0; color:#dc2626;">✕ Exclude (Excluir)</h4>
+        <p style="margin-bottom:0;">El artículo <strong>no cumple uno o más criterios</strong>. Podés (y debés) seleccionar una <em>razón de exclusión</em> de la lista. Esto alimenta automáticamente tu diagrama PRISMA.</p>
+      </div>
+    </div>
+    <div class="card" style="border-left: 5px solid #d97706; margin-top:15px;">
+      <h4 style="margin-top:0; color:#d97706;">? Maybe (Quizás / Dudoso)</h4>
+      <p style="margin-bottom:0;">El artículo genera duda. Usalo cuando necesitás discutirlo con tu compañero/a o cuando querés revisarlo más tarde. Se guarda en una lista separada para retomarlo antes de terminar el cribado.</p>
+    </div>
+
+    <h3 style="margin-top: 40px;">Atajos de teclado para mayor velocidad</h3>
+    <p>Rayyan permite usar atajos de teclado para cribado más ágil. En la pantalla de cribado podés usar:</p>
+    <div class="template-box">
+      <div class="template-badge">Atajos útiles en Rayyan</div>
+      <table style="width:100%; font-family:var(--font-ui); font-size:0.95rem; border-collapse:collapse;">
+        <tr style="border-bottom:1px solid var(--c-border);">
+          <td style="padding:10px; font-weight:700; color:var(--c-accent);">Tecla ← (flecha izquierda)</td>
+          <td style="padding:10px;">Ir al artículo anterior</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--c-border);">
+          <td style="padding:10px; font-weight:700; color:var(--c-accent);">Tecla → (flecha derecha)</td>
+          <td style="padding:10px;">Ir al artículo siguiente</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--c-border);">
+          <td style="padding:10px; font-weight:700; color:#16a34a;">Tecla I</td>
+          <td style="padding:10px;">Include (Incluir)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--c-border);">
+          <td style="padding:10px; font-weight:700; color:#dc2626;">Tecla E</td>
+          <td style="padding:10px;">Exclude (Excluir)</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; font-weight:700; color:#d97706;">Tecla M</td>
+          <td style="padding:10px;">Maybe (Quizás)</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="sec-ciego">
+    <h3>El Modo Ciego (Blinding Mode) — FUNDAMENTAL</h3>
+    <p>Por defecto, Rayyan activa el <strong>Modo Ciego</strong>. Esto significa que cuando un revisor toma una decisión sobre un artículo, el otro revisor <strong>no puede ver esa decisión</strong>. Esto es exactamente lo que pide la metodología PRISMA.</p>
+
+    <div class="blinding-visual">
+      <div class="blinding-person">
+        <div class="avatar">👩‍🎓</div>
+        <div class="name">Revisora 1</div>
+        <div class="status">Lee y decide:<br>✓ Include / ✕ Exclude</div>
+      </div>
+      <div class="blinding-wall">🔒</div>
+      <div class="blinding-person">
+        <div class="avatar">👨‍🎓</div>
+        <div class="name">Revisor 2</div>
+        <div class="status">Lee y decide:<br>✓ Include / ✕ Exclude</div>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-icon">🚫</div>
+      <div>
+        <h4>¡Nunca desactives el Blinding durante el cribado!</h4>
+        <p>El Blinding está <strong>activado por defecto</strong> y debe mantenerse durante toda la etapa de cribado de título y resumen. Desactivarlo invalida la independencia del cribado y debilita metodológicamente tu PRISMA.</p>
+        <p>Si el dueño de la revisión (Owner) desactiva el Blinding (<em>"Blinding: Off"</em>), los revisores podrán ver las decisiones del otro, lo que introduce sesgos.</p>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <div class="callout-icon">✅</div>
+      <div>
+        <h4>¿Cuándo se puede desactivar el Blinding?</h4>
+        <p>Solo <strong>después de que ambos revisores terminaron de cribar todos los artículos</strong>. En ese momento, el Owner puede ir a la configuración de la revisión y desactivar el Blinding para ver las coincidencias y discrepancias entre revisores y resolver los conflictos juntos.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-razones">
+    <h3>Registrar razones de exclusión</h3>
+    <p>Cuando hacés clic en <strong>"Exclude"</strong>, Rayyan te permite (y se recomienda) seleccionar el motivo de exclusión. Esto es crucial para el diagrama PRISMA.</p>
+
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Acceder al campo de razones</h4>
+        <p>Después de hacer clic en <strong>"Exclude"</strong>, en la barra inferior aparece el campo <strong>"Reasons"</strong>. Hacé clic en él para abrir la lista de razones.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Seleccionar o crear una razón</h4>
+        <p>Rayyan te muestra las razones que ya creaste anteriormente. Podés seleccionar una existente o escribir una nueva (por ejemplo: <em>"Población no pediátrica"</em>, <em>"Idioma no permitido"</em>, <em>"Revisión sistemática (no primario)"</em>).</p>
+        <p>Una vez escritas, esas razones quedan guardadas y aparecen en el desplegable para usarlas rápidamente en futuros artículos.</p>
+      </div>
+    </div>
+
+    <div class="template-box">
+      <div class="template-badge">Razones de exclusión recomendadas</div>
+      <p style="font-family:var(--font-ui); font-size:0.95rem; margin-bottom:15px;">Creá estas razones en Rayyan al inicio del cribado para usarlas consistentemente:</p>
+      <ul style="font-family:var(--font-ui); font-size:0.95rem; line-height:2;">
+        <li>No es un estudio primario (revisión, meta-análisis, editorial)</li>
+        <li>Población no cumple criterios (adultos / edad fuera de rango)</li>
+        <li>Intervención no corresponde al objetivo del TFL</li>
+        <li>Idioma no incluido en criterios (ej: alemán, chino)</li>
+        <li>Fecha de publicación fuera del rango establecido</li>
+        <li>Texto completo no disponible</li>
+        <li>No aborda la variable de estudio principal</li>
+      </ul>
+      <div class="template-note"><b>Tip:</b> Acordá con tu equipo la lista de razones <strong>antes de comenzar el cribado</strong> para usar las mismas etiquetas y que los datos sean comparables entre revisores.</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- PARTE 5: COLABORACIÓN -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="sec-colaborar">
+    <h2>Parte 5 — Colaboración e Invitación del Equipo</h2>
+    <p>Para que el cribado ciego sea posible, tu compañero/a de equipo debe ser invitado a la misma revisión.</p>
+
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Ir a la sección de colaboradores</h4>
+        <p>Dentro de tu revisión, buscá el ícono de personas o la pestaña <strong>"Collaborators"</strong> (Colaboradores) o <strong>"Team"</strong>. Hacé clic en <strong>"Invite"</strong> o <strong>"Add collaborator"</strong>.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Ingresar el email del colaborador</h4>
+        <p>Escribí el correo electrónico del impieza del equipo (el mismo con el que tu compañero/a creó su cuenta en Rayyan). Hacé clic en <strong>"Invite"</strong>.</p>
+        <p>Tu compañero/a recibirá un email de invitación con un link. Al aceptar, tendrá acceso a la revisión y podrá empezar el cribado independiente.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Asignar el rol correcto</h4>
+        <p>Al invitar, podés asignar el rol de <strong>"Reviewer"</strong> (Revisor) a tu compañero/a. Este rol permite hacer cribado pero no modifica la configuración de la revisión. El <strong>"Owner"</strong> (dueño) es quien creó la revisión y tiene control total.</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">🤝</div>
+      <div>
+        <h4>¿Y la professora/tutora?</h4>
+        <p>Podés también invitar a tu director/a de tesis o a la Prof. Agustina como Reviewer para que pueda ver el progreso del cribado y guiarlos. Simplemente enviá una invitación con su correo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-textocomp">
+    <h3>Gestión del texto completo (Segunda fase de cribado)</h3>
+    <p>Después de cribar todos los títulos y resúmenes, los artículos que quedaron como <strong>"Include"</strong> entran a una segunda etapa: la lectura del texto completo.</p>
+
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Filtrar los artículos incluidos</h4>
+        <p>En el panel de filtros de la izquierda, en la sección <strong>"Decisions"</strong>, hacé clic en <strong>"Included"</strong>. Esto filtra la lista para mostrar solo los artículos con decisión Include.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Descargar y leer el PDF completo</h4>
+        <p>Para cada artículo "Included", buscá el artículo completo:</p>
+        <ul>
+          <li>Si el artículo tiene DOI (Digital Object Identifier), Rayyan muestra un botón de enlace al artículo original. Hacé clic para ir a la fuente.</li>
+          <li>También podés usar <strong>Sci-Hub</strong>, <strong>Unpaywall</strong> o el acceso institucional de tu universidad para obtener los PDFs.</li>
+          <li>Si el artículo tiene acceso abierto (Open Access), generalmente hay un botón <strong>"PDF"</strong> disponible.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Adjuntar el PDF en Rayyan (opcional pero recomendado)</h4>
+        <p>Dentro del artículo en Rayyan, buscá el botón de adjuntar archivo (📎). Podés subir el PDF completo directamente al registro. Así todo el equipo tiene acceso desde la plataforma.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Decidir sobre el texto completo</h4>
+        <p>Después de leer el PDF completo, volvés a usar los botones <strong>Include / Exclude / Maybe</strong> en Rayyan. Esta vez, la exclusión debe ir sí o sí acompañada de una razón específica (ej: "La muestra no cumple el rango etario definido en el protocolo").</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-exportar-final">
+    <h3>Exportar los resultados finales</h3>
+    <p>Una vez completado el cribado, Rayyan te permite exportar los resultados para usarlos en tu tesis.</p>
+
+    <div class="step-block">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Exportar artículos incluidos</h4>
+        <p>Filtrá los artículos finalmente incluidos. Buscá el botón <strong>"Export"</strong> en la barra superior. Podés exportar en <strong>RIS</strong> (para importar a Mendeley/Zotero), <strong>CSV</strong> (para abrir en Excel y construir tu Matriz) o <strong>BibTeX</strong>.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Generar el diagrama PRISMA</h4>
+        <p>Rayyan registra automáticamente todas las etapas y números. En la sección de la revisión, buscá el botón o función <strong>"PRISMA"</strong> o <strong>"Flow Diagram"</strong>. Rayyan puede generar automáticamente el diagrama de flujo PRISMA con los números exactos de cada etapa.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- PARTE 6: CHECKLIST -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="sec-checklist" style="background:#fff; border:1px solid var(--c-border); padding:45px; border-radius:var(--radius); margin-top:80px; box-shadow:0 6px 20px rgba(0,0,0,0.02);">
+    <h2 style="margin-top:0; border:none; padding:0;">Tu Checklist PRISMA con Rayyan</h2>
+    <p>Usá esta lista como guía de progreso. Marcá cada tarea cuando la completes:</p>
+
+    <style>
+      .todo-item { display:flex; align-items:flex-start; gap:12px; margin-bottom:15px; font-family:var(--font-ui); font-size:0.95rem; cursor:pointer;}
+      .todo-item input[type="checkbox"] { width:22px; height:22px; margin-top:1px; cursor:pointer; accent-color:var(--c-accent); flex-shrink:0; border-radius:4px;}
+      .todo-item span { transition: color 0.2s, text-decoration 0.2s; user-select:none; line-height: 1.5; color: var(--c-text);}
+      .todo-item input[type="checkbox"]:checked + span { color:#a0a0c0; text-decoration:line-through; }
+    </style>
+
+    <h4 style="color:var(--c-accent); margin-top:30px;">Preparación</h4>
+    <label class="todo-item"><input type="checkbox"><span><b>Crear cuenta en Rayyan</b> — rayyan.ai/sign-up (ambos miembros del equipo).</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Definir criterios de inclusión/exclusión</b> — antes de buscar y acordados con el equipo.</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Acordar la lista de razones de exclusión</b> — que usarán ambos revisores de manera consistente.</span></label>
+
+    <h4 style="color:var(--c-accent); margin-top:25px;">Exportación de Bases de Datos</h4>
+    <label class="todo-item"><input type="checkbox"><span><b>PubMed:</b> Busqueda ejecutada y exportada en formato .nbib (Citation Manager).</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Scopus:</b> Resultados exportados en formato RIS (con abstract incluido).</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Web of Science:</b> Resultados exportados en RIS (Full Record).</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>SciELO / LILACS / BVS:</b> Resultados exportados en formato RIS o BibTeX.</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Todos los archivos organizados</b> en una carpeta con nombres descriptivos.</span></label>
+
+    <h4 style="color:var(--c-accent); margin-top:25px;">Configuración de Rayyan</h4>
+    <label class="todo-item"><input type="checkbox"><span><b>Crear la revisión</b> en Rayyan con título completo y tipo "Systematic Review".</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Subir todos los archivos RIS</b> a la revisión.</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Verificar la deduplicación</b> — anotar los números (total importados / duplicados / únicos).</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Invitar al compañero/a de equipo</b> como Reviewer (con correo de su cuenta Rayyan).</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Verificar que el Blinding esté activo</b> (ON) antes de iniciar el cribado.</span></label>
+
+    <h4 style="color:var(--c-accent); margin-top:25px;">Cribado</h4>
+    <label class="todo-item"><input type="checkbox"><span><b>Cribado de título/resumen:</b> Ambos revisores realizan cribado independiente de todos los artículos.</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Registrar razones de exclusión</b> para todos los artículos excluidos.</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Resolver artículos "Maybe"</b> — decidirlos definitivamente.</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Resolver conflictos</b> — artículos donde los revisores no coincidieron, con mediación de un tercero.</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Segunda fase:</b> Leer textos completos de los artículos "Included" y aplicar criterios de elegibilidad.</span></label>
+
+    <h4 style="color:var(--c-accent); margin-top:25px;">Cierre</h4>
+    <label class="todo-item"><input type="checkbox"><span><b>Exportar artículos finales</b> en RIS o CSV para construir la Matriz de Evidencia.</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Anotar los números finales</b> de cada etapa para completar el diagrama PRISMA.</span></label>
+    <label class="todo-item"><input type="checkbox"><span><b>Genera el diagrama de flujo PRISMA</b> con los datos de Rayyan.</span></label>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- ERRORES FRECUENTES -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="sec-errores">
+    <h2>Errores frecuentes y cómo resolverlos</h2>
+
+    <div class="callout danger">
+      <div class="callout-icon">❌</div>
+      <div>
+        <h4>Error: "El archivo no se puede importar" o "Formato no reconocido"</h4>
+        <p><strong>Causa:</strong> El archivo no está en formato RIS, BibTeX o CSV compatible, o está corrupto.</p>
+        <p><strong>Solución:</strong> Volvé a la base de datos y re-exportá el archivo. Verificá que elegiste el formato correcto. Si el archivo es <code>.txt</code>, puede que contenga referencias en formato RIS — intentá renombrarlo a <code>.ris</code>.</p>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-icon">❌</div>
+      <div>
+        <h4>Error: Los artículos no tienen abstract (resumen)</h4>
+        <p><strong>Causa:</strong> Al exportar de la base de datos, no seleccionaste la opción "Full Record" o "Include Abstract".</p>
+        <p><strong>Solución:</strong> Re-exportá desde la base de datos asegurándote de seleccionar la exportación con abstract completo. En PubMed, el Citation Manager lo incluye automáticamente.</p>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">⚠️</div>
+      <div>
+        <h4>Problema: Los títulos aparecen con caracteres extraños (ñ, tildes, etc.)</h4>
+        <p><strong>Causa:</strong> El archivo no está guardado en codificación UTF-8.</p>
+        <p><strong>Solución:</strong> Intentá volver a exportar. Si el problema persiste, abrí el archivo en el Bloc de Notas de Windows, hacé clic en <em>Archivo → Guardar como</em> y en "Codificación" elegí <em>UTF-8</em>. Guardá y volvé a subir.</p>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">⚠️</div>
+      <div>
+        <h4>Problema: Me olvide de incluir una base de datos / Quiero agregar más artículos</h4>
+        <p><strong>Causa:</strong> Ya empezaste a cribar y querés agregar registros de otra base.</p>
+        <p><strong>Solución:</strong> Podés agregar archivos a una revisión ya existente en cualquier momento. Dentro de la revisión, ir a <em>Review Data → Search Methods → Add References</em> y subís los nuevos archivos. Rayyan los integra y detecta duplicados automáticamente.</p>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">⚠️</div>
+      <div>
+        <h4>Problema: No veo las decisiones de mi compañero/a</h4>
+        <p><strong>Causa:</strong> El Blinding está activado (que es lo correcto ✅).</p>
+        <p><strong>Solución:</strong> No hagas nada. Esto es correcto. Solo verás las decisiones del otro cuando el Owner desactive el Blinding después de que ambos terminaron el cribado.</p>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-icon">❌</div>
+      <div>
+        <h4>Error: No puedo invitar a mi compañero/a porque dice "user not found"</h4>
+        <p><strong>Causa:</strong> Tu compañero/a todavía no creó su cuenta en Rayyan, o ingresaste el correo incorrecto.</p>
+        <p><strong>Solución:</strong> Verificá que tu compañero/a haya creado su cuenta y verificado su email. Pedile que te confirme exactamente el correo que usó para registrarse. Ingresalo tal cual, sin espacios adicionales.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIBLOGRAFIA -->
+  <section id="sec-biblio" style="margin-top: 100px; padding-top: 40px; border-top: 2px dashed var(--c-border); margin-bottom:100px;">
+    <h3>Recursos y Bibliografía</h3>
+    <p>Para profundizar o resolver dudas adicionales, consultá estos recursos oficiales:</p>
+
+    <ul>
+      <li><span style="color:var(--c-accent); font-weight:700;">Rayyan Help Center</span> — <code>help.rayyan.ai</code> — Documentación oficial actualizada de la plataforma.</li>
+      <li><span style="color:var(--c-accent); font-weight:700;">Rayyan Tutorials</span> — <code>ryn.ai/learnnewrayyan/</code> — Videos tutoriales oficiales.</li>
+      <li><span style="color:var(--c-accent); font-weight:700;">Page et al. (2021)</span> — Declaración PRISMA 2020: una guía actualizada para la publicación de revisiones sistemáticas. <em>BMJ</em>, 372, n71.</li>
+      <li><span style="color:var(--c-accent); font-weight:700;">Web oficial de PRISMA</span> — <code>prisma-statement.org</code> — Checklist oficial y diagramas de flujo.</li>
+      <li><span style="color:var(--c-accent); font-weight:700;">PubMed</span> — <code>pubmed.ncbi.nlm.nih.gov</code></li>
+      <li><span style="color:var(--c-accent); font-weight:700;">BVS/LILACS</span> — <code>bvsalud.org</code></li>
+      <li><span style="color:var(--c-accent); font-weight:700;">SciELO</span> — <code>scielo.org</code></li>
+    </ul>
+
+    <div class="callout" style="background:#1e1e2e; color:#fff; border-color:#1e1e2e; margin-top:50px;">
+      <div class="callout-icon">🎓</div>
+      <div>
+        <h4 style="color:#eef0ff; font-weight: 800; margin-bottom:5px;">LABORATORIO DE TESIS</h4>
+        <p style="color:#a6abc8;">Construyendo tu camino al título. Asesoría Pedagógica - Prof. Agustina</p>
+        <p style="color:#6a6f8a; font-size:0.9rem; margin-top: 5px;">Guía de Carga de Bases de Datos en Rayyan · Versión 2024–2025</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Scroll spy for active sidebar navigation
+  const secIds = [
+    'sec-intro', 'sec-cuenta', 'sec-exportar', 'sec-pubmed', 'sec-scopus',
+    'sec-wos', 'sec-scielo', 'sec-nueva-revision', 'sec-cargar',
+    'sec-cribado', 'sec-decisiones', 'sec-ciego', 'sec-razones',
+    'sec-colaborar', 'sec-textocomp', 'sec-exportar-final',
+    'sec-checklist', 'sec-errores'
+  ];
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const activeNav = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+        if(activeNav) activeNav.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px', threshold: 0.1 });
+
+  secIds.forEach(id => {
+    const section = document.getElementById(id);
+    if(section) observer.observe(section);
+  });
+</script>
+
+</body>
+</html>
